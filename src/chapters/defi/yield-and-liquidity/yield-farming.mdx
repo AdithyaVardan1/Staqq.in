@@ -1,0 +1,92 @@
+# Yield Farming
+
+Yield farming means putting your crypto to work across DeFi protocols to earn the maximum possible return. At its peak in 2020–2021, some farms offered thousands of percent APY — most of which was unsustainable.
+
+<InfoBox type="important">
+  Educational content only. High APY in DeFi almost always comes with proportionally high risk. Not financial advice.
+</InfoBox>
+
+## What is Yield Farming?
+
+Providing liquidity earns trading fees. But many protocols also distribute their **governance tokens** as additional incentives to attract liquidity. This is "liquidity mining."
+
+Yield = Trading fees + Protocol token rewards
+
+When protocol token prices are high and there's limited liquidity, APYs can appear astronomical. As more capital flows in and token prices stabilise, APYs normalise.
+
+## The "DeFi Summer" of 2020
+
+Compound Finance kicked off modern yield farming in June 2020 by distributing COMP tokens to users. Suddenly, lending and borrowing USDC on Compound yielded 20%+ APY — paid partly in COMP tokens.
+
+The practice exploded. By August 2020, billions of dollars were rotating across protocols chasing the highest yields. This period was called "DeFi Summer."
+
+## How It Works in Practice
+
+**Example: Providing liquidity on Uniswap V3 + staking LP tokens**
+
+1. Deposit ETH + USDC into a Uniswap V3 pool
+2. Receive LP tokens
+3. Stake LP tokens in the protocol's "farm" contract
+4. Earn: trading fees (0.3%) + UNI governance tokens
+
+**Example: Yield aggregator (Yearn Finance)**
+
+1. Deposit USDC into Yearn
+2. Yearn's "Strategy" automatically moves capital to the highest-yielding protocol
+3. Compounds rewards back into the position
+4. You just hold yUSDC tokens
+
+## APY Sustainability
+
+<Table
+  headers={["APY Range", "Typical Risk/Sustainability"]}
+  rows={[
+    ["3–8%", "Sustainable — similar to established lending protocols"],
+    ["8–20%", "Moderate — usually requires some protocol token exposure"],
+    ["20–100%", "High risk — often inflated by token emissions, will decline"],
+    ["100%+", "Extremely high risk — likely short-lived, token may be worthless soon"],
+    ["1000%+", "Almost certainly a rug pull or Ponzi structure"],
+  ]}
+/>
+
+<InfoBox type="warning">
+  **"Mercenary capital"** is a real phenomenon — yield farmers move money from protocol to protocol chasing APY. When rewards dry up, liquidity leaves instantly, token prices crash, and remaining participants face losses. High APY is often a temporary incentive to bootstrap a protocol, not a permanent feature.
+</InfoBox>
+
+## Major Yield Aggregators
+
+Rather than manually chasing yield across protocols, aggregators do it automatically:
+
+- **Yearn Finance** — the original yield aggregator; focuses on stablecoin yield
+- **Beefy Finance** — multi-chain, auto-compounds LP positions
+- **Convex Finance** — maximises yield for Curve LP providers
+
+## The Real Cost: Gas Fees and Complexity
+
+On Ethereum mainnet, deploying and harvesting yield farming positions can cost $50–$200+ in gas. For small amounts, fees eat all returns.
+
+Layer 2s and alternative chains (Solana, BNB Chain, Polygon) significantly reduce this barrier.
+
+## Quick Check
+
+<Quiz
+  question="Why do some DeFi protocols offer very high APY for providing liquidity?"
+  options={[
+    "They have extremely profitable businesses funding the rewards",
+    "They distribute their own governance tokens as incentives to attract liquidity",
+    "High APY is always sustainable in crypto",
+    "The rewards come from trading fees alone"
+  ]}
+  correctIndex={1}
+  explanation="Many protocols offer additional governance token rewards on top of trading fees to bootstrap liquidity. These token rewards can create temporarily high APYs. As more capital enters and/or token prices fall, APYs normalise."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Yield farming combines trading fees + protocol token rewards for total return
+  - DeFi Summer (2020) kicked off the trend with Compound's COMP token distribution
+  - APY above 20–30% almost always involves significant protocol token exposure and risk
+  - Yields are not sustainable — they decline as more capital enters and token prices normalise
+  - Aggregators like Yearn auto-compound and manage strategies automatically
+</InfoBox>

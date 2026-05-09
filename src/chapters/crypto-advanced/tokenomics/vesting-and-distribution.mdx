@@ -1,0 +1,100 @@
+# Vesting & Distribution
+
+How a project allocates its tokens and when those allocations unlock reveals the alignment (or misalignment) of incentives between founders, investors, and the community.
+
+<InfoBox type="important">
+  Educational content only. Token allocations and vesting schedules are a critical part of due diligence. Not financial advice.
+</InfoBox>
+
+## Token Distribution Categories
+
+Most crypto projects allocate tokens across several buckets:
+
+<Table
+  headers={["Category", "Typical Range", "Who Gets It"]}
+  rows={[
+    ["Team & Founders", "10–20%", "Core developers and early employees"],
+    ["Investors (VC/private)", "10–30%", "Seed, private, and strategic investors"],
+    ["Ecosystem/Treasury", "20–40%", "Protocol development, grants, DAO treasury"],
+    ["Community/Airdrop", "10–30%", "Early users, liquidity incentives, rewards"],
+    ["Foundation", "5–15%", "Non-profit supporting the protocol"],
+    ["Public Sale/IDO", "5–20%", "Tokens sold publicly at launch"],
+  ]}
+/>
+
+## What is a Vesting Schedule?
+
+Vesting prevents insiders from dumping all tokens immediately at launch. Instead, tokens unlock gradually over time.
+
+**Common vesting structures:**
+
+**Cliff + Linear Vesting:**
+- 1-year cliff: no tokens released for the first year
+- Then linear release: e.g., 25% per year for 3 more years
+
+**Example:** 
+- 10 million tokens for team
+- 1-year cliff, 3-year linear vesting
+- Month 12: 0 tokens released
+- Month 13: 277,778 tokens/month begin releasing
+- Month 48: All 10M tokens fully vested
+
+## Why Vesting Matters
+
+Without vesting, founders and VCs could sell everything on day 1 — classic "pump and dump."
+
+With proper vesting:
+- Insiders are incentivised to build long-term value
+- Market isn't flooded with supply at launch
+- Token holders know when future supply will enter the market
+
+<InfoBox type="warning">
+  **Token unlock events** are predictable selling pressure. When a large tranche of tokens unlocks for team or VCs, some holders will sell. Track upcoming unlocks at **token.unlocks.app** or **vestlab.io**. A major unlock event can precede significant price drops.
+</InfoBox>
+
+## Red Flags in Token Distribution
+
+- **Team allocation > 30%** — founders can dump and abandon project
+- **No vesting or very short cliff** — insiders can exit quickly
+- **Opaque allocation** — percentages not disclosed in documentation
+- **Large early investor allocation with short vesting** — VCs may be selling to retail
+- **Very low community allocation** — project isn't genuinely decentralised
+
+## Green Flags
+
+- **Team tokens locked 3–4 years with meaningful cliff**
+- **Community allocation >30%**
+- **Multi-sig or DAO-controlled treasury**
+- **Transparent vesting schedule published and verifiable on-chain**
+
+## Reading a Tokenomics Pie Chart
+
+When you see a tokenomics pie chart, ask:
+1. What is the team/investor % combined?
+2. What is the vesting schedule for those tokens?
+3. When does the largest unlock event happen?
+4. Is the treasury controlled by a DAO or by the company?
+
+## Quick Check
+
+<Quiz
+  question="A token has 40% allocated to VCs with a 3-month cliff and 12-month linear vesting. Current price is $5. What concern should retail investors have?"
+  options={[
+    "None — 40% VC allocation is standard and safe",
+    "Large supply unlocking within 15 months could create significant selling pressure",
+    "VCs are always aligned with retail investors",
+    "The 3-month cliff makes this token safer than most"
+  ]}
+  correctIndex={1}
+  explanation="40% to VCs who paid a much lower price at seed rounds creates massive selling pressure starting at month 3 and peaking by month 15. VCs may sell to lock in returns, depressing price. Retail investors buying at $5 could face significant downward pressure."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Token distribution reveals who benefits most and whether incentives are aligned
+  - Vesting schedules prevent insiders from dumping at launch
+  - Cliff + linear vesting is the industry standard: no tokens for X months, then gradual release
+  - Track upcoming unlock events — predictable selling pressure
+  - Red flags: high team/VC % with short vesting; opaque allocations; tiny community share
+</InfoBox>

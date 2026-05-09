@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Zap, Wallet, Shield, Rocket } from 'lucide-react';
 import styles from './CryptoNav.module.css';
 
 const TABS = [
-    { href: '/crypto/signals', label: 'Signals', icon: Zap },
-    { href: '/crypto/wallets', label: 'Wallets', icon: Wallet },
-    { href: '/crypto/scanner', label: 'Scanner', icon: Shield },
-    { href: '/crypto/new-tokens', label: 'New Launches', icon: Rocket },
+    { href: '/crypto/signals',    label: 'Social Signals', icon: Zap },
+    { href: '/crypto/wallets',    label: 'Wallet Tracker', icon: Wallet },
+    { href: '/crypto/scanner',    label: 'Token Scanner',  icon: Shield },
+    { href: '/crypto/new-tokens', label: 'New Launches',   icon: Rocket },
 ];
 
 export function CryptoNav() {
@@ -26,7 +27,15 @@ export function CryptoNav() {
                         href={tab.href}
                         className={`${styles.tab} ${active ? styles.active : ''}`}
                     >
-                        <Icon size={15} />
+                        {active && (
+                            <motion.div
+                                layoutId="activeCryptoTab"
+                                className={styles.activeBg}
+                                initial={false}
+                                transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                            />
+                        )}
+                        <Icon size={15} className={styles.tabIcon} />
                         {tab.label}
                     </Link>
                 );

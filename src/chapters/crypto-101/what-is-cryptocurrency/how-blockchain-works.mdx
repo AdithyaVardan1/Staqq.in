@@ -1,0 +1,101 @@
+# How Blockchain Works
+
+A blockchain is the technology that makes Bitcoin — and most other cryptocurrencies — possible. Understanding it removes a lot of the mystery around crypto.
+
+<InfoBox type="important">
+  This chapter is for educational purposes only. It does not constitute financial or investment advice.
+</InfoBox>
+
+## The Core Idea: A Shared Record Book
+
+Imagine a notebook that records every transaction ever made. Now imagine thousands of identical copies of that notebook existing simultaneously on computers around the world. Every time a new transaction happens, every copy updates at once.
+
+That is a blockchain.
+
+- **Distributed** — no single computer holds the "master" copy
+- **Transparent** — anyone can read every entry
+- **Tamper-resistant** — changing one copy doesn't change the others
+
+## What is a "Block"?
+
+A block is a batch of transactions grouped together. Think of it like a page in that record book. Each block contains:
+
+1. **Transaction data** — who sent what to whom
+2. **A timestamp** — when the block was created
+3. **A hash** — a unique fingerprint of the block's contents
+4. **The previous block's hash** — this is what creates the "chain"
+
+<InfoBox type="note">
+  A hash is like a fingerprint. If you change even one character in the block data, the hash changes completely. This makes tampering obvious.
+</InfoBox>
+
+## How Blocks Form a Chain
+
+Each block includes the hash of the block before it. This links them in sequence:
+
+- Block 1 (Genesis) → Block 2 → Block 3 → Block 4 → ...
+
+If someone tries to alter Block 2, its hash changes. This breaks Block 3 (which stored the old hash of Block 2). And Block 4. And every block after it. The entire network immediately rejects the tampered chain.
+
+## How a Transaction Gets Confirmed
+
+When you send Bitcoin, here's what happens step by step:
+
+<Table
+  headers={["Step", "What Happens"]}
+  rows={[
+    ["1. Broadcast", "Your transaction is sent to the Bitcoin network (~10,000 nodes)"],
+    ["2. Mempool", "Unconfirmed transactions wait in a 'memory pool'"],
+    ["3. Mining", "A miner picks up transactions and groups them into a block"],
+    ["4. Proof of Work", "The miner solves a mathematical puzzle to 'seal' the block"],
+    ["5. Broadcast", "The sealed block is sent to all nodes for verification"],
+    ["6. Accepted", "Nodes verify the block is valid and add it to their chain"],
+    ["7. Confirmed", "Your transaction is now permanently recorded"],
+  ]}
+/>
+
+## Why Can't Someone Just Edit the Blockchain?
+
+Three layers of protection:
+
+1. **Cryptographic hashing** — altering data breaks the chain
+2. **Decentralisation** — you'd need to change over 51% of all copies simultaneously
+3. **Proof of Work** — re-mining thousands of blocks takes enormous computing power
+
+A so-called "51% attack" (controlling over half the network) is theoretically possible but astronomically expensive on large networks like Bitcoin.
+
+## Public vs Private Blockchains
+
+<Table
+  headers={["Type", "Who Can Join?", "Examples"]}
+  rows={[
+    ["Public", "Anyone — fully permissionless", "Bitcoin, Ethereum"],
+    ["Private", "Invited members only", "Hyperledger (banks, enterprises)"],
+    ["Consortium", "Group of pre-approved organisations", "Trade finance networks"],
+  ]}
+/>
+
+Crypto as we know it uses **public blockchains** — open to everyone.
+
+## Quick Check
+
+<Quiz
+  question="What links one block to the next in a blockchain?"
+  options={[
+    "The transaction amount",
+    "The timestamp of the block",
+    "The hash of the previous block",
+    "The miner's wallet address"
+  ]}
+  correctIndex={2}
+  explanation="Each block stores the hash (fingerprint) of the previous block. This is what creates the 'chain' — and makes tampering detectable, because changing any block breaks all the hashes that follow it."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - A blockchain is a shared, distributed record book that no single party controls
+  - Blocks contain transaction data + the hash of the previous block, forming an unbreakable chain
+  - Changing any transaction would require re-computing every block that follows — practically impossible on large networks
+  - Bitcoin uses a public blockchain — anyone can read it, anyone can participate
+</InfoBox>

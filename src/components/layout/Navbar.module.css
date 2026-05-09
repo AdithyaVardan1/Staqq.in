@@ -12,19 +12,19 @@
 
 @keyframes activePulse {
     0%, 100% {
-        box-shadow: 0 0 16px rgba(202, 255, 0, 0.28);
+        box-shadow: 0 0 15px rgba(202, 255, 0, 0.15);
     }
     50% {
-        box-shadow: 0 0 32px rgba(202, 255, 0, 0.55), 0 0 64px rgba(202, 255, 0, 0.1);
+        box-shadow: 0 0 25px rgba(202, 255, 0, 0.3), 0 0 45px rgba(202, 255, 0, 0.08);
     }
 }
 
 @keyframes activePulseViolet {
     0%, 100% {
-        box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.15);
     }
     50% {
-        box-shadow: 0 0 32px rgba(168, 85, 247, 0.58), 0 0 64px rgba(168, 85, 247, 0.12);
+        box-shadow: 0 0 25px rgba(168, 85, 247, 0.3), 0 0 45px rgba(168, 85, 247, 0.08);
     }
 }
 
@@ -299,6 +299,20 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-muted);
+}
+
+/* ── Crypto / Violet dropdown overrides ── */
+.navDropdownViolet {
+    border-color: rgba(168, 85, 247, 0.15);
+}
+
+.navDropdownIconViolet {
+    background: rgba(168, 85, 247, 0.1) !important;
+    color: #a855f7 !important;
+}
+
+.navDropdownItemViolet:hover .navDropdownIconViolet {
+    background: rgba(168, 85, 247, 0.2) !important;
 }
 
 /* ── Actions ── */

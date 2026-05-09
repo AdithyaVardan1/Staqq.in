@@ -313,6 +313,206 @@ export const modules: Module[] = [
             { slug: "investor-psychology", title: "Investor Psychology" },
         ],
     },
+
+    // ==========================================
+    // PATH 6: CRYPTO 101 (3 modules, 9 chapters)
+    // ==========================================
+    {
+        id: 23,
+        slug: "what-is-cryptocurrency",
+        title: "What is Cryptocurrency?",
+        path: "crypto-101",
+        description: "Understand Bitcoin, blockchain, and the crypto ecosystem.",
+        chapters: [
+            { slug: "what-is-bitcoin", title: "What is Bitcoin" },
+            { slug: "how-blockchain-works", title: "How Blockchain Works" },
+            { slug: "types-of-crypto", title: "Types of Cryptocurrency" },
+        ],
+    },
+    {
+        id: 24,
+        slug: "crypto-wallets-security",
+        title: "Wallets & Security",
+        path: "crypto-101",
+        description: "Store your crypto safely and avoid common traps.",
+        chapters: [
+            { slug: "hot-vs-cold-wallets", title: "Hot vs Cold Wallets" },
+            { slug: "private-keys-seed-phrases", title: "Private Keys & Seed Phrases" },
+            { slug: "staying-safe-online", title: "Staying Safe Online" },
+        ],
+    },
+    {
+        id: 25,
+        slug: "buying-your-first-crypto",
+        title: "Buying Your First Crypto",
+        path: "crypto-101",
+        description: "Get on an exchange and make your first purchase.",
+        chapters: [
+            { slug: "choosing-an-exchange", title: "Choosing an Exchange" },
+            { slug: "kyc-and-verification", title: "KYC & Verification" },
+            { slug: "making-your-first-purchase", title: "Making Your First Purchase" },
+        ],
+    },
+
+    // ==========================================
+    // PATH 7: BLOCKCHAIN & WEB3 (3 modules, 9 chapters)
+    // ==========================================
+    {
+        id: 26,
+        slug: "blockchain-fundamentals",
+        title: "Blockchain Fundamentals",
+        path: "blockchain",
+        description: "Consensus, Layer 1 vs Layer 2, and how networks differ.",
+        chapters: [
+            { slug: "consensus-mechanisms", title: "Consensus Mechanisms" },
+            { slug: "proof-of-work-vs-stake", title: "Proof of Work vs Stake" },
+            { slug: "layer1-vs-layer2", title: "Layer 1 vs Layer 2" },
+        ],
+    },
+    {
+        id: 27,
+        slug: "smart-contracts-dapps",
+        title: "Smart Contracts & dApps",
+        path: "blockchain",
+        description: "Self-executing code, decentralised apps, and DAOs.",
+        chapters: [
+            { slug: "what-are-smart-contracts", title: "What are Smart Contracts" },
+            { slug: "decentralized-applications", title: "Decentralized Applications" },
+            { slug: "daos-and-governance", title: "DAOs & Governance" },
+        ],
+    },
+    {
+        id: 28,
+        slug: "nfts-and-digital-assets",
+        title: "NFTs & Digital Assets",
+        path: "blockchain",
+        description: "Non-fungible tokens, use cases, and the NFT market.",
+        chapters: [
+            { slug: "what-are-nfts", title: "What are NFTs" },
+            { slug: "nft-standards", title: "NFT Standards (ERC-721, ERC-1155)" },
+            { slug: "nft-use-cases", title: "NFT Use Cases" },
+        ],
+    },
+
+    // ==========================================
+    // PATH 8: DEFI DECODED (3 modules, 9 chapters)
+    // ==========================================
+    {
+        id: 29,
+        slug: "defi-basics",
+        title: "DeFi Basics",
+        path: "defi",
+        description: "What DeFi is, DEXes, and how AMMs work.",
+        chapters: [
+            { slug: "what-is-defi", title: "What is DeFi" },
+            { slug: "decentralized-exchanges", title: "Decentralized Exchanges" },
+            { slug: "automated-market-makers", title: "Automated Market Makers" },
+        ],
+    },
+    {
+        id: 30,
+        slug: "lending-and-borrowing",
+        title: "Lending & Borrowing",
+        path: "defi",
+        description: "Earn yield on assets and borrow without a bank.",
+        chapters: [
+            { slug: "lending-protocols", title: "Lending Protocols" },
+            { slug: "collateralized-loans", title: "Collateralized Loans" },
+            { slug: "liquidation-risks", title: "Liquidation Risks" },
+        ],
+    },
+    {
+        id: 31,
+        slug: "yield-and-liquidity",
+        title: "Yield & Liquidity",
+        path: "defi",
+        description: "Liquidity pools, yield farming, and impermanent loss.",
+        chapters: [
+            { slug: "liquidity-pools", title: "Liquidity Pools" },
+            { slug: "yield-farming", title: "Yield Farming" },
+            { slug: "impermanent-loss", title: "Impermanent Loss" },
+        ],
+    },
+
+    // ==========================================
+    // PATH 9: CRYPTO TRADING (3 modules, 9 chapters)
+    // ==========================================
+    {
+        id: 32,
+        slug: "reading-crypto-markets",
+        title: "Reading Crypto Markets",
+        path: "crypto-trading",
+        description: "Market cap, order books, and crypto-specific metrics.",
+        chapters: [
+            { slug: "market-cap-and-volume", title: "Market Cap & Volume" },
+            { slug: "crypto-order-books", title: "Crypto Order Books" },
+            { slug: "funding-rates", title: "Funding Rates & Open Interest" },
+        ],
+    },
+    {
+        id: 33,
+        slug: "crypto-trading-strategies",
+        title: "Trading Strategies",
+        path: "crypto-trading",
+        description: "Spot, futures, DCA, and risk management for crypto.",
+        chapters: [
+            { slug: "spot-vs-futures", title: "Spot vs Futures" },
+            { slug: "dollar-cost-averaging", title: "Dollar-Cost Averaging" },
+            { slug: "crypto-risk-management", title: "Risk Management in Crypto" },
+        ],
+    },
+    {
+        id: 34,
+        slug: "on-chain-analysis",
+        title: "On-Chain Analysis",
+        path: "crypto-trading",
+        description: "Use blockchain data to track whale moves and trends.",
+        chapters: [
+            { slug: "whale-watching", title: "Whale Watching" },
+            { slug: "exchange-flows", title: "Exchange Flows" },
+            { slug: "network-activity", title: "Network Activity Metrics" },
+        ],
+    },
+
+    // ==========================================
+    // PATH 10: TOKENOMICS & ADVANCED (3 modules, 9 chapters)
+    // ==========================================
+    {
+        id: 35,
+        slug: "tokenomics",
+        title: "Tokenomics",
+        path: "crypto-advanced",
+        description: "Token supply, inflation, vesting, and utility.",
+        chapters: [
+            { slug: "token-supply-and-inflation", title: "Token Supply & Inflation" },
+            { slug: "vesting-and-distribution", title: "Vesting & Distribution" },
+            { slug: "token-utility", title: "Token Utility" },
+        ],
+    },
+    {
+        id: 36,
+        slug: "crypto-in-india",
+        title: "Crypto in India",
+        path: "crypto-advanced",
+        description: "Indian regulations, taxes, and approved exchanges.",
+        chapters: [
+            { slug: "indian-crypto-regulations", title: "Indian Crypto Regulations" },
+            { slug: "crypto-taxation-india", title: "Crypto Taxation in India" },
+            { slug: "approved-exchanges-india", title: "Approved Exchanges in India" },
+        ],
+    },
+    {
+        id: 37,
+        slug: "crypto-portfolio-and-risk",
+        title: "Portfolio & Risk Management",
+        path: "crypto-advanced",
+        description: "Diversify, rebalance, and avoid common scams.",
+        chapters: [
+            { slug: "diversification-in-crypto", title: "Diversification in Crypto" },
+            { slug: "portfolio-rebalancing", title: "Portfolio Rebalancing" },
+            { slug: "avoiding-scams", title: "Avoiding Scams & Rug Pulls" },
+        ],
+    },
 ];
 
 export function getModulesByPath(pathKey: string): Module[] {

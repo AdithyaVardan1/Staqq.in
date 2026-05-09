@@ -1,0 +1,96 @@
+# Liquidation Risks
+
+Liquidation is DeFi's equivalent of a margin call — when your collateral value falls below a threshold, the protocol automatically seizes and sells it to repay your debt.
+
+<InfoBox type="important">
+  Educational content only. Liquidation risk can result in permanent loss of your collateral. Not financial advice.
+</InfoBox>
+
+## What Triggers Liquidation
+
+Your position is liquidated when your **health factor drops below 1**.
+
+Health factor = (Collateral Value × Liquidation Threshold) / Total Debt Value
+
+When the price of your collateral drops OR the value of your debt rises (in a variable rate scenario), health factor decreases.
+
+**Scenario:**
+- Deposit: 2 ETH at ₹2,00,000 each = ₹4,00,000 collateral
+- Borrowed: ₹2,40,000 USDC (60% LTV)
+- Liquidation threshold: 82.5% LTV
+
+Liquidation occurs when: ₹2,40,000 / collateral value = 82.5%
+→ Collateral value must fall to ~₹2,91,000
+→ This happens if ETH price falls from ₹2,00,000 to ~₹1,45,500
+
+## The Liquidation Process
+
+1. A **liquidation bot** monitors all positions on-chain continuously
+2. When health factor < 1, the bot triggers liquidation
+3. The bot repays some or all of your debt on your behalf
+4. In return, the bot receives your collateral at a **discount** (the liquidation bonus)
+5. Any remaining collateral after the debt is repaid stays with you
+
+**Liquidation bonuses (approximate):**
+
+<Table
+  headers={["Asset", "Typical Liquidation Bonus"]}
+  rows={[
+    ["ETH / BTC", "5%"],
+    ["Stablecoins", "4–5%"],
+    ["Mid-cap altcoins", "7–15%"],
+    ["Small-cap tokens", "10–20%"],
+  ]}
+/>
+
+## How to Avoid Liquidation
+
+1. **Borrow conservatively** — keep LTV well below the maximum (50% or less)
+2. **Monitor your health factor** actively, especially in volatile markets
+3. **Add collateral** when your position weakens — reduces LTV
+4. **Repay debt** partially to improve health factor
+5. **Use alerts** — Aave and third-party tools (DeBankAlert, Instadapp) can send notifications
+
+<InfoBox type="warning">
+  Crypto markets can move 20–30% in a single hour during extreme events. Positions that seem "safe" at 60% LTV can be liquidated within minutes if a major crash occurs (like the May 2021 or November 2022 crashes). Don't set and forget DeFi positions.
+</InfoBox>
+
+## Flash Loans — A Different Kind of Risk/Tool
+
+Flash loans are a unique DeFi primitive: **borrow any amount of any asset with zero collateral, as long as you repay within the same transaction**.
+
+If the repayment fails, the entire transaction reverts — the protocol never loses money.
+
+**Legitimate uses:**
+- Arbitrage between DEXes
+- Collateral swaps (swap your collateral type in one transaction)
+- Self-liquidation (liquidate your own position efficiently)
+
+**Malicious uses:**
+- Flash loan attacks have been used to manipulate oracle prices and drain DeFi protocols of hundreds of millions
+
+Flash loans themselves aren't dangerous to users directly, but they are frequently used as tools in complex exploits.
+
+## Quick Check
+
+<Quiz
+  question="If your collateral value drops and your health factor on Aave falls below 1, what happens?"
+  options={[
+    "Aave sends you an email warning to add collateral",
+    "Your position is automatically liquidated — bots repay your debt and take your collateral at a discount",
+    "The protocol pauses your loan and gives you 30 days to repay",
+    "Nothing happens until you manually close the position"
+  ]}
+  correctIndex={1}
+  explanation="DeFi liquidations are automated. The moment health factor falls below 1, liquidation bots compete to repay your debt in exchange for your collateral at a discount. There is no grace period or manual intervention."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Liquidation is triggered automatically when health factor falls below 1
+  - Liquidators receive your collateral at a 5–15%+ discount as a reward
+  - Always borrow well below the maximum LTV to maintain a safety buffer
+  - Monitor positions actively — crypto can move violently in minutes
+  - Flash loans are zero-collateral loans that must be repaid within one transaction; often used in exploits
+</InfoBox>

@@ -4,6 +4,7 @@ import { getTrendingTickers } from '@/lib/social';
 import { redis } from '@/lib/redis';
 import { angelOne } from '@/lib/angelone';
 import { yahoo } from '@/lib/yahoo';
+import { isMarketOpen, secondsUntilMarketOpen } from '@/utils/market-hours';
 
 export const dynamic = 'force-dynamic';
 
@@ -133,7 +134,9 @@ async function getPriceCached(ticker: string): Promise<{
 }
 
 async function storePriceCache(ticker: string, data: { price: number; change: number; changeAmount: number }) {
-    await redis.set(`screener:price:${ticker}`, JSON.stringify(data), PRICE_TTL);
+    // After market close, keep the closing price cached until next open to avoid stale re-fetches
+    const ttl = isMarketOpen() ? PRICE_TTL : secondsUntilMarketOpen();
+    await redis.set(`screener:price:${ticker}`, JSON.stringify(data), ttl);
 }
 
 // ── Batch fetch prices from Angel One ────────────────────────────────
@@ -260,8 +263,8 @@ export async function GET(request: Request) {
                 else priceMisses.push(stock.symbol);
             }
 
-            // 2. Batch-fetch price misses from Angel One
-            if (priceMisses.length > 0) {
+            // 2. Batch-fetch price misses from Angel One — only during market hours
+            if (priceMisses.length > 0 && isMarketOpen()) {
                 const fresh = await fetchAngelOnePrices(priceMisses, tokensMap);
                 for (const [ticker, data] of Object.entries(fresh)) {
                     priceHits[ticker] = data;

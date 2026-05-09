@@ -9,7 +9,6 @@ import {
 } from 'lucide-react';
 import type { WalletBuy } from '@/lib/wallet-tracker';
 import { createBrowserClient } from '@supabase/ssr';
-import { CryptoNav } from '@/components/crypto/CryptoNav';
 import styles from './page.module.css';
 
 const supabase = createBrowserClient(
@@ -309,20 +308,12 @@ export default function WalletTrackerPage() {
     }
 
     return (
-        <main className={styles.page}>
-            <CryptoNav />
-            <section className={styles.hero}>
-                <div className={styles.heroIcon}><Wallet size={32} /></div>
-                <h1 className={styles.title}>Wallet <span className={styles.accent}>Tracker</span></h1>
-                <p className={styles.subtitle}>
-                    Track any ETH or Solana wallet. See exactly what tokens they've been buying and copy their moves.
-                </p>
-                {!user && !authLoading && (
-                    <Link href="/login" className={styles.signInBanner}>
-                        <LogIn size={14} /> Sign in to save wallets across devices and get email alerts
-                    </Link>
-                )}
-            </section>
+        <div className={styles.page}>
+            {!user && !authLoading && (
+                <Link href="/login" className={styles.signInBanner}>
+                    <LogIn size={14} /> Sign in to save wallets across devices and get email alerts
+                </Link>
+            )}
 
             <div className={styles.inputSection}>
                 <div className={styles.inputRow}>
@@ -401,6 +392,6 @@ export default function WalletTrackerPage() {
                     ))}
                 </div>
             )}
-        </main>
+        </div>
     );
 }

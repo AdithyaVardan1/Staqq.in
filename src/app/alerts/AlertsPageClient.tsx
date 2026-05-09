@@ -74,7 +74,7 @@ const PROOF = [
 const fadeUp = (delay = 0): any => ({
     initial: { opacity: 0, y: 28, filter: 'blur(8px)' },
     animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
-    transition: { duration: 0.85, delay, ease: [0.22, 1, 0.36, 1] }
+    transition: { duration: 0.85, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
 });
 
 const stagger: any = {
@@ -84,7 +84,7 @@ const stagger: any = {
 
 const childVariant: any = {
     hidden: { opacity: 0, y: 24, filter: 'blur(6px)' },
-    show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } }
+    show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } }
 };
 
 export default function AlertsPage() {

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import clsx from 'clsx';
-import { Menu, X, Search, User, LogOut, ChevronDown, TrendingUp, Building2, BarChart3, Zap } from 'lucide-react';
+import { Menu, X, Search, User, LogOut, ChevronDown, TrendingUp, Building2, BarChart3, Zap, Activity, Wallet, Shield, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Logo from '@/components/ui/Logo';
 import { createClient } from '@/utils/supabase/client';
@@ -16,8 +16,8 @@ import styles from './Navbar.module.css';
 
 const navLinks = [
     { name: 'IPO Hub', href: '/ipo' },
-    { name: 'Intel', href: '/signals', hasDropdown: true },
-    { name: 'Crypto', href: '/crypto' },
+    { name: 'Intel', href: '/signals', hasDropdown: true, dropdownKey: 'intel' },
+    { name: 'Crypto', href: '/crypto', hasDropdown: true, dropdownKey: 'crypto' },
     { name: 'Stocks', href: '/stocks/screener' },
     { name: 'Learn', href: '/learn' },
     { name: 'Blog', href: '/blog' },
@@ -26,7 +26,13 @@ const navLinks = [
 
 const intelDropdown = [
     {
-        name: 'FII / DII Flows',
+        name: 'Market Feed',
+        desc: 'Real-time intelligence and insights',
+        href: '/signals',
+        icon: <Activity size={14} />,
+    },
+    {
+        name: 'FII / DII',
         desc: 'Institutional buy & sell activity',
         href: '/signals/fii-dii',
         icon: <TrendingUp size={14} />,
@@ -43,11 +49,32 @@ const intelDropdown = [
         href: '/signals/bulk-deals',
         icon: <BarChart3 size={14} />,
     },
+];
+
+const cryptoDropdown = [
     {
-        name: 'Social Buzz',
-        desc: 'Reddit & Twitter sentiment',
-        href: '/signals',
+        name: 'Social Signals',
+        desc: 'Token sentiment on Reddit & Twitter',
+        href: '/crypto/signals',
         icon: <Zap size={14} />,
+    },
+    {
+        name: 'Wallet Tracker',
+        desc: 'Follow smart money wallets',
+        href: '/crypto/wallets',
+        icon: <Wallet size={14} />,
+    },
+    {
+        name: 'Token Scanner',
+        desc: 'Rugpull & honeypot risk check',
+        href: '/crypto/scanner',
+        icon: <Shield size={14} />,
+    },
+    {
+        name: 'New Launches',
+        desc: 'Fresh tokens, pre-filtered for safety',
+        href: '/crypto/new-tokens',
+        icon: <Rocket size={14} />,
     },
 ];
 
@@ -141,6 +168,9 @@ export const Navbar = () => {
                                 const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
 
                                 if (link.hasDropdown) {
+                                    const isCrypto = link.dropdownKey === 'crypto';
+                                    const items = isCrypto ? cryptoDropdown : intelDropdown;
+                                    const headerLabel = isCrypto ? 'Crypto Suite' : 'Market Intelligence';
                                     return (
                                         <div key={link.name} className={styles.navDropdownTrigger}>
                                             <Link
@@ -151,16 +181,16 @@ export const Navbar = () => {
                                                 <ChevronDown size={13} className={styles.navChevron} />
                                             </Link>
 
-                                            <div className={styles.navDropdown}>
-                                                <div className={styles.navDropdownHeader}>Market Intelligence</div>
+                                            <div className={clsx(styles.navDropdown, isCrypto && styles.navDropdownViolet)}>
+                                                <div className={styles.navDropdownHeader}>{headerLabel}</div>
                                                 <div className={styles.navDropdownGrid}>
-                                                    {intelDropdown.map((item) => (
+                                                    {items.map((item) => (
                                                         <Link
                                                             key={item.name}
                                                             href={item.href}
-                                                            className={styles.navDropdownItem}
+                                                            className={clsx(styles.navDropdownItem, isCrypto && styles.navDropdownItemViolet)}
                                                         >
-                                                            <div className={styles.navDropdownIcon}>
+                                                            <div className={clsx(styles.navDropdownIcon, isCrypto && styles.navDropdownIconViolet)}>
                                                                 {item.icon}
                                                             </div>
                                                             <span className={styles.navDropdownItemName}>{item.name}</span>

@@ -1,0 +1,101 @@
+# Private Keys & Seed Phrases
+
+Your seed phrase is the master key to all your crypto. If someone gets it, your funds are gone. There is no customer support, no fraud department, no reversal.
+
+<InfoBox type="important">
+  This chapter is educational only. Never share your seed phrase or private key with anyone under any circumstances.
+</InfoBox>
+
+## Public Keys and Private Keys
+
+Cryptography uses pairs of keys:
+
+**Public Key → Your Address**
+- Like your bank account number — safe to share
+- People send crypto to your public address
+- Example: `0x742d35Cc6634C0532925a3b844Bc454e4438f44e`
+
+**Private Key → Your Signature**
+- Like your PIN — never share this
+- Proves you own the address
+- Required to send crypto out
+- A 256-bit number, usually shown as 64 hexadecimal characters
+
+<InfoBox type="warning">
+  Anyone who has your private key has complete control of your wallet. They can drain all funds instantly and irreversibly.
+</InfoBox>
+
+## What is a Seed Phrase?
+
+Managing raw private keys (64-character strings) is impractical. The industry adopted **BIP-39**, a standard that converts a private key into 12 or 24 ordinary English words.
+
+Example (never use this):
+> `abandon ability able about above absent absorb abstract absurd abuse access accident`
+
+This seed phrase:
+- Is generated when you create a new wallet
+- Can recreate your private keys on any compatible wallet
+- Controls ALL accounts and all coins in that wallet
+- Is the single most important thing to protect
+
+## How to Store Your Seed Phrase
+
+<Table
+  headers={["Method", "Safety", "Notes"]}
+  rows={[
+    ["Write on paper, store in safe", "Good", "Vulnerable to fire/flood — consider fireproof safe"],
+    ["Stamp on metal plate", "Excellent", "Survives fire, water, physical damage"],
+    ["Screenshot or photo", "Extremely bad", "Hackers target phone galleries"],
+    ["Cloud storage (Google Drive, etc.)", "Extremely bad", "Accessible to hackers and companies"],
+    ["Password manager", "Risky", "Single point of failure if manager is compromised"],
+    ["Email to yourself", "Extremely bad", "Email accounts are regularly hacked"],
+  ]}
+/>
+
+## The 3-2-1 Backup Rule (Adapted for Crypto)
+
+- **3** copies of your seed phrase
+- **2** different storage media (paper + metal)
+- **1** stored in a separate physical location (e.g., bank safe deposit box)
+
+## What Happens If You Lose Your Seed Phrase?
+
+If you lose your seed phrase AND access to your wallet (device lost, broken), your funds are **permanently inaccessible**. There is no recovery option.
+
+Estimates suggest 3–4 million BTC (worth hundreds of billions of dollars) is permanently lost due to forgotten keys and phrases.
+
+## Seed Phrases vs Passwords
+
+<Table
+  headers={["Feature", "Password", "Seed Phrase"]}
+  rows={[
+    ["Can be reset?", "Yes — contact support", "No — permanent"],
+    ["Recovers what?", "Account access", "All crypto in wallet"],
+    ["Who knows it?", "You + the company", "Only you"],
+    ["If stolen?", "Change password", "Funds gone forever"],
+  ]}
+/>
+
+## Quick Check
+
+<Quiz
+  question="What should you do if someone online claims to be 'wallet support' and asks for your seed phrase to fix an issue?"
+  options={[
+    "Provide the first 6 words only",
+    "Share it via encrypted message",
+    "Never share it — it is a scam",
+    "Share it if they have a verified profile"
+  ]}
+  correctIndex={2}
+  explanation="No legitimate wallet, exchange, or support team will ever ask for your seed phrase. This is always a scam. Your seed phrase gives complete access to your wallet — never share it with anyone."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Private keys prove ownership; public keys (addresses) receive crypto
+  - A seed phrase (12 or 24 words) is the master backup of your private keys
+  - Store your seed phrase offline — on paper or engraved metal, never digitally
+  - Losing your seed phrase = permanently losing access to your funds
+  - Anyone who asks for your seed phrase is attempting to steal your crypto
+</InfoBox>

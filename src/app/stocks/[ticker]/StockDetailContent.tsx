@@ -20,7 +20,9 @@ import {
     Bookmark,
     Activity,
     Plus,
-    Trash2
+    Trash2,
+    Tag,
+    ExternalLink,
 } from 'lucide-react';
 import Link from 'next/link';
 import clsx from 'clsx';
@@ -185,7 +187,7 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                             date: n.date || 'Recent'
                         })),
                         shareholding: f.shareholding || prev.shareholding,
-                        technicals: f.technicals || prev.technicals
+                        technicals: (f.technicals && f.technicals.length > 0) ? f.technicals : prev.technicals
                     }));
 
                     console.log(`[StockDetail] Loaded fundamentals for ${ticker}:`, f);
@@ -279,16 +281,32 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
     const stats = getRealStats();
     const companyInfo = getCompanyInfo();
 
-    // Helper functions for chart data
+    // Yahoo Finance returns raw rupee values — convert to Crores for display
+    const toCr = (v: number) => Math.round((v || 0) / 1e7);
+
+    const fmtCrLabel = (v: number) => {
+        if (v >= 100000) return `₹${(v / 100000).toFixed(1)}L Cr`;
+        if (v >= 1000)   return `₹${(v / 1000).toFixed(1)}K Cr`;
+        return `₹${v.toFixed(0)} Cr`;
+    };
+
+    const fmtCrTick = (v: number) => {
+        if (v >= 100000) return `${(v / 100000).toFixed(0)}L Cr`;
+        if (v >= 1000)   return `${(v / 1000).toFixed(0)}K Cr`;
+        return `${v} Cr`;
+    };
+
     const getChartData = () => {
         const sourceData = activePeriod === 'quarterly'
             ? fundamentals?.financials?.quarterly
             : fundamentals?.financials?.annual;
 
         if (sourceData && sourceData.length > 0) {
-            return [...sourceData].reverse().map(item => ({
+            return [...sourceData].reverse().map((item: any) => ({
                 ...item,
-                period: 'period' in item ? item.period : (item as any).year,
+                period: 'period' in item ? item.period : item.year,
+                revenue: toCr(item.revenue),
+                profit: toCr(item.profit),
             }));
         }
 
@@ -301,15 +319,11 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                 dataKey: 'revenue',
                 name: 'Revenue',
                 color: '#22C55E',
-                unit: 'Cr',
-                formatter: (value: number) => `₹${value.toLocaleString('en-IN')} Cr`
             },
             profit: {
                 dataKey: 'profit',
                 name: 'Net Profit',
                 color: '#3B82F6',
-                unit: 'Cr',
-                formatter: (value: number) => `₹${value.toLocaleString('en-IN')} Cr`
             }
         };
         return configs[activeMetric];
@@ -394,6 +408,11 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                                             <Activity size={12} /> LIVE
                                         </span>
                                     )}
+                                    {status === 'closed' && (
+                                        <span className={styles.liveIndicator} style={{ color: '#888', borderColor: 'rgba(255,255,255,0.1)' }}>
+                                            Market Closed
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -454,11 +473,8 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                             <div className={styles.sectionHeader}>
                                 <h2 className={styles.sectionHeading}>Quick Stats</h2>
                                 {fundamentals && !isLoadingFundamentals && (
-                                    <Badge
-                                        variant={dataSource === 'yfinance-python' ? 'success' : 'warning'}
-                                        style={{ fontSize: '11px' }}
-                                    >
-                                        {dataSource === 'yfinance-python' ? 'Live Data' : 'Sample Data'}
+                                    <Badge variant="success" style={{ fontSize: '11px' }}>
+                                        Live Data
                                     </Badge>
                                 )}
                             </div>
@@ -544,9 +560,9 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                                                     <YAxis
                                                         axisLine={false}
                                                         tickLine={false}
-                                                        tick={{ fill: '#888', fontSize: 12, fontWeight: 400 }}
-                                                        tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
-                                                        width={60}
+                                                        tick={{ fill: '#888', fontSize: 11, fontWeight: 400 }}
+                                                        tickFormatter={fmtCrTick}
+                                                        width={80}
                                                     />
                                                     <Tooltip
                                                         contentStyle={{
@@ -555,8 +571,8 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                                                             borderRadius: '12px',
                                                             color: '#fff'
                                                         }}
-                                                        formatter={(value: any) => [metricConfig.formatter(value), metricConfig.name]}
-                                                        labelFormatter={(label) => `Quarter: ${label}`}
+                                                        formatter={(value: any) => [fmtCrLabel(value), metricConfig.name]}
+                                                        labelFormatter={(label) => `Period: ${label}`}
                                                     />
                                                     <Bar
                                                         dataKey={metricConfig.dataKey}
@@ -568,11 +584,11 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                                                         <LabelList
                                                             dataKey={metricConfig.dataKey}
                                                             position="top"
-                                                            offset={15}
+                                                            offset={10}
                                                             fill="#ccc"
-                                                            fontSize={12}
+                                                            fontSize={11}
                                                             fontWeight={600}
-                                                            formatter={(val: any) => val?.toLocaleString?.('en-IN') || val}
+                                                            formatter={(val: any) => fmtCrLabel(val)}
                                                         />
                                                     </Bar>
                                                 </BarChart>
@@ -599,6 +615,64 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                             </div>
                         </section>
                     </div>
+
+                    {/* Right sidebar */}
+                    <aside className={styles.sidebar}>
+                        {/* Company About */}
+                        <Card className={styles.sidebarSection}>
+                            <h3 className={styles.sidebarHeading}>About</h3>
+                            <p className={styles.aboutText}>
+                                {isLoadingFundamentals ? 'Loading company information...' : companyInfo.about}
+                            </p>
+                            <div className={styles.metaInfo}>
+                                {companyInfo.sector && companyInfo.sector !== '---' && (
+                                    <div className={styles.metaRow}>
+                                        <Tag size={13} />
+                                        <span>{companyInfo.sector}{companyInfo.industry && companyInfo.industry !== '---' ? ` · ${companyInfo.industry}` : ''}</span>
+                                    </div>
+                                )}
+                                {companyInfo.website && companyInfo.website !== 'N/A' && companyInfo.website !== '---' && (
+                                    <a href={companyInfo.website} target="_blank" rel="noopener noreferrer" className={styles.websiteLink}>
+                                        <ExternalLink size={12} />
+                                        {companyInfo.website.replace(/^https?:\/\//, '')}
+                                    </a>
+                                )}
+                            </div>
+                        </Card>
+
+                        {/* Shareholding */}
+                        {data.shareholding.some((s: any) => s.value > 0) && (
+                            <Card className={styles.sidebarSection}>
+                                <h3 className={styles.sidebarHeading}>Shareholding</h3>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 8 }}>
+                                    {data.shareholding.map((s: any) => (
+                                        <div key={s.name} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.82rem' }}>
+                                            <span style={{ width: 70, color: 'var(--text-secondary)', flexShrink: 0 }}>{s.name}</span>
+                                            <div style={{ flex: 1, background: 'rgba(255,255,255,0.06)', borderRadius: 4, height: 5 }}>
+                                                <div style={{ background: s.color, borderRadius: 4, height: 5, width: `${Math.min(s.value, 100)}%`, transition: 'width 0.5s ease' }} />
+                                            </div>
+                                            <span style={{ width: 44, textAlign: 'right', fontWeight: 600, color: s.color }}>{s.value.toFixed(1)}%</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </Card>
+                        )}
+
+                        {/* Latest News */}
+                        {data.news.length > 0 && (
+                            <Card className={styles.sidebarSection}>
+                                <h3 className={styles.sidebarHeading}>Latest News</h3>
+                                <div className={styles.newsList}>
+                                    {data.news.slice(0, 5).map((n: any) => (
+                                        <a key={n.id} href={n.link} target="_blank" rel="noopener noreferrer" className={styles.newsItem}>
+                                            <div className={styles.newsTitle}>{n.title}</div>
+                                            <div className={styles.newsMeta}>{n.source} · {n.date}</div>
+                                        </a>
+                                    ))}
+                                </div>
+                            </Card>
+                        )}
+                    </aside>
                 </div>
             </div>
         </main>

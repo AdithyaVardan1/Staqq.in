@@ -1,0 +1,85 @@
+# Proof of Work vs Proof of Stake
+
+These are the two most important consensus mechanisms in crypto. Understanding their trade-offs explains many debates in the industry.
+
+<InfoBox type="important">
+  This chapter is educational only. Not financial advice.
+</InfoBox>
+
+## Proof of Work (PoW)
+
+Used by Bitcoin since 2009. Miners compete to solve a computationally intensive puzzle. The first to solve it earns the right to add the next block and receives a reward.
+
+**How it works:**
+1. You take the block's data and a random number called a **nonce**
+2. You run it through a hash function (SHA-256 for Bitcoin)
+3. The output must start with a certain number of zeros (set by difficulty)
+4. If your hash doesn't qualify, change the nonce and try again
+5. Globally, Bitcoin miners make trillions of attempts per second
+
+**Security:** An attacker would need to out-compute the entire rest of the network (51% attack). Bitcoin's hash rate is so massive this is practically impossible.
+
+**Downside:** Enormous electricity consumption. Bitcoin mining consumes roughly as much electricity as a medium-sized country.
+
+## Proof of Stake (PoS)
+
+Used by Ethereum (since "The Merge" in September 2022), Cardano, Solana, and most newer blockchains. Instead of computing power, validators put up **stake** (locked crypto) as collateral.
+
+**How it works:**
+1. Validators lock up (stake) crypto as collateral (e.g., 32 ETH for Ethereum)
+2. The network randomly selects a validator to propose the next block
+3. Other validators attest (verify) the block
+4. Correct validators earn rewards; dishonest validators lose stake (**slashing**)
+
+**Security:** Attacking the network requires owning 33%+ of all staked ETH — worth tens of billions of dollars. Economic punishment (slashing) deters bad behaviour.
+
+**Advantage:** ~99.95% less energy than PoW. Ethereum's energy consumption dropped by over 99% after The Merge.
+
+## Comparison
+
+<Table
+  headers={["Feature", "Proof of Work", "Proof of Stake"]}
+  rows={[
+    ["Used by", "Bitcoin", "Ethereum, Cardano, Solana"],
+    ["Security mechanism", "Computational work", "Economic stake (collateral)"],
+    ["Energy use", "Very high", "Very low"],
+    ["Hardware needed", "Specialised ASICs", "Standard computer + stake"],
+    ["Decentralisation", "Risk of mining pool centralisation", "Risk of whale centralisation"],
+    ["Entry barrier", "Expensive mining hardware", "Minimum stake (32 ETH for Ethereum)"],
+    ["Proven track record", "15+ years (Bitcoin)", "Younger, shorter track record"],
+  ]}
+/>
+
+## The Merge — Ethereum's Switch
+
+In September 2022, Ethereum switched from PoW to PoS in an event called **The Merge**. This was one of the most significant technical events in crypto history — the equivalent of changing an airplane's engine mid-flight.
+
+The Merge reduced Ethereum's energy consumption by over 99.95% overnight.
+
+<InfoBox type="note">
+  Neither PoW nor PoS is universally "better." Bitcoin maximalists argue PoW is more battle-tested and decentralised. Ethereum advocates argue PoS is more efficient and scalable. Both have trade-offs.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="What happens to a dishonest validator in a Proof of Stake network?"
+  options={[
+    "They are banned from the internet",
+    "Their staked crypto is partially or fully destroyed (slashing)",
+    "Their block is simply ignored with no penalty",
+    "They must solve a PoW puzzle as punishment"
+  ]}
+  correctIndex={1}
+  explanation="In Proof of Stake, validators who act dishonestly or incorrectly face 'slashing' — a portion or all of their staked collateral is destroyed. This economic punishment makes attacks extremely costly."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - PoW (Bitcoin) uses energy/computation as the security mechanism
+  - PoS (Ethereum, Cardano) uses locked collateral with slashing penalties
+  - PoS is ~99.95% more energy-efficient than PoW
+  - Ethereum switched from PoW to PoS in September 2022 (The Merge)
+  - Both have proven security but make different decentralisation trade-offs
+</InfoBox>

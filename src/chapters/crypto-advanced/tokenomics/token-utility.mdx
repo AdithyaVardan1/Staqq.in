@@ -1,0 +1,109 @@
+# Token Utility
+
+Not all tokens are created equal. A token with genuine utility is embedded in a product people actually use. A token with no utility is just a speculative asset hoping demand outpaces supply.
+
+<InfoBox type="important">
+  Educational content only. Token classification is complex and evolving. This is not legal, financial, or investment advice.
+</InfoBox>
+
+## Types of Token Utility
+
+### Gas / Fee Tokens
+
+Some tokens are required to pay transaction fees on their network. Demand for the token is directly tied to demand for the network.
+
+- **ETH** — required to pay gas on Ethereum and most L2s
+- **BNB** — used for gas on BNB Smart Chain
+- **SOL** — required for every Solana transaction
+- **MATIC/POL** — gas on Polygon
+
+The more the network is used, the more the token is needed. This creates a fundamental demand driver beyond speculation.
+
+### Governance Tokens
+
+Holders vote on protocol decisions: fee changes, treasury spending, new features, upgrades.
+
+<Table
+  headers={["Token", "Protocol", "What You Vote On"]}
+  rows={[
+    ["UNI", "Uniswap", "Fee tiers, treasury grants, protocol upgrades"],
+    ["AAVE", "Aave", "New asset listings, risk parameters, fee distribution"],
+    ["MKR", "MakerDAO/Sky", "DAI stability parameters, collateral types"],
+    ["ARB", "Arbitrum DAO", "Protocol upgrades, grant programs"],
+  ]}
+/>
+
+**Limitation:** Most governance token holders don't vote. Participation rates below 5% are common. Large holders (VCs, founders) often control outcomes.
+
+### Discount / Rebate Tokens
+
+Holding the token gives you a discount on fees or other benefits within the platform.
+
+- **BNB** — 25% discount on Binance trading fees when paid in BNB
+- **BGB (Bitget)** — fee discounts on Bitget exchange
+- **KCS (KuCoin)** — reduced trading fees + daily dividend from exchange revenue
+
+This creates "sticky" demand: active traders have a strong reason to hold the token regardless of speculation.
+
+### Access Tokens
+
+Owning a token (or NFT) grants access to a product, service, or community.
+
+- **NFT access passes** — e.g., holding a specific NFT grants entry to a private community or event
+- **Threshold gating** — some DeFi protocols require holding X tokens to access certain pools
+- **API credits** — some protocols use token burning or staking to access API calls
+
+### Revenue-Share / Staking Yield Tokens
+
+Staking tokens earns a portion of protocol fees or network rewards.
+
+- **GMX** — staking GMX earns 30% of platform trading fees in ETH
+- **dYdX** — stakers earn protocol revenue
+- **Ethereum validators** — staking 32 ETH earns ~3–5% annual yield from block rewards and priority fees
+
+<InfoBox type="warning">
+  "Staking yield" from inflationary token emissions is different from revenue-sharing from actual protocol fees. If the yield comes purely from printing new tokens, it dilutes everyone. Real yield comes from fees the protocol actually collects.
+</InfoBox>
+
+## The Utility Spectrum
+
+```
+No Utility ←————————————————————→ Strong Utility
+
+Memecoins       Governance    Discount    Gas Tokens
+(SHIB, DOGE)    tokens only   tokens      (ETH, SOL)
+```
+
+The further right a token sits, the more demand is tied to real usage rather than speculation.
+
+## Questions to Evaluate Token Utility
+
+1. Can you do anything with this token beyond sell it?
+2. Is the utility available today, or is it "coming soon"?
+3. How many people are actually using the utility?
+4. Does demand for the utility scale with protocol adoption?
+5. Can the utility be removed by a protocol upgrade?
+
+## Quick Check
+
+<Quiz
+  question="A DeFi protocol issues a governance token. The protocol generates $50M in annual fees, but 100% of fees go to liquidity providers — none go to token holders. What best describes this token's utility?"
+  options={[
+    "Strong utility — governance is valuable",
+    "Limited utility — token only grants voting rights with no economic benefit tied to protocol success",
+    "No utility — governance tokens are always worthless",
+    "Full utility — voting rights are worth more than fee revenue"
+  ]}
+  correctIndex={1}
+  explanation="Governance rights have value in theory, but if token holders receive no share of protocol revenue, there's little economic incentive to hold the token long-term. Many governance tokens suffer from this — votes are rarely cast, and the token's value depends on speculation rather than a clear economic claim on protocol value."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Gas tokens (ETH, SOL, BNB) have utility tied directly to network usage
+  - Governance tokens grant voting rights but often lack economic benefit unless paired with fee sharing
+  - Discount tokens create retention by rewarding holders who use the platform
+  - "Real yield" comes from protocol fee revenue, not freshly minted tokens
+  - Always ask: what can I do with this token besides sell it?
+</InfoBox>

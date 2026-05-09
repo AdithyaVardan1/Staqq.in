@@ -1,0 +1,71 @@
+# Consensus Mechanisms
+
+In a decentralised network with no central authority, how does everyone agree on which transactions are valid? The answer is a **consensus mechanism** — a set of rules that all participants follow to reach agreement.
+
+<InfoBox type="important">
+  This chapter is educational only. Not financial or investment advice.
+</InfoBox>
+
+## The Problem: Byzantine Fault Tolerance
+
+Imagine a group of generals surrounding a city, communicating only by messenger. Some generals might be traitors sending false messages. How do the loyal generals agree on a battle plan when they can't trust every message?
+
+This is the **Byzantine Generals Problem** — a foundational challenge in distributed computing. Blockchain consensus mechanisms solve it for digital transactions.
+
+In crypto terms: how does the network agree that a transaction is valid when any participant could be lying?
+
+## What a Consensus Mechanism Must Achieve
+
+1. **Agreement** — all honest nodes agree on the same version of the ledger
+2. **Validity** — only legitimate transactions are recorded
+3. **Fault tolerance** — the network keeps working even if some nodes fail or cheat
+4. **Sybil resistance** — prevents one entity from creating thousands of fake identities to dominate voting
+
+## Major Consensus Mechanisms
+
+<Table
+  headers={["Mechanism", "Used By", "How It Achieves Sybil Resistance"]}
+  rows={[
+    ["Proof of Work (PoW)", "Bitcoin", "Computational work (energy expenditure)"],
+    ["Proof of Stake (PoS)", "Ethereum, Cardano, Solana", "Economic stake (locked collateral)"],
+    ["Delegated PoS (DPoS)", "EOS, TRON", "Token holders vote for a fixed set of validators"],
+    ["Proof of History (PoH)", "Solana", "Cryptographic timestamps for ordering"],
+    ["Proof of Authority (PoA)", "Private chains", "Pre-approved, known validators"],
+  ]}
+/>
+
+## Why Consensus Matters to Investors
+
+The consensus mechanism directly affects:
+
+- **Security** — how hard is it to attack the network?
+- **Decentralisation** — how many independent parties validate transactions?
+- **Throughput** — how many transactions per second can the network handle?
+- **Environmental impact** — PoW uses significant energy; PoS does not
+
+<InfoBox type="note">
+  The "blockchain trilemma" (coined by Ethereum's Vitalik Buterin) states that a blockchain can only optimise for two of three properties at once: security, decentralisation, scalability. Different consensus mechanisms make different trade-offs.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="What is the main purpose of a consensus mechanism in a blockchain?"
+  options={[
+    "To set the price of cryptocurrency",
+    "To allow all participants in a decentralised network to agree on the valid state of the ledger",
+    "To encrypt user data on the blockchain",
+    "To limit the number of tokens in circulation"
+  ]}
+  correctIndex={1}
+  explanation="A consensus mechanism is the set of rules that lets a decentralised network (with no central authority) agree on which transactions are valid and what the correct state of the ledger is."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Consensus mechanisms let decentralised networks agree without a trusted authority
+  - They solve the Byzantine Generals Problem — agreeing despite potential bad actors
+  - PoW (Bitcoin) and PoS (Ethereum) are the two dominant mechanisms
+  - Different mechanisms trade off security, decentralisation, and scalability
+</InfoBox>

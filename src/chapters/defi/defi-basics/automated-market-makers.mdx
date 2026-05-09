@@ -1,0 +1,99 @@
+# Automated Market Makers (AMMs)
+
+AMMs are the engine inside most DEXes. Instead of matching buyers with sellers in an order book, they use a mathematical formula and pooled liquidity to price and execute trades automatically.
+
+<InfoBox type="important">
+  Educational content only. Not financial advice.
+</InfoBox>
+
+## The Problem AMMs Solve
+
+Traditional order books require:
+- Active market makers to provide liquidity
+- Enough buyers and sellers at the same time
+- Off-chain infrastructure (expensive on blockchains)
+
+For thousands of small token pairs with low trading volume, order books don't work. AMMs do.
+
+## The Constant Product Formula
+
+Uniswap V2 (and most basic AMMs) use this formula:
+
+**x × y = k**
+
+Where:
+- `x` = amount of Token A in the pool
+- `y` = amount of Token B in the pool
+- `k` = a constant (never changes)
+
+When you buy Token A, you remove some `x` from the pool and add `y` (paying with Token B). The formula ensures `k` stays constant — which means the price of A rises as you buy more of it.
+
+**Example:**
+- Pool: 100 ETH and 200,000 USDC (k = 20,000,000)
+- You buy 10 ETH
+- New ETH in pool: 90, so new USDC must be: 20,000,000 / 90 = 222,222 USDC
+- Price paid: 222,222 - 200,000 = 22,222 USDC for 10 ETH
+- Implied price: 2,222 USDC per ETH (vs 2,000 at start) — price rose as you bought
+
+This price increase is called **price impact**. Larger trades in smaller pools = higher price impact.
+
+## Concentrated Liquidity (Uniswap V3)
+
+Uniswap V3 improved on this by letting liquidity providers concentrate their liquidity within specific price ranges.
+
+**Benefit:** Capital efficiency — liquidity providers earn more fees for the same capital.
+
+**Drawback:** More complex; LPs need to actively manage their price ranges.
+
+## Stable AMMs (Curve Finance)
+
+The constant product formula isn't efficient for assets that should trade near the same price (e.g., USDC/USDT). Curve uses a modified formula that keeps prices much more stable near 1:1, enabling near-zero slippage for stablecoin swaps.
+
+<Table
+  headers={["AMM Type", "Best For", "Example"]}
+  rows={[
+    ["Constant product (x*y=k)", "General token pairs", "Uniswap V2"],
+    ["Concentrated liquidity", "Capital efficiency", "Uniswap V3"],
+    ["Stable swap", "Pegged assets (USDC/USDT)", "Curve Finance"],
+    ["Weighted pools", "Multi-asset portfolios", "Balancer"],
+  ]}
+/>
+
+## How Prices Stay Aligned with the Market
+
+AMM prices would drift from global market prices without arbitrageurs. **Arbitrage bots** constantly:
+1. Notice a price discrepancy (e.g., ETH is cheaper on Uniswap than Binance)
+2. Buy ETH on Uniswap (pushing price up)
+3. Sell on Binance (pushing price down there)
+4. Profit the difference
+
+This continuous arbitrage keeps AMM prices close to global market prices.
+
+<InfoBox type="note">
+  Arbitrage bots are also the reason fast blockchain confirmations matter. Stale prices create opportunities — and MEV (Maximal Extractable Value) bots compete to capture them.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="In the constant product formula x × y = k, what happens to the price of Token A when you buy a large amount of it from the pool?"
+  options={[
+    "The price falls because supply decreases",
+    "The price stays the same regardless of trade size",
+    "The price rises because x decreases while k stays constant",
+    "The price is set by the exchange, not the formula"
+  ]}
+  correctIndex={2}
+  explanation="As you buy Token A, x (the amount of A in the pool) decreases. Since k must stay constant, y (Token B) increases. This means each subsequent unit of A costs more B — the price of A rises. This is price impact."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - AMMs use pooled liquidity and a math formula instead of order books
+  - The constant product formula (x*y=k) keeps pool value balanced as trades happen
+  - Larger trades cause more price impact (slippage) in smaller pools
+  - Uniswap V3 concentrated liquidity improves capital efficiency for LPs
+  - Curve Finance specialises in stablecoin swaps with near-zero slippage
+  - Arbitrageurs keep AMM prices aligned with global market prices
+</InfoBox>

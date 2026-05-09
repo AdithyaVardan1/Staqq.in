@@ -1,0 +1,95 @@
+# Funding Rates & Open Interest
+
+Funding rates are unique to crypto's perpetual futures market. They're one of the most useful sentiment indicators available to traders.
+
+<InfoBox type="important">
+  Educational content only. Futures trading involves significant risk including total loss of margin. Not financial advice.
+</InfoBox>
+
+## What are Perpetual Futures?
+
+Unlike traditional futures contracts that expire on a set date, **perpetual futures** (perps) have no expiry. You can hold a long or short position indefinitely.
+
+They're the most traded instrument in crypto — daily perp volume often exceeds spot volume by 5–10x.
+
+## The Funding Mechanism
+
+Perps stay close to the spot price through a **funding rate** — a periodic payment between long and short position holders.
+
+**Positive funding rate:**
+- Longs pay shorts
+- Happens when the perp price is trading above spot (more demand for longs)
+- The market is bullish
+
+**Negative funding rate:**
+- Shorts pay longs
+- Happens when the perp price trades below spot (more demand for shorts)
+- The market is bearish or fearful
+
+Funding is paid every 8 hours on most exchanges. The rate might be 0.01% (tiny) or 0.1%+ (significant if sustained).
+
+## Reading Funding as a Sentiment Indicator
+
+<Table
+  headers={["Funding Rate", "Market Sentiment", "Potential Implication"]}
+  rows={[
+    ["Very high positive (>0.1%)", "Extremely bullish / crowded longs", "Contrarian warning — possible short squeeze setup"],
+    ["Slightly positive (0.01–0.05%)", "Moderately bullish", "Normal healthy uptrend"],
+    ["Near zero", "Neutral / balanced", "No strong bias"],
+    ["Slightly negative", "Moderately bearish", "Normal in downtrend"],
+    ["Very negative (<-0.05%)", "Extremely fearful / crowded shorts", "Potential short squeeze — possible bottom signal"],
+  ]}
+/>
+
+<InfoBox type="note">
+  Extreme funding rates are often a contrarian indicator. When everyone is long (high positive funding), there are few new buyers left to push price higher — making a reversal more likely. Conversely, extreme negative funding means most traders are short, setting up for a violent short squeeze.
+</InfoBox>
+
+## Open Interest
+
+**Open Interest (OI)** is the total notional value of all outstanding futures positions.
+
+- **Rising OI + rising price** → New money entering longs — bullish confirmation
+- **Rising OI + falling price** → New money entering shorts — bearish confirmation
+- **Falling OI + rising price** → Short covering (shorts exiting) — momentum may be weaker
+- **Falling OI + falling price** → Long liquidations — capitulation
+
+## Liquidation Cascades
+
+When price moves sharply against a large number of leveraged positions, those positions get liquidated automatically. This forces the exchange to close them at market — further accelerating the price move.
+
+This is why crypto drops can be so violent: a 5% move might liquidate billions in positions, pushing price another 10%, liquidating more positions, etc.
+
+<InfoBox type="warning">
+  High aggregate open interest + high positive funding = large pool of leveraged longs waiting to be liquidated if price falls. This is often called an "overleveraged market" and precedes sharp corrections.
+</InfoBox>
+
+## Where to Track These Metrics
+
+- **Coinglass.com** — funding rates, open interest, liquidations across all major exchanges
+- **CoinGlass Heatmap** — shows liquidation levels (where stops are clustered)
+- **Glassnode** — comprehensive on-chain + futures metrics
+
+## Quick Check
+
+<Quiz
+  question="Bitcoin's perpetual futures have a funding rate of +0.15% every 8 hours. What does this tell you?"
+  options={[
+    "The market is extremely bearish and shorts are being paid",
+    "Longs are significantly outweighing shorts — an extremely bullish and crowded long market",
+    "Bitcoin's price is about to rise 0.15%",
+    "The exchange is charging maintenance fees"
+  ]}
+  correctIndex={1}
+  explanation="+0.15% funding means longs are paying shorts. This high rate indicates the perp is trading well above spot — demand for long leverage is very high. This is often a contrarian warning: too many longs means a squeeze risk."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Perpetual futures have no expiry and use funding rates to stay pegged to spot price
+  - Positive funding = longs pay shorts (bullish market); negative = shorts pay longs (bearish)
+  - Extreme positive funding = crowded longs, potential reversal risk
+  - Open interest measures total outstanding futures positions — rising OI confirms trends
+  - Liquidation cascades happen when high OI unwinds rapidly — causes violent moves
+</InfoBox>

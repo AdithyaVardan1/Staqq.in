@@ -1,79 +1,190 @@
 .page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 6rem 1.5rem 5rem;
+  padding: 132px 1.5rem 5rem;
 }
 
 /* ── Page header ── */
 .pageHeader {
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 1.25rem;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
+  gap: 32px;
+  padding: 0 0 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
 }
 
-.titleRow {
-  display: flex;
+/* Left: badge + title + subtitle */
+.headerLeft {
+  flex: 1;
+  min-width: 0;
+}
+
+.headerBadge {
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.35rem;
-}
-
-.pageTitle {
-  font-size: 1.45rem;
+  gap: 6px;
+  font-size: 0.68rem;
   font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.02em;
-  margin: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary-brand);
+  background: rgba(202, 255, 0, 0.08);
+  border: 1px solid rgba(202, 255, 0, 0.22);
+  border-radius: 999px;
+  padding: 4px 14px;
+  margin-bottom: 12px;
+  width: fit-content;
 }
 
-.streakChip {
-  font-size: 0.75rem;
-  font-weight: 600;
+.streakBadge {
   color: #ff8c42;
   background: rgba(255, 140, 66, 0.1);
   border: 1px solid rgba(255, 140, 66, 0.2);
-  padding: 0.22rem 0.65rem;
-  border-radius: 999px;
-  white-space: nowrap;
 }
 
-/* Change 6 */
-.socialProof {
-  font-size: 0.85rem;
-  color: #a1a1aa;
+.badgeDot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--primary-brand);
+  box-shadow: 0 0 8px var(--primary-brand);
+  flex-shrink: 0;
+  animation: badgeDotPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes badgeDotPulse {
+  0%, 100% { box-shadow: 0 0 8px var(--primary-brand); opacity: 1; }
+  50%       { box-shadow: 0 0 3px var(--primary-brand); opacity: 0.4; }
+}
+
+.title {
+  font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: #fff;
+  margin: 0 0 0.65rem;
+  font-family: var(--font-outfit), sans-serif;
+}
+
+.subtitle {
+  font-size: 0.88rem;
+  color: #52525b;
+  line-height: 1.65;
   margin: 0;
-  line-height: 1.5;
-  max-width: 520px;
+  max-width: 440px;
 }
 
-/* Change 2: stat pills */
-.statPills {
+/* ── Ambient background glows ── */
+.bgGlow1 {
+  position: fixed;
+  top: -150px; right: -100px;
+  width: 600px; height: 500px;
+  background: radial-gradient(ellipse, rgba(202,255,0,0.05) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  animation: glowBreath 10s ease-in-out infinite;
+  filter: blur(60px);
+}
+.bgGlow2 {
+  position: fixed;
+  bottom: 10%; left: -80px;
+  width: 500px; height: 400px;
+  background: radial-gradient(ellipse, rgba(168,85,247,0.05) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  animation: glowBreath2 13s ease-in-out 2s infinite;
+  filter: blur(70px);
+}
+
+@keyframes glowBreath {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.1); }
+}
+@keyframes glowBreath2 {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.08); }
+}
+
+.accent {
+  background: linear-gradient(135deg, #caff00 0%, #a3e635 40%, #f0ff80 70%, #caff00 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerLime 4s linear infinite;
+  position: relative;
+  display: inline-block;
+}
+
+@keyframes shimmerLime {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* Right: stat chips grid */
+.headerRight {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  flex-shrink: 0;
+  min-width: 220px;
+}
+
+.statChip {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  flex-wrap: wrap;
+  gap: 7px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 9px 14px;
+  transition:
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      background 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.statChip::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.statChip:hover {
+  background: rgba(255,255,255,0.055);
+  border-color: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.statChip:hover::after {
+  opacity: 1;
+}
+
+.chipIcon {
   flex-shrink: 0;
+  opacity: 0.9;
 }
-
-.pill {
-  font-size: 0.72rem;
+.chipNum {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #e4e4e7;
+  font-family: var(--font-outfit), sans-serif;
+  letter-spacing: -0.01em;
+}
+.chipLabel {
+  font-size: 0.65rem;
+  color: #3f3f46;
   font-weight: 500;
-  color: #a1a1aa;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.28rem 0.75rem;
-  border-radius: 9999px;
-  white-space: nowrap;
-}
-
-.pillLime {
-  color: #caff00;
-  background: rgba(202, 255, 0, 0.08);
-  border-color: rgba(202, 255, 0, 0.18);
+  margin-left: auto;
 }
 
 /* Change 3: progress card */
@@ -198,6 +309,53 @@
 }
 
 .nudge:hover svg { transform: translateX(3px); }
+
+/* ── Tab toggle ── */
+.toggleWrap {
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.toggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 1rem;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #555;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
+}
+
+.toggleBtn:hover {
+  color: #aaa;
+}
+
+.toggleActive {
+  background: rgba(255,255,255,0.06);
+  color: var(--tab-color, #b6ff00);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+
+.toggleActive svg {
+  color: var(--tab-color, #b6ff00);
+}
 
 /* ── Grid: featured spans 2 cols, rest fill 2×2 ── */
 .grid {

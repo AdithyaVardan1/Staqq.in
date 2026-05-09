@@ -1,0 +1,105 @@
+# NFT Standards
+
+NFT standards are the technical specifications that define how tokens behave on a blockchain. Understanding them helps you know what you're actually buying.
+
+<InfoBox type="important">
+  Educational content only. Not financial advice.
+</InfoBox>
+
+## Why Standards Matter
+
+Standards ensure interoperability. An NFT from any collection following ERC-721 can be displayed in any compatible wallet, traded on any compatible marketplace, and transferred with the same set of functions.
+
+Without standards, every NFT would work differently and nothing would be compatible.
+
+## Ethereum NFT Standards
+
+### ERC-721 — The Original NFT Standard
+
+ERC-721 (Ethereum Request for Comment #721) was proposed in 2018 and is the most widely used NFT standard.
+
+**Key properties:**
+- Each token has a unique `tokenId`
+- Each `tokenId` is owned by exactly one address
+- Transfers, approvals, and ownership queries work the same way across all ERC-721 contracts
+
+**Famous ERC-721 collections:**
+- CryptoPunks (retroactively adopted)
+- Bored Ape Yacht Club
+- CryptoKitties (popularised the standard)
+- Art Blocks generative art
+
+### ERC-1155 — Multi-Token Standard
+
+ERC-1155 allows a single contract to manage **both fungible and non-fungible tokens**. This is ideal for gaming.
+
+**Example:** A game might use one ERC-1155 contract for:
+- 10,000 copies of a "Health Potion" (fungible — each is identical)
+- 500 copies of "Silver Sword" (semi-fungible)
+- 1 legendary unique weapon (non-fungible)
+
+**Key benefits:**
+- Batch transfers (send multiple different tokens in one transaction = lower fees)
+- More gas-efficient than multiple ERC-721 contracts
+
+<Table
+  headers={["Standard", "Token Type", "Use Case", "Batch Transfers"]}
+  rows={[
+    ["ERC-20", "Fungible only", "Cryptocurrencies, governance tokens", "No"],
+    ["ERC-721", "Non-fungible only", "Collectibles, art, 1-of-1 assets", "No"],
+    ["ERC-1155", "Both fungible and non-fungible", "Gaming, mixed asset collections", "Yes"],
+  ]}
+/>
+
+## Solana NFT Standards
+
+Solana uses the **SPL Token** standard extended with **Metaplex** — a protocol for creating and managing NFTs on Solana.
+
+Solana NFTs became popular due to much lower minting fees (fractions of a cent vs. $10–$100+ on Ethereum).
+
+Popular Solana NFT collections: Mad Lads, DeGods (originally Solana), y00ts.
+
+## What Metadata Contains
+
+Every NFT has metadata — data describing what it is:
+
+```json
+{
+  "name": "Bored Ape #3429",
+  "description": "Bored Ape Yacht Club",
+  "image": "ipfs://QmXyz.../3429.png",
+  "attributes": [
+    {"trait_type": "Background", "value": "Orange"},
+    {"trait_type": "Eyes", "value": "Laser Eyes"},
+    {"trait_type": "Hat", "value": "Cowboy Hat"}
+  ]
+}
+```
+
+<InfoBox type="note">
+  The metadata URL is often stored on IPFS (decentralised) or on a centralised server. If the server goes down, the image is no longer accessible — though your ownership record on the blockchain remains. This is called "link rot."
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="Which NFT standard is best suited for a blockchain game that has both unique legendary items and thousands of identical common items?"
+  options={[
+    "ERC-20",
+    "ERC-721",
+    "ERC-1155",
+    "ERC-404"
+  ]}
+  correctIndex={2}
+  explanation="ERC-1155 is the multi-token standard that supports both fungible (identical copies) and non-fungible (unique) tokens in the same contract. This makes it perfect for gaming where you need both types."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Standards ensure NFTs are interoperable across wallets and marketplaces
+  - ERC-721: the original NFT standard — one unique token per ID
+  - ERC-1155: multi-token standard supporting fungible, semi-fungible, and non-fungible tokens in one contract
+  - Solana NFTs use the SPL + Metaplex standard with much lower fees
+  - NFT metadata (including the image) is often stored off-chain and can be lost if the host goes down
+</InfoBox>

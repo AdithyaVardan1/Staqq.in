@@ -19,23 +19,71 @@ function categoryBadgeClass(cat: string): string {
     return styles.genericBadge;
 }
 
-function simplifyMode(mode: string): string {
-    const m = mode.toLowerCase();
-    if (m.includes('purchase') || m.includes('buy')) return 'Purchase';
-    if (m.includes('sale') || m.includes('sell')) return 'Sale';
-    return mode;
+/**
+ * Classifies NSE PIT transaction modes as positive (insider acquiring/holding more)
+ * or negative (insider disposing/reducing holding).
+ *
+ * Positive = share count goes up or shares are freed:
+ *   Market Purchase, Off Market Purchase, ESOP exercise, Allotment,
+ *   Preferential Allotment, Bonus, Rights, Conversion (warrants→shares),
+ *   Revoke Pledge (freeing previously locked shares), Transmission (inheritance)
+ *
+ * Negative = share count goes down or shares are locked/given away:
+ *   Market Sale, Off Market Sale, Pledge (locking shares as collateral),
+ *   Gift (giving away shares), Inter-se Transfer (passing shares to another entity)
+ */
+function isPositiveTransaction(mode: string): boolean {
+    const m = mode.toLowerCase().trim();
+
+    // Acquisitions / increases in holding
+    if (m.includes('purchase'))    return true;   // Market Purchase, Off Market Purchase
+    if (m.includes('buy'))         return true;
+    if (m.includes('allot'))       return true;   // Allotment, Preferential Allotment
+    if (m.includes('esop'))        return true;   // ESOPs exercise = receiving shares
+    if (m.includes('exercise'))    return true;   // Exercise of options
+    if (m.includes('conver'))      return true;   // Conversion of warrants / debentures
+    if (m.includes('bonus'))       return true;   // Bonus shares
+    if (m.includes('rights'))      return true;   // Rights issue
+    if (m.includes('revoke'))      return true;   // Revoke Pledge = freeing shares (positive)
+    if (m.includes('transmiss'))   return true;   // Transmission = inheritance of shares
+
+    // Disposals / decreases or locks
+    if (m.includes('sale'))        return false;  // Market Sale, Off Market Sale
+    if (m.includes('sell'))        return false;
+    if (m.includes('pledge'))      return false;  // Pledging shares = bearish signal
+    if (m.includes('gift'))        return false;  // Giving away shares
+    if (m.includes('transfer'))    return false;  // Inter-se Transfer
+
+    return false; // Unknown — treat as neutral/negative
 }
 
-function isBuyMode(mode: string): boolean {
-    const m = mode.toLowerCase();
-    return m.includes('purchase') || m.includes('buy');
+/** Human-readable label for NSE transaction modes */
+function simplifyMode(mode: string): string {
+    const m = mode.toLowerCase().trim();
+    if (m.includes('market purchase'))        return 'Market Buy';
+    if (m.includes('market sale'))            return 'Market Sale';
+    if (m.includes('off market') && m.includes('purchase')) return 'Off-Market Buy';
+    if (m.includes('off market') && m.includes('sale'))     return 'Off-Market Sale';
+    if (m.includes('purchase') || m.includes('buy'))        return 'Purchase';
+    if (m.includes('sale')     || m.includes('sell'))       return 'Sale';
+    if (m.includes('esop'))                   return 'ESOP';
+    if (m.includes('allot'))                  return 'Allotment';
+    if (m.includes('conver'))                 return 'Conversion';
+    if (m.includes('bonus'))                  return 'Bonus';
+    if (m.includes('rights'))                 return 'Rights';
+    if (m.includes('revoke'))                 return 'Revoke Pledge';
+    if (m.includes('pledge'))                 return 'Pledge';
+    if (m.includes('gift'))                   return 'Gift';
+    if (m.includes('transmiss'))              return 'Transmission';
+    if (m.includes('transfer'))               return 'Transfer';
+    return mode; // Fallback: show raw value
 }
 
 export default async function InsiderTradesPage() {
     const trades = await fetchInsiderTrades(14);
 
-    const buyTrades = trades.filter(t => isBuyMode(t.acquireMode));
-    const sellTrades = trades.filter(t => !isBuyMode(t.acquireMode));
+    const buyTrades = trades.filter(t => isPositiveTransaction(t.acquireMode));
+    const sellTrades = trades.filter(t => !isPositiveTransaction(t.acquireMode));
     const uniqueSymbols = new Set(trades.map(t => t.symbol)).size;
 
     return (
@@ -121,11 +169,13 @@ export default async function InsiderTradesPage() {
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <span className={`${styles.badge} ${isBuyMode(trade.acquireMode) ? styles.buyBadge : styles.sellBadge}`}>
+                                                    <span className={`${styles.badge} ${isPositiveTransaction(trade.acquireMode) ? styles.buyBadge : styles.sellBadge}`}>
                                                         {simplifyMode(trade.acquireMode)}
                                                     </span>
                                                 </td>
-                                                <td>{trade.sharesAcquired.toLocaleString('en-IN')}</td>
+                                                <td style={{ color: isPositiveTransaction(trade.acquireMode) ? '#22c55e' : '#ef4444', fontWeight: 600 }}>
+                                                    {isPositiveTransaction(trade.acquireMode) ? '+' : '−'}{trade.sharesAcquired.toLocaleString('en-IN')}
+                                                </td>
                                                 <td className={styles.dateCell}>{trade.beforePercent}%</td>
                                                 <td className={styles.dateCell}>{trade.afterPercent}%</td>
                                             </tr>

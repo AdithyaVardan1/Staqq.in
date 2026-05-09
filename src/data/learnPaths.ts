@@ -73,3 +73,55 @@ export const learnPaths: Record<string, LearnPath> = {
     modules: buildModulesForPath("fundamental"),
   },
 };
+
+export const cryptoLearnPaths: Record<string, LearnPath> = {
+  "crypto-101": {
+    title: "Crypto 101",
+    description: "Start from zero. What Bitcoin is, how wallets work, and how to buy your first crypto.",
+    difficulty: "BEGINNER",
+    estimatedTime: "45m",
+    icon: "bitcoin",
+    color: "#f7931a",
+    modules: buildModulesForPath("crypto-101"),
+  },
+
+  blockchain: {
+    title: "Blockchain & Web3",
+    description: "Consensus, smart contracts, dApps, DAOs, and NFTs explained.",
+    difficulty: "INTERMEDIATE",
+    estimatedTime: "1h 15m",
+    icon: "network",
+    color: "#8b5cf6",
+    modules: buildModulesForPath("blockchain"),
+  },
+
+  defi: {
+    title: "DeFi Decoded",
+    description: "DEXes, lending protocols, yield farming, and liquidity pools.",
+    difficulty: "INTERMEDIATE",
+    estimatedTime: "1h 30m",
+    icon: "defi",
+    color: "#22c55e",
+    modules: buildModulesForPath("defi"),
+  },
+
+  "crypto-trading": {
+    title: "Crypto Trading",
+    description: "Read crypto markets, trade spot and futures, and use on-chain data.",
+    difficulty: "INTERMEDIATE",
+    estimatedTime: "2h",
+    icon: "chart-candlestick",
+    color: "#38bdf8",
+    modules: buildModulesForPath("crypto-trading"),
+  },
+
+  "crypto-advanced": {
+    title: "Tokenomics & Advanced",
+    description: "Token economics, Indian crypto regulations, portfolio management.",
+    difficulty: "ADVANCED",
+    estimatedTime: "2h 30m",
+    icon: "building",
+    color: "#ef4444",
+    modules: buildModulesForPath("crypto-advanced"),
+  },
+};

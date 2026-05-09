@@ -6,7 +6,9 @@ import styles from "./lesson.module.css";
 import { MarkCompleteButton } from "@/components/MarkCompleteButton";
 import { ReadingProgress } from "@/components/ReadingProgress/ReadingProgress";
 import { LessonSidebar } from "@/components/LessonSidebar/LessonSidebar";
-import { learnPaths } from "@/data/learnPaths";
+import { learnPaths, cryptoLearnPaths } from "@/data/learnPaths";
+
+const allLearnPaths = { ...learnPaths, ...cryptoLearnPaths };
 
 interface PageProps {
     params: Promise<{
@@ -59,7 +61,7 @@ export default async function LessonPage({ params }: PageProps) {
         Content = null;
     }
 
-    const pathTitle = learnPaths[pathKey as keyof typeof learnPaths]?.title ?? pathKey;
+    const pathTitle = allLearnPaths[pathKey as keyof typeof allLearnPaths]?.title ?? pathKey;
 
     // Build sidebar module data (all modules in path with their chapters)
     const sidebarModules = pathModules.map(m => ({

@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { angelOne } from '@/lib/angelone';
 import { redis } from '@/lib/redis';
+import { isMarketOpen, secondsUntilMarketOpen } from '@/utils/market-hours';
 
 export const dynamic = 'force-dynamic';
 
-const PRICE_CACHE_TTL = 10; // 10 seconds — multiple users watching same stock share one Angel One call
+const PRICE_CACHE_TTL_LIVE = 10; // 10s during market hours
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
@@ -14,13 +15,23 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Ticker is required' }, { status: 400 });
     }
 
-    // Check Redis first — concurrent users watching same ticker all benefit
     const cacheKey = `live:price:${ticker.toUpperCase()}`;
+    const marketOpen = isMarketOpen();
+
+    // Always serve from cache first
     const cached = await redis.get(cacheKey);
     if (cached) {
         try {
-            return NextResponse.json(JSON.parse(cached));
+            const parsed = JSON.parse(cached);
+            // Market is closed — cached closing price is the right answer, no need to hit Angel One
+            if (!marketOpen) return NextResponse.json({ ...parsed, marketClosed: true });
+            return NextResponse.json(parsed);
         } catch { /* fall through */ }
+    }
+
+    // Market closed and nothing cached — nothing useful to fetch from Angel One
+    if (!marketOpen) {
+        return NextResponse.json({ error: 'Market closed, no cached price available' }, { status: 503 });
     }
 
     try {
@@ -39,7 +50,9 @@ export async function GET(req: NextRequest) {
                 change: parseFloat(data.netChange),
                 changePercent: parseFloat(data.percentChange),
             };
-            await redis.set(cacheKey, JSON.stringify(result), PRICE_CACHE_TTL);
+            // If market just closed by the time we get the response, cache until next open
+            const ttl = isMarketOpen() ? PRICE_CACHE_TTL_LIVE : secondsUntilMarketOpen();
+            await redis.set(cacheKey, JSON.stringify(result), ttl);
             return NextResponse.json(result);
         }
 

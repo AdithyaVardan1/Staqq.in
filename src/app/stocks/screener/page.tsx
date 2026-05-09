@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { StockCard } from '@/components/stocks/StockCard';
@@ -117,6 +117,11 @@ export default function StockScreener() {
         filters.priceRange < 10000,
     ].filter(Boolean).length;
 
+    // Non-trending sorts (marketCap, returns, price-*) are purely client-side.
+    // Only re-fetch when filters change, or when switching between trending/screener modes.
+    const isTrending = TRENDING_CATEGORIES.includes(sortBy);
+    const fetchKey = isTrending ? sortBy : 'screener';
+
     const fetchStocks = useCallback(async (offset: number) => {
         if (TRENDING_CATEGORIES.includes(sortBy)) {
             const res = await fetch('/api/stocks/trending');
@@ -167,17 +172,27 @@ export default function StockScreener() {
     }, [debouncedFilters, sortBy]);
 
     const { items: stocks, isLoading, error, total, loadMore, intersectionRef, showLoadMoreButton } =
-        useInfiniteScroll<Stock>({ fetchData: fetchStocks, dependencies: [debouncedFilters, sortBy], maxAutoLoads: 10, limit: 10 });
+        useInfiniteScroll<Stock>({ fetchData: fetchStocks, dependencies: [debouncedFilters, fetchKey], maxAutoLoads: 10, limit: 10 });
+
+    // Keep previous items visible (dimmed) while a filter change is loading,
+    // so the grid never goes blank mid-transition.
+    const prevStocksRef = useRef<Stock[]>([]);
+    useEffect(() => {
+        if (stocks.length > 0) prevStocksRef.current = stocks;
+    }, [stocks]);
+
+    const isRefreshing = isLoading && stocks.length === 0;
 
     const sortedStocks = useMemo(() => {
-        if (TRENDING_CATEGORIES.includes(sortBy)) return stocks;
-        return [...stocks].sort((a, b) => {
+        const base = isRefreshing ? prevStocksRef.current : stocks;
+        if (TRENDING_CATEGORIES.includes(sortBy)) return base;
+        return [...base].sort((a, b) => {
             if (sortBy === 'price-high') return b.price - a.price;
             if (sortBy === 'price-low') return a.price - b.price;
             if (sortBy === 'returns') return b.return1Y - a.return1Y;
             return b.marketCap - a.marketCap;
         });
-    }, [stocks, sortBy]);
+    }, [stocks, sortBy, isRefreshing]);
 
     const pill = (label: string, value: string, field: keyof Filters) => (
         <button
@@ -361,24 +376,27 @@ export default function StockScreener() {
                             </div>
                         )}
 
-                        {!error && !isLoading && stocks.length === 0 && (
+                        {!error && !isLoading && sortedStocks.length === 0 && (
                             <div className={styles.emptyState}>
                                 <p>No stocks match your filters.</p>
                                 <Button variant="secondary" size="sm" onClick={() => setFilters(INITIAL_FILTERS)}>Clear filters</Button>
                             </div>
                         )}
 
-                        {(stocks.length > 0 || isLoading) && (
+                        {(sortedStocks.length > 0 || isLoading) && (
                             <>
                                 {viewMode === 'card' ? (
-                                    <div className={styles.grid}>
+                                    <div className={clsx(styles.grid, isRefreshing && styles.gridFading)}>
                                         {sortedStocks.map(stock => (
                                             <StockCard key={stock.ticker} {...stock} marketCap={fmtMcap(stock.marketCap)} />
                                         ))}
-                                        {isLoading && [...Array(3)].map((_, i) => <StockCardSkeleton key={i} />)}
+                                        {isRefreshing && sortedStocks.length === 0 && [...Array(6)].map((_, i) => <StockCardSkeleton key={i} />)}
+                                        {isLoading && !isRefreshing && [...Array(3)].map((_, i) => <StockCardSkeleton key={i} />)}
                                     </div>
                                 ) : (
-                                    <StockTable stocks={sortedStocks} />
+                                    <div className={clsx(isRefreshing && styles.gridFading)}>
+                                        <StockTable stocks={sortedStocks} />
+                                    </div>
                                 )}
 
                                 <div ref={intersectionRef} className={styles.scrollTrigger}>

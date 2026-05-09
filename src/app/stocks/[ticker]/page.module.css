@@ -21,7 +21,7 @@
 }
 
 .main {
-    padding-top: 100px;
+    padding-top: 132px;
     padding-bottom: var(--spacing-2xl);
     background-color: var(--bg-dark);
     position: relative;
@@ -326,6 +326,7 @@
 
 .chartContainer {
     width: 100%;
+    min-height: 420px;
     margin-top: var(--spacing-md);
     margin-bottom: var(--spacing-sm);
     position: relative;

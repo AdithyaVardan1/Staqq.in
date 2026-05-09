@@ -1,0 +1,96 @@
+# Impermanent Loss
+
+Impermanent loss (IL) is the most misunderstood concept in DeFi. It's the reason why providing liquidity to a volatile pair can leave you worse off than simply holding the tokens.
+
+<InfoBox type="important">
+  Educational content only. Impermanent loss can significantly reduce returns from liquidity provision. Not financial advice.
+</InfoBox>
+
+## What is Impermanent Loss?
+
+When you provide liquidity to an AMM pool, the ratio of tokens in the pool shifts as trading happens. When you withdraw, you receive a different mix than you deposited — and this mix is often worth less than if you'd just held the original tokens.
+
+It's called "impermanent" because if prices return to their original levels, the loss disappears. If you withdraw while prices are different, it becomes a **permanent** loss.
+
+## A Concrete Example
+
+You deposit into a 50/50 ETH/USDC pool when ETH = ₹2,00,000.
+
+- You deposit: 1 ETH + ₹2,00,000 USDC = ₹4,00,000 total
+- Your pool share: say 1%
+
+Now ETH price rises to ₹4,00,000 (doubles).
+
+The pool re-balances through arbitrage. Your 1% share now contains:
+- ~0.707 ETH (less ETH than you put in)
+- ~₹2,82,843 USDC (more USDC)
+- Total value: ~₹5,65,685
+
+**But if you had just held:**
+- 1 ETH at ₹4,00,000 = ₹4,00,000
+- ₹2,00,000 USDC = ₹2,00,000
+- Total: ₹6,00,000
+
+**Impermanent loss = ₹6,00,000 - ₹5,65,685 = ₹34,315 (about 5.7%)**
+
+## IL by Price Change
+
+<Table
+  headers={["Price Change (1 asset)", "Impermanent Loss"]}
+  rows={[
+    ["1.25x (25% increase)", "0.6%"],
+    ["1.5x (50% increase)", "2.0%"],
+    ["2x (100% increase / doubles)", "5.7%"],
+    ["4x (300% increase)", "20.0%"],
+    ["5x (400% increase)", "25.5%"],
+    ["10x (900% increase)", "42.5%"],
+  ]}
+/>
+
+The higher the price divergence, the greater the impermanent loss.
+
+## When Does IL Become Permanent?
+
+IL is "impermanent" only as long as you keep your LP tokens. The moment you **withdraw your liquidity**, the loss is realised permanently — regardless of the word "impermanent."
+
+## How to Mitigate IL
+
+**1. Use stable pairs**
+USDC/USDT or other pegged assets move together — minimal IL because prices stay near 1:1.
+
+**2. Use concentrated liquidity wisely**
+Uniswap V3 lets you set price ranges. Narrower range = more fees earned, but you exit the range (and stop earning) if price moves far.
+
+**3. One-sided liquidity**
+Some protocols (Bancor V3 historically, certain newer protocols) offer single-sided staking that hedges IL — but with caveats.
+
+**4. Earn enough fees to offset IL**
+High-volume pairs can generate enough trading fees to more than compensate for IL. BTC/ETH and ETH/USDC on Uniswap V3 with tight ranges often achieves this.
+
+<InfoBox type="note">
+  IL is not a bug — it's a feature of how AMMs work. It's the cost of providing liquidity. The question is whether fees (and any token rewards) are sufficient to compensate.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="You provide ETH/USDC liquidity to Uniswap. ETH price doubles. Compared to just holding ETH and USDC, your LP position is:"
+  options={[
+    "Worth the same — the fees exactly compensate",
+    "Worth more — because you earned trading fees",
+    "Worth less — you've experienced impermanent loss of about 5.7%",
+    "Worth nothing — IL always results in total loss"
+  ]}
+  correctIndex={2}
+  explanation="When ETH doubles, the constant product formula means your pool share rebalances toward less ETH and more USDC. This leaves your position worth about 5.7% less than just holding both tokens. Trading fees may offset this, but IL is real."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Impermanent loss occurs when pooled token prices diverge after you deposit
+  - The greater the price divergence, the larger the IL (up to 42.5% at 10x)
+  - IL becomes permanent when you withdraw your liquidity
+  - Stablecoin pairs have minimal IL — ideal for conservative yield
+  - IL is offset by trading fees + token rewards; profitability depends on volume vs divergence
+</InfoBox>

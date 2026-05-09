@@ -1,0 +1,83 @@
+# What are Smart Contracts
+
+A smart contract is a program that runs on the blockchain. It executes automatically when predefined conditions are met — with no human, bank, or lawyer needed to enforce it.
+
+<InfoBox type="important">
+  This chapter is educational only. Not financial advice.
+</InfoBox>
+
+## The Simple Analogy
+
+A vending machine is the world's oldest "smart contract." Put ₹20 in, press B3, get a Kurkure. The machine enforces the deal automatically:
+
+- No shopkeeper needed
+- No trust required between you and the machine
+- The outcome is predictable and tamper-proof
+
+Smart contracts do the same thing — but for complex financial agreements, on the blockchain, globally accessible.
+
+## Where Smart Contracts Came From
+
+The concept was described by cryptographer Nick Szabo in 1994, long before blockchain existed. Ethereum, launched in 2015, was the first platform to make them practical at scale.
+
+Ethereum's creator, Vitalik Buterin, designed it as a "programmable blockchain" — you write any logic, deploy it, and it runs forever without anyone being able to shut it down.
+
+## How They Work
+
+A smart contract is code written in a language like **Solidity** (Ethereum's main language). Once deployed to the blockchain:
+
+1. It gets a permanent address (like a wallet address)
+2. Anyone can call its functions by sending a transaction
+3. It executes exactly as written — no deviations
+4. Results are publicly visible on-chain
+5. It cannot be changed (unless designed with upgradability)
+
+## What Smart Contracts Enable
+
+<Table
+  headers={["Use Case", "How Smart Contracts Help"]}
+  rows={[
+    ["Token creation", "ERC-20 standard: create a new tradeable token in 50 lines of code"],
+    ["Decentralised trading", "Uniswap: trade tokens without an order book or company"],
+    ["Lending", "Aave: supply assets and earn interest; borrow against collateral"],
+    ["NFTs", "ERC-721: prove unique ownership of digital assets"],
+    ["Insurance", "Automatic payouts when flight delay or crop failure is confirmed on-chain"],
+    ["DAOs", "Token-based voting on protocol decisions without a board of directors"],
+  ]}
+/>
+
+## The Big Limitation: Smart Contracts Can't See the Real World
+
+Smart contracts only know what's on the blockchain. To use real-world data (prices, weather, sports scores), they need **oracles** — services that feed external data onto the blockchain.
+
+**Chainlink** is the leading oracle network. It powers price feeds for most DeFi protocols.
+
+## Smart Contract Risks
+
+<InfoBox type="warning">
+  Smart contracts are "code is law" — they execute exactly as written, including bugs. Major hacks (The DAO in 2016, $60M+; various DeFi protocols) happened because of smart contract vulnerabilities. Always check if a contract has been audited before interacting with it.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="What happens to a smart contract after it is deployed to the blockchain?"
+  options={[
+    "The developer can update it whenever they want",
+    "It is controlled by the exchange it was deployed on",
+    "It executes exactly as coded, is publicly visible, and cannot be altered",
+    "It expires after 12 months"
+  ]}
+  correctIndex={2}
+  explanation="Once deployed, a smart contract lives permanently on the blockchain. It executes exactly as written — no changes can be made (unless the contract was specifically coded to allow upgrades). This immutability is both its strength and a risk if there are bugs."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Smart contracts are self-executing programs on the blockchain
+  - They run automatically when conditions are met — no intermediaries needed
+  - Ethereum is the primary platform for smart contracts
+  - They power DeFi, NFTs, tokens, DAOs, and much more
+  - Bugs in smart contracts can lead to permanent loss of funds — always use audited contracts
+</InfoBox>

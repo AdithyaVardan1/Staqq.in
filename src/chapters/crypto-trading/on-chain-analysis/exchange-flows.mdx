@@ -1,0 +1,87 @@
+# Exchange Flows
+
+Exchange flows track how much crypto is moving onto and off of exchanges. This is one of the most actionable on-chain metrics for understanding buying and selling pressure.
+
+<InfoBox type="important">
+  Educational content only. On-chain metrics are indicators, not certainties. Not financial advice.
+</InfoBox>
+
+## The Core Idea
+
+Crypto held on exchanges is available for immediate sale. Crypto held in private wallets (cold storage) is not readily tradeable.
+
+- **High exchange reserves** → More potential selling supply
+- **Low exchange reserves** → Less available supply, potentially bullish
+- **Increasing reserves** → People moving crypto to sell
+- **Decreasing reserves** → People withdrawing to hold
+
+## Exchange Inflow vs Outflow
+
+**Net Exchange Flow = Inflows - Outflows**
+
+<Table
+  headers={["Metric", "Bullish Signal", "Bearish Signal"]}
+  rows={[
+    ["Exchange Inflow", "Low — people not depositing to sell", "High — large selling supply incoming"],
+    ["Exchange Outflow", "High — people withdrawing to hold long-term", "Low — little accumulation"],
+    ["Net Flow", "Negative (more leaving than entering)", "Positive (more entering than leaving)"],
+    ["Exchange Reserves (total)", "Declining trend", "Rising trend"],
+  ]}
+/>
+
+## Bitcoin Exchange Reserves as a Macro Signal
+
+Bitcoin exchange reserves have been in a long-term downtrend since 2020. This coincides with:
+- Institutional accumulation (moving to custodians, not exchanges)
+- Growing ETF holdings (BlackRock, Fidelity holding BTC off public exchanges)
+- "Not your keys, not your coins" culture
+
+Lower exchange reserves reduce the available float, potentially making prices more sensitive to demand.
+
+<InfoBox type="note">
+  The 2022 FTX collapse caused a massive outflow from exchanges as users panic-withdrew funds (after seeing Celsius and Voyager collapse earlier that year). This was actually bullish for exchange reserve metrics — but happened for bearish reasons. Context matters.
+</InfoBox>
+
+## Stablecoin Reserves on Exchanges
+
+Tracking stablecoins (USDC, USDT) on exchanges shows "dry powder" — capital ready to buy.
+
+- **Rising stablecoin inflows to exchanges** → Potential buying pressure incoming
+- **High stablecoin reserves on exchange** → Buy walls being built
+- **Stablecoin supply ratio (SSR)** — Bitcoin market cap divided by stablecoin supply; low SSR = lots of buying power relative to BTC size
+
+## Tools for Exchange Flow Analysis
+
+- **Glassnode** — the gold standard; tracks exchange reserves for BTC, ETH, and stablecoins
+- **CryptoQuant** — exchange-specific inflow/outflow, miner flows
+- **Nansen** — labelled exchange wallets for real-time tracking
+
+## Real Example: 2022 Bear Market
+
+In May 2022, Luna/UST collapsed, triggering panic. Exchange inflows for BTC and ETH spiked massively — people moving assets to exchanges to sell. This preceded the next leg down from ~$38k to $25k.
+
+In January 2023, exchange reserves hit multi-year lows. Shortly after, BTC began its recovery rally from $16k to $30k.
+
+## Quick Check
+
+<Quiz
+  question="Bitcoin exchange reserves have been declining steadily for 6 months. What is the most likely interpretation?"
+  options={[
+    "Bitcoin is about to crash — people are selling",
+    "The network has stopped working",
+    "Long-term holders are withdrawing BTC to cold storage, reducing available selling supply",
+    "Exchanges are being shut down by regulators"
+  ]}
+  correctIndex={2}
+  explanation="Declining exchange reserves mean BTC is being withdrawn from exchanges to private wallets — typically into cold storage for long-term holding. This reduces immediately available selling supply, which is generally considered a bullish signal."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Exchange flows track crypto moving on/off trading platforms
+  - High inflows = potential selling pressure; high outflows = accumulation
+  - Bitcoin exchange reserves declining long-term = reducing available supply
+  - Stablecoin reserves on exchanges = "dry powder" ready to buy
+  - Use Glassnode or CryptoQuant for exchange flow data; interpret with broader context
+</InfoBox>

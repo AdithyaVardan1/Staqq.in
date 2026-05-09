@@ -1,0 +1,105 @@
+# Crypto Order Books
+
+On centralised exchanges, an order book records every buy and sell order waiting to be filled. Reading it tells you where supply and demand are concentrated.
+
+<InfoBox type="important">
+  Educational content only. Order book analysis has limitations and should not be used as the sole basis for trading decisions. Not financial advice.
+</InfoBox>
+
+## How an Order Book Works
+
+The order book has two sides:
+
+**Bids (buy orders)** — buyers waiting to purchase at or below a certain price
+**Asks (sell orders)** — sellers waiting to sell at or above a certain price
+
+**Best bid** — highest price a buyer will pay right now
+**Best ask** — lowest price a seller will accept right now
+
+**Spread** — the gap between best bid and best ask
+
+## Example Order Book
+
+```
+ASKS (Sellers)
+₹52,000   |  0.50 BTC
+₹51,800   |  1.20 BTC
+₹51,500   |  2.00 BTC
+──────────────────────
+₹51,200   |  1.80 BTC   ← Best Ask
+₹51,100   |  3.50 BTC   ← Best Bid
+──────────────────────
+₹51,000   |  2.20 BTC
+₹50,800   |  0.90 BTC
+BIDS (Buyers)
+```
+
+Spread = ₹51,200 - ₹51,100 = ₹100
+
+If you place a **market buy order** for 1.8 BTC, you'll get filled at ₹51,200 (best ask).
+
+## Order Types
+
+<Table
+  headers={["Order Type", "How It Works"]}
+  rows={[
+    ["Market Order", "Executes immediately at the best available price"],
+    ["Limit Order", "Executes only if price reaches your specified level"],
+    ["Stop-Limit Order", "Triggers a limit order once a stop price is reached"],
+    ["Stop-Market Order", "Triggers a market order once a stop price is reached"],
+    ["Post-Only Order", "Ensures your order goes on the book (maker, not taker)"],
+  ]}
+/>
+
+## Market Depth
+
+Market depth (or "depth of market") shows cumulative bid and ask volume at each price level. A depth chart visualises this.
+
+**Deep market:** Large volume on both sides — hard to move price with one trade
+**Shallow market:** Thin volume — a large order can spike price significantly
+
+For Indian traders: BTC and ETH pairs on CoinDCX/WazirX have reasonable depth. Smaller altcoins have very thin books.
+
+## Reading the Order Book for Signals
+
+**Large buy wall (bid wall):** A cluster of buy orders at a particular price — can act as support. May also be spoofed.
+
+**Large sell wall (ask wall):** A cluster of sell orders — acts as resistance. Also can be spoofed.
+
+**Spoofing:** Placing a large order with no intention of filling it to influence price — then cancelling before execution. This is illegal in traditional markets but difficult to enforce in crypto.
+
+<InfoBox type="warning">
+  Order book analysis has significant limitations in crypto. Large orders are frequently spoofed (placed and cancelled to manipulate perception). On-chain markets (DEXes) don't have traditional order books — AMM pools serve a similar function but work very differently.
+</InfoBox>
+
+## Slippage
+
+When your order is large relative to the available liquidity at the best price, you'll pay more than the quoted price. This is **slippage**.
+
+Example: You want to buy ₹50 lakh of BTC. The best ask has only ₹10 lakh available. Your order consumes that and the next several price levels.
+
+Calculate expected slippage using the order book depth before placing large orders.
+
+## Quick Check
+
+<Quiz
+  question="The best bid on an exchange is ₹2,00,000 and the best ask is ₹2,00,500. What is the spread?"
+  options={[
+    "₹2,00,000",
+    "₹500",
+    "₹2,00,500",
+    "0.25%"
+  ]}
+  correctIndex={1}
+  explanation="Spread = Best Ask - Best Bid = ₹2,00,500 - ₹2,00,000 = ₹500. The spread represents the immediate cost of entering and exiting a position. Tighter spreads on liquid markets mean lower transaction costs."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Order books show all pending buy (bids) and sell (asks) orders with quantities
+  - Spread = best ask - best bid; tighter spread = more liquid market
+  - Market depth shows available liquidity at each price level
+  - Large bid/ask walls can indicate support/resistance but may be spoofed
+  - Large orders cause slippage — check depth before placing significant trades
+</InfoBox>

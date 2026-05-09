@@ -69,7 +69,7 @@ async function fetchCryptoTweets(): Promise<RedditPost[]> {
         const ct0 = process.env.TWITTER_CT0;
         if (!authToken || !ct0) return [];
 
-        const pythonBin = path.join(process.cwd(), '.venv/bin/python3');
+        const pythonBin = process.env.PYTHON_BIN || '/usr/bin/python3';
         const script = path.join(process.cwd(), 'scripts/twikit_bridge.py');
 
         const payload = JSON.stringify({

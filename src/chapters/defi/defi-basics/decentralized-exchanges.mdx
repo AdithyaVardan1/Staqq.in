@@ -1,0 +1,97 @@
+# Decentralised Exchanges (DEXes)
+
+A DEX lets you swap one token for another directly from your wallet — no sign-up, no KYC, no company in the middle.
+
+<InfoBox type="important">
+  Educational content only. Not financial advice. DEX interactions involve gas fees and smart contract risk.
+</InfoBox>
+
+## How CEXes vs DEXes Differ
+
+**Centralised Exchange (CEX):** You deposit funds to the exchange. The exchange maintains an internal order book. Trades settle in their database. You withdraw later.
+
+**Decentralised Exchange (DEX):** You keep your funds in your wallet. Smart contracts handle swaps. Trades settle on the blockchain. No deposit or withdrawal needed.
+
+<Table
+  headers={["Feature", "CEX (e.g., CoinDCX)", "DEX (e.g., Uniswap)"]}
+  rows={[
+    ["Custody of funds", "Exchange holds your funds", "You hold your own funds"],
+    ["KYC required", "Yes", "No"],
+    ["Token selection", "Limited (exchange-listed only)", "Any ERC-20 token"],
+    ["Trading speed", "Fast (off-chain)", "Slower + gas fees (on-chain)"],
+    ["Risk", "Exchange hack/insolvency", "Smart contract bug"],
+    ["Availability", "May be restricted by region", "Globally permissionless"],
+  ]}
+/>
+
+## Two Types of DEXes
+
+### 1. Order Book DEXes
+Work like traditional exchanges — buyers post bids, sellers post asks. The DEX matches them.
+
+**Examples:** dYdX (perpetuals), Serum (on Solana), Vertex
+
+These work well for derivatives but are less common for spot trading on Ethereum due to gas costs.
+
+### 2. Automated Market Makers (AMMs)
+No order book. Instead, liquidity is pooled by users into smart contracts. A mathematical formula determines prices. This is how Uniswap works.
+
+## Major DEXes
+
+<Table
+  headers={["DEX", "Chain", "Type", "Notable For"]}
+  rows={[
+    ["Uniswap", "Ethereum + L2s", "AMM", "Largest DEX by volume, invented the AMM model"],
+    ["Curve Finance", "Multi-chain", "AMM (optimised for stablecoins)", "Extremely low slippage on stablecoin swaps"],
+    ["SushiSwap", "Multi-chain", "AMM", "Uniswap fork with additional features"],
+    ["dYdX", "Ethereum / own chain", "Order book", "Perpetual futures trading"],
+    ["GMX", "Arbitrum + Avalanche", "Unique model", "Perpetuals with low fees"],
+    ["Raydium", "Solana", "AMM + Order book", "Solana's primary DEX"],
+  ]}
+/>
+
+## How to Use Uniswap (Step by Step)
+
+1. Go to app.uniswap.org
+2. Connect your MetaMask wallet
+3. Select tokens: e.g., ETH → USDC
+4. Enter amount and review the rate + slippage tolerance
+5. Click "Swap" and approve the transaction in MetaMask
+6. Wait for the blockchain to confirm (~15–30 seconds)
+7. USDC appears in your wallet
+
+## Slippage
+
+Slippage is the difference between the expected price and the actual execution price. It occurs because pool prices change between when you submit and when the transaction executes.
+
+- **Low liquidity pools** have high slippage
+- **Set a slippage tolerance** (e.g., 0.5%) — if slippage exceeds this, the transaction reverts
+- **MEV bots** can sandwich your trade to extract value — high slippage tolerance worsens this
+
+<InfoBox type="tip">
+  For large trades, use aggregators like 1inch or Paraswap. They split your order across multiple DEXes to get the best price and minimal slippage.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="What is the main advantage of trading on a DEX over a CEX?"
+  options={[
+    "DEXes always offer better prices",
+    "You maintain custody of your own funds and no KYC is required",
+    "DEXes have faster transaction speeds",
+    "DEXes are regulated by SEBI"
+  ]}
+  correctIndex={1}
+  explanation="The primary advantage of a DEX is self-custody — your funds stay in your wallet and never touch an exchange's servers. Combined with no KYC requirements, DEXes are permissionless and globally accessible."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - DEXes let you swap tokens from your own wallet — no KYC, no deposits
+  - AMMs (Uniswap, Curve) use liquidity pools instead of order books
+  - Major risk: smart contract vulnerabilities and slippage on low-liquidity pairs
+  - Use aggregators (1inch) for large trades to minimise slippage
+  - CEXes are easier; DEXes give you access to more tokens and full self-custody
+</InfoBox>

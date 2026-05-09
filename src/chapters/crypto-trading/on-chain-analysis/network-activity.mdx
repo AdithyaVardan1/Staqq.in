@@ -1,0 +1,112 @@
+# Network Activity Metrics
+
+On-chain activity tells you how much a blockchain is actually being used — independent of price speculation. Strong fundamentals in usage often precede or confirm price strength.
+
+<InfoBox type="important">
+  Educational content only. Network metrics are one input in a broader analytical framework. Not financial advice.
+</InfoBox>
+
+## Key Network Activity Metrics
+
+### Active Addresses
+
+The number of unique addresses sending or receiving transactions in a given period (daily, weekly).
+
+- **Rising active addresses** → Growing adoption and usage
+- **Falling active addresses** → Declining engagement
+- **Price rising + active addresses falling** → Divergence — potentially speculative rally not backed by usage
+
+### Transaction Count
+
+Total number of transactions confirmed on-chain per day. Indicates network throughput and usage.
+
+- Bitcoin typically processes 300,000–500,000 transactions/day
+- Ethereum: 1–1.5 million/day
+- Solana: 50+ million/day (but many are automated/program-generated)
+
+### Transaction Volume (On-chain)
+
+The total USD value of all on-chain transactions. High value transferred indicates active use for value settlement.
+
+## Bitcoin-Specific Metrics
+
+### Hash Rate
+
+Hash rate measures the total computational power miners are using to secure the Bitcoin network.
+
+- **Rising hash rate** → More miners investing in hardware (long-term bullish signal; miners are confident)
+- **Falling hash rate** → Miners turning off machines (usually in bear markets or post-halving difficulty adjustments)
+- **Hash rate** reaching new all-time highs is a sign of network health
+
+### Miner Revenue
+
+Miners earn block subsidies + transaction fees. When miner revenue is high:
+- Transaction fees are high (network demand is strong)
+- Miners are more likely to hold BTC rather than sell immediately
+- Mining is profitable, encouraging more investment in network security
+
+<InfoBox type="note">
+  Bitcoin halvings (occurring roughly every 4 years, reducing block subsidy by 50%) are closely watched events. After each halving, if price doesn't rise enough, less efficient miners shut off — causing a temporary hash rate drop before recovering.
+</InfoBox>
+
+## The NVT Ratio
+
+**Network Value to Transactions (NVT) = Market Cap / On-chain Transaction Volume**
+
+NVT is often called the crypto equivalent of a P/E ratio.
+
+- **Low NVT** → Network is processing a lot of value relative to its market cap (undervalued relative to usage)
+- **High NVT** → Market cap far exceeds actual usage (potentially overvalued)
+- **NVT Signal (NVTS)** — uses 90-day average transaction volume for smoother readings
+
+## Ethereum-Specific Metrics
+
+### Gas Price / Base Fee
+
+The fee to include a transaction on Ethereum. High gas = high demand for block space.
+
+- During NFT/DeFi booms, gas exceeded $100 per transaction
+- Low gas = quiet network; high gas = network is in demand
+
+### ETH Burn Rate (EIP-1559)
+
+Since August 2021, every Ethereum transaction burns a portion of fees. More transactions = more ETH burned = deflationary pressure.
+
+Track at: **ultrasound.money** (real-time ETH supply and burn data)
+
+## Where to Find These Metrics
+
+<Table
+  headers={["Platform", "Best For"]}
+  rows={[
+    ["Glassnode", "Comprehensive Bitcoin and Ethereum on-chain data"],
+    ["CryptoQuant", "Exchange flows, miner data, derivatives"],
+    ["blockchain.com", "Bitcoin mempool, hash rate, transaction data"],
+    ["ultrasound.money", "Ethereum supply and burn metrics"],
+    ["Dune Analytics", "Custom on-chain queries and dashboards"],
+  ]}
+/>
+
+## Quick Check
+
+<Quiz
+  question="Bitcoin's price makes a new all-time high, but active address count is significantly lower than during the previous ATH. What might this indicate?"
+  options={[
+    "The blockchain has been upgraded and is more efficient",
+    "The rally may be driven by a smaller group of participants — less broad adoption, potential divergence",
+    "On-chain addresses are no longer relevant for analysis",
+    "Active addresses always lag price by 6 months"
+  ]}
+  correctIndex={1}
+  explanation="Price making new highs with declining active addresses suggests the rally isn't supported by broad network usage. Fewer participants are transacting. This divergence can sometimes precede a correction, though it's not a definitive signal."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Network activity metrics separate blockchain usage from price speculation
+  - Active addresses and transaction volume measure real adoption
+  - Hash rate (Bitcoin) indicates miner confidence and network security
+  - NVT ratio compares market cap to on-chain activity — a crypto P/E equivalent
+  - Use Glassnode, CryptoQuant, and blockchain.com for on-chain data
+</InfoBox>

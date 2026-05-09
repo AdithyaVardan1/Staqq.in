@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     padding: var(--spacing-md);
-    padding-top: 100px;
+    padding-top: 132px;
     /* Account for navbar */
     background: radial-gradient(circle at 80% 20%, rgba(var(--primary-brand-h), var(--primary-brand-s), var(--primary-brand-l), 0.05) 0%, transparent 50%);
 }

@@ -13,8 +13,8 @@
   width: 260px;
   flex-shrink: 0;
   position: sticky;
-  top: 72px;
-  max-height: calc(100vh - 88px);
+  top: 88px;
+  max-height: calc(100vh - 104px);
   overflow-y: auto;
   padding-bottom: 2rem;
   scrollbar-width: thin;

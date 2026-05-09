@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import { Shield, AlertTriangle, CheckCircle, XCircle, Search, ExternalLink, Copy, Check } from 'lucide-react';
 import type { RugpullResult, SupportedChain } from '@/lib/goplus';
 import { CHAIN_LABELS } from '@/lib/goplus';
-import { CryptoNav } from '@/components/crypto/CryptoNav';
 import styles from './page.module.css';
 
 const CHAINS: SupportedChain[] = ['eth', 'bsc', 'base', 'solana', 'polygon', 'arbitrum'];
@@ -35,21 +34,23 @@ function ScoreMeter({ score }: { score: number }) {
 
     return (
         <div className={styles.scoreMeter}>
-            <div className={styles.scoreCircle} style={{ '--score-color': color } as any}>
-                <svg viewBox="0 0 120 120" className={styles.scoreRing}>
-                    <circle cx="60" cy="60" r="50" className={styles.scoreTrack} />
-                    <circle
-                        cx="60" cy="60" r="50"
-                        className={styles.scoreFill}
-                        style={{
-                            stroke: color,
-                            strokeDasharray: `${(score / 100) * 314} 314`,
-                        }}
-                    />
-                </svg>
-                <div className={styles.scoreInner}>
-                    <span className={styles.scoreNum} style={{ color }}>{score}</span>
-                    <span className={styles.scoreLabel} style={{ color }}>{label}</span>
+            <div className={styles.scoreCircleContent}>
+                <div className={styles.scoreCircle} style={{ '--score-color': color } as any}>
+                    <svg viewBox="0 0 120 120" className={styles.scoreRing}>
+                        <circle cx="60" cy="60" r="50" className={styles.scoreTrack} />
+                        <circle
+                            cx="60" cy="60" r="50"
+                            className={styles.scoreFill}
+                            style={{
+                                stroke: color,
+                                strokeDasharray: `${(score / 100) * 314} 314`,
+                            }}
+                        />
+                    </svg>
+                    <div className={styles.scoreInner}>
+                        <span className={styles.scoreNum} style={{ color }}>{score}</span>
+                        <span className={styles.scoreLabel} style={{ color }}>{label}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,21 +127,7 @@ function RugpullChecker() {
     const cleanFlags = result?.flags.filter(f => !f.detected) || [];
 
     return (
-        <main className={styles.page}>
-            <CryptoNav />
-            {/* Hero */}
-            <section className={styles.hero}>
-                <div className={styles.heroIcon}>
-                    <Shield size={40} />
-                </div>
-                <h1 className={styles.title}>
-                    Rugpull <span className={styles.accent}>Checker</span>
-                </h1>
-                <p className={styles.subtitle}>
-                    Scan any token contract for honeypots, hidden mints, and rug risk before you ape in.
-                </p>
-            </section>
-
+        <div className={styles.page}>
             {/* Input */}
             <section className={styles.inputSection}>
                 {/* Chain selector */}
@@ -351,7 +338,7 @@ function RugpullChecker() {
                     </div>
                 </section>
             )}
-        </main>
+        </div>
     );
 }
 

@@ -1,6 +1,6 @@
 .track {
   position: fixed;
-  top: 56px; /* below navbar */
+  top: 80px; /* below navbar */
   left: 0;
   right: 0;
   height: 2px;

@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { isMarketOpen } from '@/utils/market-hours';
 
-const POLL_INTERVAL = 15000; // 15 seconds — fast enough to feel live, slow enough for cache hits
+const POLL_INTERVAL = 15000; // 15 seconds during market hours
 
 export function useLiveMarketData(
     ticker: string,
@@ -13,11 +14,17 @@ export function useLiveMarketData(
     const [price, setPrice] = useState(initialPrice);
     const [change, setChange] = useState(initialChange);
     const [changePercent, setChangePercent] = useState(initialChangePercent);
-    const [status, setStatus] = useState<'idle' | 'live' | 'error'>('idle');
+    const [status, setStatus] = useState<'idle' | 'live' | 'closed' | 'error'>('idle');
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         if (!ticker) return;
+
+        // NSE is closed — no need to poll, just show the last known price
+        if (!isMarketOpen()) {
+            setStatus('closed');
+            return;
+        }
 
         let cancelled = false;
 
@@ -25,7 +32,6 @@ export function useLiveMarketData(
             if (cancelled) return;
             try {
                 const res = await fetch(`/api/stocks/price?ticker=${encodeURIComponent(ticker)}`, {
-                    // 5-second timeout so a slow Angel One response doesn't block UI
                     signal: AbortSignal.timeout(5000),
                 });
                 if (!res.ok) throw new Error(`${res.status}`);
@@ -46,7 +52,6 @@ export function useLiveMarketData(
             }
         }
 
-        // First poll immediately
         poll();
 
         return () => {

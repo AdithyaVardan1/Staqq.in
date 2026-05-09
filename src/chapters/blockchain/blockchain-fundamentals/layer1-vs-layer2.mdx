@@ -1,0 +1,91 @@
+# Layer 1 vs Layer 2
+
+As crypto grew, base blockchains struggled to handle millions of transactions cheaply. Layer 2 networks were built to solve this — without sacrificing security.
+
+<InfoBox type="important">
+  This chapter is educational only. Not financial advice.
+</InfoBox>
+
+## The Scalability Trilemma
+
+Vitalik Buterin described a fundamental challenge: a blockchain can only optimise two of these three properties at once:
+
+- **Security** — resistant to attacks
+- **Decentralisation** — many independent nodes
+- **Scalability** — fast, cheap transactions
+
+Bitcoin and Ethereum prioritise security and decentralisation, making them slow and expensive at scale.
+
+## Layer 1 — The Base Blockchain
+
+A Layer 1 (L1) is the foundational blockchain that handles its own security and consensus.
+
+<Table
+  headers={["Layer 1", "Transactions/sec", "Transaction Fee (approx)"]}
+  rows={[
+    ["Bitcoin", "~7 TPS", "$1–$50+ (varies)"],
+    ["Ethereum", "~15–30 TPS", "$1–$100+ (varies with congestion)"],
+    ["Solana", "~65,000 TPS (theoretical)", "~$0.00025"],
+    ["Avalanche", "~4,500 TPS", "$0.01–$0.10"],
+    ["BNB Chain", "~300 TPS", "~$0.10"],
+  ]}
+/>
+
+Solana achieves high throughput by making different trade-offs (fewer validators, specialised hardware requirements).
+
+## Layer 2 — Built on Top
+
+Layer 2 networks process transactions off the main chain and periodically settle on the L1. They inherit L1's security while dramatically increasing speed and reducing costs.
+
+### Types of Layer 2
+
+**Rollups (for Ethereum):**
+- **Optimistic Rollups** — Assume transactions are valid; disputes resolved by fraud proofs (Arbitrum, Optimism)
+- **ZK-Rollups** — Validity proved cryptographically before submitting to L1 (zkSync, StarkNet, Polygon zkEVM)
+
+**Payment Channels:**
+- **Lightning Network** — Bitcoin's L2; creates direct payment channels between parties for instant, near-zero fee BTC payments
+
+**Sidechains:**
+- **Polygon (PoS)** — Ethereum-compatible chain with its own validators; cheaper and faster but not a true rollup
+
+## Real-World Example
+
+Sending ETH on Ethereum mainnet during peak congestion: ~$30–$100 fee, 15–30 second confirmation.
+
+The same transaction on Arbitrum (an L2): ~$0.10 fee, under 1 second confirmation — while ultimately secured by Ethereum's security.
+
+<InfoBox type="note">
+  Polygon is often called an L2 but is technically a sidechain with its own security. Arbitrum, Optimism, and zkSync are true rollups that inherit Ethereum's security.
+</InfoBox>
+
+## Why This Matters
+
+- **DeFi and NFTs** mostly live on Ethereum L1 and its L2s
+- **L2 tokens** (ARB, OP) represent governance and sometimes fee-sharing in these networks
+- **Scalability improvements** drive broader adoption — cheap transactions = more users
+- **Bitcoin's Lightning Network** enables micro-payments (e.g., pay-per-article, streaming sats)
+
+## Quick Check
+
+<Quiz
+  question="What is the main benefit of a Layer 2 network over its Layer 1?"
+  options={[
+    "It replaces the Layer 1 with a more secure system",
+    "It increases speed and reduces fees while inheriting the L1's security",
+    "It creates a new separate blockchain with its own security",
+    "It reduces the number of validators needed"
+  ]}
+  correctIndex={1}
+  explanation="Layer 2 networks process transactions off-chain and batch-settle on the L1. This gives you much faster and cheaper transactions while the underlying L1 (e.g., Ethereum) provides the security guarantee."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - The scalability trilemma: you can't easily have security, decentralisation, AND scalability at once
+  - Layer 1 = base blockchain (Bitcoin, Ethereum) — secure but slower/expensive
+  - Layer 2 = built on L1 — fast and cheap, inherits L1 security
+  - Ethereum L2s include Arbitrum, Optimism (Optimistic Rollups) and zkSync, StarkNet (ZK-Rollups)
+  - Bitcoin's Lightning Network is its main Layer 2 for cheap, fast BTC payments
+</InfoBox>

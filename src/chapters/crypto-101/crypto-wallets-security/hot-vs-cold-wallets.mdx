@@ -1,0 +1,100 @@
+# Hot vs Cold Wallets
+
+A crypto wallet doesn't actually store your cryptocurrency. Your coins live on the blockchain. What a wallet stores are your **private keys** — the passwords that prove ownership and allow you to sign transactions.
+
+<InfoBox type="important">
+  This chapter is for educational purposes only. Not financial advice. Always research wallet options thoroughly before use.
+</InfoBox>
+
+## The Golden Rule
+
+> "Not your keys, not your coins."
+
+If you don't control your private keys, you don't truly own your crypto. This is why understanding wallets is essential.
+
+## Hot Wallets — Connected to the Internet
+
+Hot wallets are software applications that store your private keys on a device connected to the internet.
+
+**Types:**
+- **Browser extensions** — MetaMask, Phantom
+- **Mobile apps** — Trust Wallet, Coinbase Wallet
+- **Exchange wallets** — WazirX, CoinDCX hold keys on your behalf (custodial)
+
+**Pros:**
+- Convenient for daily use and DeFi
+- Free to use
+- Easy to set up
+
+**Cons:**
+- Vulnerable to hacking, phishing, and malware
+- If your device is compromised, your funds can be stolen
+
+<InfoBox type="note">
+  Exchange wallets are custodial — the exchange holds your keys. If the exchange is hacked or goes bankrupt (as FTX did in 2022), you may lose your funds.
+</InfoBox>
+
+## Cold Wallets — Offline Storage
+
+Cold wallets store your private keys on a device that is never connected to the internet.
+
+**Types:**
+- **Hardware wallets** — Ledger Nano S/X, Trezor
+- **Paper wallets** — private key written/printed on paper (old method, risky if damaged)
+- **Air-gapped computers** — old laptop kept permanently offline
+
+**Pros:**
+- Virtually immune to online hacking
+- Ideal for storing large amounts long-term
+
+**Cons:**
+- Cost (hardware wallets run ₹6,000–₹15,000+)
+- Physical damage or loss can mean losing funds
+- Less convenient for frequent trading
+
+## Custodial vs Non-Custodial
+
+<Table
+  headers={["Type", "Who Holds Keys?", "Examples", "Risk"]}
+  rows={[
+    ["Custodial", "Exchange / Third party", "WazirX, CoinDCX, Binance", "Exchange risk (hack, insolvency)"],
+    ["Non-custodial hot", "You (software)", "MetaMask, Trust Wallet", "Device/malware risk"],
+    ["Non-custodial cold", "You (hardware)", "Ledger, Trezor", "Physical loss/damage"],
+  ]}
+/>
+
+## Which Should You Use?
+
+A sensible approach for most people:
+
+- **Small amounts / frequent trading** → keep on a reputable exchange (custodial)
+- **Medium amounts** → non-custodial hot wallet
+- **Large amounts / long-term holding** → hardware wallet (cold storage)
+
+<InfoBox type="tip">
+  The crypto community's standard advice: keep only what you actively trade on exchanges. Move anything significant to a hardware wallet you control.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="What does a crypto wallet actually store?"
+  options={[
+    "Your cryptocurrency coins directly",
+    "Your private keys that prove ownership",
+    "A backup of the blockchain",
+    "Your exchange login credentials"
+  ]}
+  correctIndex={1}
+  explanation="Your actual crypto lives on the blockchain. The wallet stores your private keys — the cryptographic proof that you control a particular address. Whoever holds the keys controls the coins."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Wallets store private keys, not coins — coins live on the blockchain
+  - Hot wallets are internet-connected and convenient but less secure
+  - Cold wallets are offline and much more secure for long-term storage
+  - Custodial wallets (exchanges) are easy but you don't control your keys
+  - For significant holdings, use a hardware wallet
+</InfoBox>

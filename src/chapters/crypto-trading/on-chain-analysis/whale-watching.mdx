@@ -1,0 +1,90 @@
+# Whale Watching
+
+In crypto, "whales" are large holders — wallets or entities controlling enough coins to meaningfully move markets. Tracking their activity can provide insights into upcoming price moves.
+
+<InfoBox type="important">
+  Educational content only. Whale watching is an imprecise art with many false signals. Not financial advice.
+</InfoBox>
+
+## Who are Crypto Whales?
+
+<Table
+  headers={["Entity", "Example"]}
+  rows={[
+    ["Early adopters", "Someone who mined thousands of BTC in 2009–2011"],
+    ["Exchanges", "Binance, Coinbase cold wallets holding customer funds"],
+    ["Institutions", "MicroStrategy, BlackRock Bitcoin ETF"],
+    ["Crypto funds", "Jump Trading, Alameda (defunct), Pantera Capital"],
+    ["Miners", "Large mining operations with hundreds of BTC mined daily"],
+    ["Protocol treasuries", "Ethereum Foundation, Uniswap DAO treasury"],
+  ]}
+/>
+
+A common rule of thumb: any wallet holding >1,000 BTC is considered a whale.
+
+## Why Whale Activity Matters
+
+Because blockchains are public, you can see exactly what every wallet does. When a whale moves funds:
+
+- **Exchange inflow** (whale sends to exchange) → potential selling pressure
+- **Exchange outflow** (whale withdraws from exchange) → likely accumulation (moving to cold storage)
+- **Between wallets** → may be internal movement, or transfer to OTC desks
+
+## Tools for Whale Watching
+
+<Table
+  headers={["Tool", "What It Shows"]}
+  rows={[
+    ["Whale Alert (whale-alert.io)", "Real-time alerts for large transactions (>$1M+)"],
+    ["Nansen", "Labelled wallets (smart money, exchange wallets, protocols)"],
+    ["Arkham Intelligence", "Entity identification for wallet addresses"],
+    ["Glassnode", "Aggregate on-chain metrics including whale supply distribution"],
+    ["Etherscan / blockchain.com", "Raw transaction data for individual wallets"],
+  ]}
+/>
+
+## Bitcoin Whale Concentration
+
+Glassnode tracks "whale addresses" (those holding >1,000 BTC or >10,000 BTC). Periods when whale count rises (accumulation) historically precede bull runs. When whales distribute (count falls), it can precede corrections.
+
+<InfoBox type="note">
+  Exchanges hold massive amounts of BTC for their users — their wallets don't represent the exchange's own speculation. Nansen and Arkham label known exchange wallets to help filter out this "noise."
+</InfoBox>
+
+## Limitations of Whale Watching
+
+**Internal transfers:** A whale moving funds between their own wallets looks like a sale but isn't. Most Whale Alert transactions are internal.
+
+**OTC trades:** Large blocks of crypto are often traded OTC (over-the-counter) directly between parties — never touching an exchange. These don't appear in order books.
+
+**Spoofing:** Whales know they're being watched. They can make transactions that create false signals to trigger retail buying/selling before doing the opposite.
+
+**Delayed reaction:** By the time Whale Alert notifies you, the market may have already priced in the move.
+
+<InfoBox type="warning">
+  Whale watching signals should be used as one input in a broader analysis, not as a standalone trading signal. Many retail traders have lost money acting on whale alert notifications without context.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="A Whale Alert notification shows '10,000 BTC moved from Coinbase to unknown wallet.' What does this most likely indicate?"
+  options={[
+    "The whale is about to sell, creating massive selling pressure",
+    "The whale is moving BTC off an exchange, likely to cold storage (potential accumulation)",
+    "Coinbase is about to go bankrupt",
+    "The BTC price will fall immediately by 10,000 BTC worth"
+  ]}
+  correctIndex={1}
+  explanation="Moving large amounts FROM an exchange TO an unknown wallet typically means withdrawal to cold storage — a sign of accumulation/holding, not selling. Selling would involve moving TO an exchange or directly to another buyer."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Whales are large holders; their on-chain moves are publicly visible on the blockchain
+  - Exchange inflows (deposits) may signal upcoming selling; outflows suggest accumulation
+  - Tools: Whale Alert, Nansen, Arkham, Glassnode for tracking
+  - Most Whale Alert transactions are internal moves — not indicative of buying or selling
+  - Whale watching is noisy and subject to manipulation; use as one input, not a standalone signal
+</InfoBox>

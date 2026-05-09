@@ -7,7 +7,6 @@ import {
     ExternalLink, RefreshCw, TrendingUp, TrendingDown,
     Clock, Zap, Search
 } from 'lucide-react';
-import { CryptoNav } from '@/components/crypto/CryptoNav';
 import styles from './page.module.css';
 
 interface TokenFlag {
@@ -212,33 +211,8 @@ export default function NewTokensPage() {
     };
 
     return (
-        <main className={styles.main}>
-            <div className="container">
-                <CryptoNav />
-
-                <div className={styles.header}>
-                    <div className={styles.headerLeft}>
-                        <div className={styles.eyebrow}>NEW LAUNCHES</div>
-                        <h1 className={styles.title}>
-                            New Token <span className={styles.accent}>Launches</span>
-                        </h1>
-                        <p className={styles.subtitle}>
-                            Latest token launches, auto-scanned for rugpull risk before you ape in.
-                        </p>
-                    </div>
-                    <div className={styles.headerRight}>
-                        {lastUpdated && (
-                            <span className={styles.lastUpdated}>
-                                <Clock size={12} /> Updated {timeAgo(lastUpdated.getTime())}
-                            </span>
-                        )}
-                        <button className={styles.refreshBtn} onClick={load} disabled={loading}>
-                            <RefreshCw size={14} className={loading ? styles.spinning : ''} />
-                            {loading ? 'Scanning...' : 'Refresh'}
-                        </button>
-                    </div>
-                </div>
-
+        <div className={styles.page}>
+            <div className={styles.toolbar}>
                 <div className={styles.filters}>
                     {(['all', 'SAFE', 'CAUTION', 'DANGER', 'RUG'] as FilterVerdict[]).map(v => (
                         <button
@@ -254,6 +228,18 @@ export default function NewTokensPage() {
                         </button>
                     ))}
                 </div>
+                <div className={styles.toolbarRight}>
+                    {lastUpdated && (
+                        <span className={styles.lastUpdated}>
+                            <Clock size={12} /> {timeAgo(lastUpdated.getTime())}
+                        </span>
+                    )}
+                    <button className={styles.refreshBtn} onClick={load} disabled={loading}>
+                        <RefreshCw size={14} className={loading ? styles.spinning : ''} />
+                        {loading ? 'Scanning...' : 'Refresh'}
+                    </button>
+                </div>
+            </div>
 
                 {loading && tokens.length === 0 ? (
                     <div className={styles.loadingState}>
@@ -279,11 +265,10 @@ export default function NewTokensPage() {
                     </div>
                 )}
 
-                <div className={styles.disclaimer}>
-                    Safety scores are powered by GoPlus Security. Not financial advice. Always DYOR before trading new tokens.
-                    <Link href="/crypto/scanner"> Run a full scan on any token.</Link>
-                </div>
+            <div className={styles.disclaimer}>
+                Safety scores are powered by GoPlus Security. Not financial advice. Always DYOR before trading new tokens.
+                <Link href="/crypto/scanner"> Run a full scan on any token.</Link>
             </div>
-        </main>
+        </div>
     );
 }

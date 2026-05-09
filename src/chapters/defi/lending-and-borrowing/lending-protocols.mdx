@@ -1,0 +1,94 @@
+# Lending Protocols
+
+DeFi lending protocols let you earn interest on crypto assets you hold, or borrow assets against collateral — without a bank, credit check, or paperwork.
+
+<InfoBox type="important">
+  Educational content only. DeFi lending involves liquidation risk and smart contract risk. Not financial advice.
+</InfoBox>
+
+## How DeFi Lending Works
+
+Traditional banks: you deposit money, the bank lends it to someone else at a higher rate, and keeps the spread.
+
+DeFi lending protocols: smart contracts connect lenders and borrowers directly. The protocol manages interest rates algorithmically.
+
+**Two sides of every lending pool:**
+
+1. **Suppliers (lenders)** — deposit assets, earn interest
+2. **Borrowers** — post collateral, borrow assets, pay interest
+
+The interest rate adjusts automatically based on **utilisation rate** — how much of the supplied capital has been borrowed.
+
+## Major Lending Protocols
+
+<Table
+  headers={["Protocol", "Chain", "Key Feature"]}
+  rows={[
+    ["Aave", "Ethereum + L2s + others", "Multiple collateral types, flash loans, isolation mode"],
+    ["Compound", "Ethereum", "One of the original DeFi lending protocols"],
+    ["MakerDAO / Sky", "Ethereum", "Borrow DAI stablecoin against ETH and other collateral"],
+    ["Morpho", "Ethereum", "Peer-to-peer matching on top of Aave/Compound for better rates"],
+    ["Kamino", "Solana", "Leading Solana lending protocol"],
+  ]}
+/>
+
+## APY vs APR
+
+<Table
+  headers={["Term", "Meaning", "Key Difference"]}
+  rows={[
+    ["APR", "Annual Percentage Rate", "Simple interest — doesn't include compounding"],
+    ["APY", "Annual Percentage Yield", "Includes effect of compound interest"],
+  ]}
+/>
+
+If an Aave pool shows 5% APY on USDC, a ₹1,00,000 deposit earns ~₹5,000 in a year — compounded continuously. Higher frequency compounding means APY > APR for the same nominal rate.
+
+## Utilisation Rate and Interest Rate Model
+
+As borrowing demand increases, the protocol raises rates to attract more suppliers:
+
+- Low utilisation (10%) → Low supply rate, low borrow rate
+- High utilisation (90%) → High supply rate, high borrow rate
+- Near 100% utilisation → Very high rates (to incentivise repayment or new deposits)
+
+## Supply Rate vs Borrow Rate
+
+Borrow rates are always higher than supply rates. The difference (spread) goes to:
+- **Protocol reserves** (safety fund)
+- **Token holders** (in protocols that share revenue with governance stakers)
+
+## Real Risk: Smart Contract Vulnerability
+
+Aave and Compound have been running for years and are among the most audited protocols. However, no protocol is immune:
+
+- Euler Finance (a Aave competitor) was exploited for ~$197 million in March 2023
+- The attacker exploited a vulnerability in its donation feature
+
+<InfoBox type="warning">
+  Newer, less audited protocols offering higher yields carry significantly more smart contract risk. Higher yield = higher risk. Always check if a protocol has been audited.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="What drives interest rates up in a DeFi lending protocol like Aave?"
+  options={[
+    "The central bank setting rates",
+    "Governance token holders voting on rates",
+    "High utilisation rate — most of the supplied capital is borrowed",
+    "The price of ETH increasing"
+  ]}
+  correctIndex={2}
+  explanation="DeFi lending protocols use algorithmic interest rate models. When utilisation is high (most supply is borrowed), rates automatically increase to attract more suppliers and encourage repayments."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Lending protocols connect suppliers (earn interest) and borrowers (pay interest) via smart contracts
+  - Aave and Compound are the most established protocols on Ethereum
+  - Interest rates are set algorithmically based on utilisation rate
+  - APY includes compounding; APR does not
+  - Always verify audit status — newer protocols with high yields often carry higher smart contract risk
+</InfoBox>

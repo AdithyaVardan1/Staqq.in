@@ -1,0 +1,105 @@
+# Spot vs Futures
+
+Two ways to trade crypto — one you own the asset, one you're betting on its price. Understanding the difference is critical before placing any trade.
+
+<InfoBox type="important">
+  Educational content only. Futures trading can result in losses exceeding your initial capital. Not financial advice. Beginners should start with spot only.
+</InfoBox>
+
+## Spot Trading
+
+In spot trading, you **buy and own the actual cryptocurrency**.
+
+- Pay ₹1,00,000 for 0.002 BTC → you now own 0.002 BTC
+- BTC rises to ₹60,00,000 per coin → your 0.002 BTC is now worth ₹1,20,000
+- Sell → you made ₹20,000 profit (20%)
+- Maximum loss: 100% (if BTC goes to zero)
+
+Spot is straightforward. You hold what you bought.
+
+## Futures Trading
+
+In futures, you're entering a **contract** on the future price — without owning the underlying asset.
+
+- Buy a long BTC futures contract worth ₹1,00,000 at 10x leverage
+- Your margin: ₹10,000 (you're controlling ₹1,00,000 worth of BTC)
+- BTC rises 10% → your position gains ₹10,000 → 100% return on margin
+- BTC falls 10% → position loses ₹10,000 → 100% of margin gone (liquidated)
+
+Leverage amplifies both gains AND losses proportionally.
+
+<Table
+  headers={["Feature", "Spot", "Futures"]}
+  rows={[
+    ["Own the asset?", "Yes", "No — a contract"],
+    ["Can go short?", "No (without borrowing)", "Yes — natively"],
+    ["Leverage?", "No", "Yes (up to 125x on some exchanges)"],
+    ["Maximum loss?", "100% of investment", "Can exceed initial margin"],
+    ["Expiry?", "None — hold forever", "Perpetual (no expiry) or dated"],
+    ["Funding fee?", "None", "Yes (perps) — paid every 8 hours"],
+    ["Suitable for beginners?", "Yes", "No"],
+  ]}
+/>
+
+## Types of Futures in Crypto
+
+**Perpetual Futures (Perps):**
+- No expiry date
+- Most popular crypto futures product
+- Funding rate mechanism keeps price near spot
+- Available on: Binance, Bybit, dYdX, OKX
+
+**Dated/Quarterly Futures:**
+- Expire on a specific date (monthly or quarterly)
+- Used by institutions for hedging
+- Convergence to spot at expiry
+
+## Leverage: How Quickly It Destroys
+
+<Table
+  headers={["Leverage", "Price Move to Liquidation"]}
+  rows={[
+    ["2x", "50% move against you"],
+    ["5x", "20% move against you"],
+    ["10x", "10% move against you"],
+    ["20x", "5% move against you"],
+    ["50x", "2% move against you"],
+    ["100x", "1% move against you"],
+  ]}
+/>
+
+<InfoBox type="warning">
+  BTC commonly moves 5–10% in a single day. At 10x leverage, one bad day wipes your entire position. 95%+ of retail futures traders lose money according to exchange data. Avoid leverage entirely until you have significant experience with spot markets.
+</InfoBox>
+
+## Who Uses Futures and Why?
+
+**Hedging:** A miner with 10 BTC can short BTC futures to lock in today's price and protect against a decline while they mine.
+
+**Speculation:** Traders use leverage to amplify returns.
+
+**Market neutral strategies:** Simultaneously long spot and short perps to capture funding rate.
+
+## Quick Check
+
+<Quiz
+  question="You open a 20x leveraged long on ETH worth ₹2,00,000. How much does ETH need to fall (%) before you are liquidated?"
+  options={[
+    "20%",
+    "10%",
+    "5%",
+    "50%"
+  ]}
+  correctIndex={2}
+  explanation="At 20x leverage, a 5% adverse move against your position wipes out your margin (100% / 20 = 5%). In crypto, 5% moves happen regularly — sometimes within minutes. This is why high leverage is extremely dangerous."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Spot: you own the asset; loss capped at 100%; suitable for all investors
+  - Futures: you hold a contract; leveraged exposure; loss can exceed initial margin
+  - Perpetual futures are the most traded crypto instrument — no expiry, funding every 8 hours
+  - Higher leverage = liquidated faster by smaller price moves
+  - Beginners should stick to spot trading — understand markets before using futures
+</InfoBox>

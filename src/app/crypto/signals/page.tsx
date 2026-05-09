@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 import type { CryptoSignal } from '@/lib/crypto-signals';
 import { useSubscription } from '@/hooks/useSubscription';
-import { CryptoNav } from '@/components/crypto/CryptoNav';
 import styles from './page.module.css';
 
 const SIGNAL_TYPE_LABELS: Record<string, string> = {
@@ -59,11 +58,11 @@ function formatVolume(vol: number | null): string {
 }
 
 function ScoreBadge({ score }: { score: number }) {
-    const color = score >= 70 ? '#a78bfa' : score >= 50 ? '#22c55e' : score >= 30 ? '#f97316' : '#64748b';
+    const color = score >= 70 ? '#a855f7' : score >= 50 ? '#22c55e' : score >= 30 ? '#f97316' : '#64748b';
     return (
-        <div className={styles.scoreBadge} style={{ borderColor: color, color }}>
-            <Zap size={11} />
+        <div className={styles.scoreBadge} style={{ borderColor: `${color}40`, color }}>
             {score}
+            <span>Score</span>
         </div>
     );
 }
@@ -72,17 +71,17 @@ function LockedCard({ signal }: { signal: CryptoSignal }) {
     return (
         <div className={`${styles.signalCard} ${styles.lockedCard}`}>
             <div className={styles.lockedOverlay}>
-                <Lock size={20} />
-                <span className={styles.lockedText}>Signal fired {timeAgo(signal.firstDetectedAt)}</span>
+                <Lock size={18} className={styles.proBannerIcon} />
+                <span className={styles.lockedText}>Detected {timeAgo(signal.firstDetectedAt)}</span>
                 <Link href="/pricing" className={styles.unlockBtn}>
-                    Unlock real-time signals
+                    Unlock Signal
                 </Link>
             </div>
             <div className={styles.lockedBlur}>
                 <div className={styles.cardTop}>
                     <div className={styles.tokenInfo}>
-                        <span className={styles.tokenSymbol}>████</span>
-                        <span className={styles.chainBadge}>???</span>
+                        <span className={styles.tokenSymbol}>$XXXX</span>
+                        <span className={styles.tokenName}>Hidden Project</span>
                     </div>
                     <ScoreBadge score={signal.socialScore} />
                 </div>
@@ -93,11 +92,11 @@ function LockedCard({ signal }: { signal: CryptoSignal }) {
                     </div>
                     <div className={styles.stat}>
                         <span className={styles.statLabel}>1h</span>
-                        <span className={`${styles.statVal} ${styles.up}`}>+?.??%</span>
+                        <span className={styles.statVal}>+?.??%</span>
                     </div>
                     <div className={styles.stat}>
-                        <span className={styles.statLabel}>Volume 24h</span>
-                        <span className={styles.statVal}>$?.??M</span>
+                        <span className={styles.statLabel}>24h</span>
+                        <span className={styles.statVal}>+?.??%</span>
                     </div>
                 </div>
             </div>
@@ -108,7 +107,7 @@ function LockedCard({ signal }: { signal: CryptoSignal }) {
 function SignalCard({ signal }: { signal: CryptoSignal }) {
     const change1h = signal.priceChange1h;
     const change24h = signal.priceChange24h;
-    const typeColor = SIGNAL_TYPE_COLORS[signal.signalType] || '#a78bfa';
+    const typeColor = SIGNAL_TYPE_COLORS[signal.signalType] || '#a855f7';
 
     return (
         <div className={styles.signalCard}>
@@ -125,7 +124,7 @@ function SignalCard({ signal }: { signal: CryptoSignal }) {
                 <ScoreBadge score={signal.socialScore} />
             </div>
 
-            <div className={styles.signalTypeBadge} style={{ color: typeColor, borderColor: `${typeColor}40` }}>
+            <div className={styles.signalTypeBadge} style={{ color: typeColor, borderColor: `${typeColor}30` }}>
                 <Zap size={11} />
                 {SIGNAL_TYPE_LABELS[signal.signalType]}
             </div>
@@ -136,34 +135,18 @@ function SignalCard({ signal }: { signal: CryptoSignal }) {
                     <span className={styles.statVal}>{formatPrice(signal.priceUsd)}</span>
                 </div>
                 <div className={styles.stat}>
-                    <span className={styles.statLabel}>1h Change</span>
+                    <span className={styles.statLabel}>1h</span>
                     <span className={`${styles.statVal} ${change1h !== null && change1h > 0 ? styles.up : change1h !== null && change1h < 0 ? styles.down : ''}`}>
                         {change1h !== null
-                            ? <>{change1h > 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />} {change1h > 0 ? '+' : ''}{change1h.toFixed(2)}%</>
+                            ? <>{change1h > 0 ? <TrendingUp size={11} /> : <TrendingDown size={11} />} {change1h > 0 ? '+' : ''}{change1h.toFixed(1)}%</>
                             : '-'
                         }
                     </span>
                 </div>
                 <div className={styles.stat}>
-                    <span className={styles.statLabel}>24h Change</span>
+                    <span className={styles.statLabel}>24h</span>
                     <span className={`${styles.statVal} ${change24h !== null && change24h > 0 ? styles.up : change24h !== null && change24h < 0 ? styles.down : ''}`}>
-                        {change24h !== null ? `${change24h > 0 ? '+' : ''}${change24h.toFixed(2)}%` : '-'}
-                    </span>
-                </div>
-                <div className={styles.stat}>
-                    <span className={styles.statLabel}>Volume 24h</span>
-                    <span className={styles.statVal}>{formatVolume(signal.volume24h)}</span>
-                </div>
-                <div className={styles.stat}>
-                    <span className={styles.statLabel}>Mentions</span>
-                    <span className={styles.statVal}>
-                        <Users size={11} /> {signal.mentionCount}
-                    </span>
-                </div>
-                <div className={styles.stat}>
-                    <span className={styles.statLabel}>Velocity</span>
-                    <span className={`${styles.statVal} ${styles.up}`}>
-                        {signal.mentionVelocity.toFixed(1)}x
+                        {change24h !== null ? `${change24h > 0 ? '+' : ''}{change24h.toFixed(1)}%` : '-'}
                     </span>
                 </div>
             </div>
@@ -176,8 +159,8 @@ function SignalCard({ signal }: { signal: CryptoSignal }) {
                     rel="noopener noreferrer"
                     className={styles.topPost}
                 >
-                    <span className={styles.topPostTitle}>{signal.topPosts[0].title.slice(0, 80)}{signal.topPosts[0].title.length > 80 ? '...' : ''}</span>
-                    <ExternalLink size={11} className={styles.topPostIcon} />
+                    <span className={styles.topPostTitle}>{signal.topPosts[0].title.slice(0, 75)}{signal.topPosts[0].title.length > 75 ? '...' : ''}</span>
+                    <ExternalLink size={12} className={styles.topPostIcon} />
                 </a>
             )}
 
@@ -186,14 +169,16 @@ function SignalCard({ signal }: { signal: CryptoSignal }) {
                     <Clock size={11} />
                     {timeAgo(signal.firstDetectedAt)}
                 </span>
-                {signal.dexUrl && (
-                    <a href={signal.dexUrl} target="_blank" rel="noopener noreferrer" className={styles.dexLink}>
-                        DexScreener <ArrowUpRight size={11} />
-                    </a>
-                )}
-                <Link href={`/crypto/scanner?address=${signal.contractAddress || ''}&chain=${signal.chain}`} className={styles.rugLink}>
-                    <Shield size={11} /> Rug Check
-                </Link>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                    {signal.dexUrl && (
+                        <a href={signal.dexUrl} target="_blank" rel="noopener noreferrer" className={styles.dexLink}>
+                            Dex <ArrowUpRight size={11} />
+                        </a>
+                    )}
+                    <Link href={`/crypto/scanner?address=${signal.contractAddress || ''}&chain=${signal.chain}`} className={styles.rugLink}>
+                        Scan <Shield size={11} />
+                    </Link>
+                </div>
             </div>
         </div>
     );
@@ -242,35 +227,7 @@ export default function CryptoSignalsPage() {
     const lockedCount = signals.filter(s => s.isLocked).length;
 
     return (
-        <main className={styles.page}>
-            <CryptoNav />
-            {/* Hero */}
-            <section className={styles.hero}>
-                <h1 className={styles.title}>
-                    Crypto <span className={styles.accent}>Signals</span>
-                </h1>
-                <p className={styles.subtitle}>
-                    Real-time social surge + volume spike detection across 7 crypto subreddits.
-                    Catch the move before the crowd.
-                </p>
-
-                <div className={styles.heroBadges}>
-                    <span className={styles.heroBadge}>
-                        <Zap size={13} /> {signals.length} signals detected
-                    </span>
-                    {lockedCount > 0 && !isPro && (
-                        <span className={`${styles.heroBadge} ${styles.lockedBadge}`}>
-                            <Lock size={13} /> {lockedCount} locked (Pro)
-                        </span>
-                    )}
-                    {lastRefresh && (
-                        <span className={styles.heroBadge}>
-                            <Clock size={13} /> Updated {timeAgo(lastRefresh.toISOString())}
-                        </span>
-                    )}
-                </div>
-            </section>
-
+        <div className={styles.page}>
             {/* Pro banner for free users */}
             {!isPro && lockedCount > 0 && (
                 <div className={styles.proBanner}>
@@ -287,7 +244,7 @@ export default function CryptoSignalsPage() {
                 </div>
             )}
 
-            {/* Filters */}
+            {/* Filters + refresh */}
             <div className={styles.filters}>
                 {(['all', 'combined', 'social_surge', 'volume_spike'] as const).map(f => (
                     <button
@@ -306,6 +263,11 @@ export default function CryptoSignalsPage() {
                 >
                     <RefreshCw size={14} className={loading ? styles.spinning : ''} />
                 </button>
+                {lastRefresh && (
+                    <span className={styles.refreshTime}>
+                        <Clock size={11} /> Updated {timeAgo(lastRefresh.toISOString())}
+                    </span>
+                )}
             </div>
 
             {/* Feed */}
@@ -352,6 +314,6 @@ export default function CryptoSignalsPage() {
                     </div>
                 </div>
             </section>
-        </main>
+        </div>
     );
 }

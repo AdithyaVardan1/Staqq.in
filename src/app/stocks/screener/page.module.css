@@ -26,7 +26,7 @@
 
 /* ── Base ── */
 .main {
-    padding-top: 100px;
+    padding-top: 132px;
     padding-bottom: var(--spacing-2xl);
     min-height: 100vh;
     position: relative;
@@ -601,6 +601,12 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: var(--spacing-md);
+    transition: opacity 0.2s ease;
+}
+
+.gridFading {
+    opacity: 0.35;
+    pointer-events: none;
 }
 
 /* Stagger card entrance animations */

@@ -1,4 +1,6 @@
-import { learnPaths } from '@/data/learnPaths';
+import { learnPaths, cryptoLearnPaths } from '@/data/learnPaths';
+
+const allLearnPaths = { ...learnPaths, ...cryptoLearnPaths };
 import ModulesAccordion from '@/components/ModulesAccordion';
 import PathProgressBar from '@/components/PathProgressBar';
 import Link from 'next/link';
@@ -17,7 +19,7 @@ const DIFF_STYLE: Record<string, { color: string; bg: string }> = {
 
 export default async function LearnPathPage({ params }: LearnPathPageProps) {
   const { path } = await params;
-  const pathData = learnPaths[path as keyof typeof learnPaths];
+  const pathData = allLearnPaths[path as keyof typeof allLearnPaths];
 
   if (!pathData) return <main style={{ padding: '3rem' }}>Path not found</main>;
 

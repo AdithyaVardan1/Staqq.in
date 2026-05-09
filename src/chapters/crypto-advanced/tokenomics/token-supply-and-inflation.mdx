@@ -1,0 +1,91 @@
+# Token Supply & Inflation
+
+Token supply is one of the most overlooked aspects of crypto investing. Two tokens with the same price can have wildly different actual values based on their supply design.
+
+<InfoBox type="important">
+  Educational content only. Not financial advice.
+</InfoBox>
+
+## Types of Supply
+
+<Table
+  headers={["Term", "Definition", "Example"]}
+  rows={[
+    ["Circulating Supply", "Tokens actively in the market today", "BTC: ~19.7M"],
+    ["Total Supply", "All tokens created minus any burned", "ETH: ~120M (changing)"],
+    ["Max Supply", "Hard cap — will never be exceeded", "BTC: 21M | ETH: No hard cap"],
+  ]}
+/>
+
+**Fully Diluted Valuation (FDV) = Price × Max Supply** — tells you what the whole project is valued at if all tokens were in circulation.
+
+## Deflationary vs Inflationary Tokens
+
+**Deflationary (hard cap):**
+- Bitcoin: 21 million max supply, decreasing issuance through halvings
+- As supply growth approaches zero, price is determined purely by demand
+- Scarcity narrative drives long-term value thesis
+
+**Inflationary (no hard cap):**
+- Ethereum: New ETH is issued as staking rewards, but ETH is also burned via EIP-1559
+- Most proof-of-stake tokens have perpetual inflation to pay validators
+- Net inflation vs deflation depends on fee burn vs staking issuance
+
+**Hyperinflationary (ponzi warning):**
+- Many DeFi tokens issue billions of tokens as yield rewards
+- Rapid supply expansion dilutes existing holders unless demand grows proportionally
+- Token price often trends toward zero as emissions continue
+
+## Bitcoin Halvings
+
+Every ~4 years, Bitcoin's block reward (new BTC issued per block) is cut in half.
+
+<Table
+  headers={["Year", "Block Reward", "New BTC/Year (approx)"]}
+  rows={[
+    ["2009", "50 BTC", "2.6 million"],
+    ["2012", "25 BTC", "1.3 million"],
+    ["2016", "12.5 BTC", "657,000"],
+    ["2020", "6.25 BTC", "328,500"],
+    ["2024", "3.125 BTC", "164,250"],
+    ["~2028", "1.5625 BTC", "~82,000"],
+  ]}
+/>
+
+By 2140, all 21 million BTC will have been mined. After that, miners are compensated purely by transaction fees.
+
+<InfoBox type="note">
+  Halvings reduce the rate at which new supply enters the market. Historically, halvings have preceded significant bull markets — though correlation isn't causation, and past performance doesn't predict future results.
+</InfoBox>
+
+## Ethereum's Supply Model (Post-Merge)
+
+Ethereum now issues new ETH as staking rewards (~0.5–0.8% annual issuance) BUT also burns a base fee on every transaction (EIP-1559).
+
+When network activity is high enough, burns exceed issuance — making ETH net deflationary.
+
+Track ETH supply in real-time at **ultrasound.money**.
+
+## Quick Check
+
+<Quiz
+  question="A new token has 100 million tokens circulating but a max supply of 10 billion. Its current price is ₹10. What is its Fully Diluted Valuation (FDV)?"
+  options={[
+    "₹1 billion (₹100 crore)",
+    "₹100 billion (₹10,000 crore)",
+    "₹10 million",
+    "₹1 trillion"
+  ]}
+  correctIndex={1}
+  explanation="FDV = Price × Max Supply = ₹10 × 10,000,000,000 = ₹100 billion (₹10,000 crore). With only 100M circulating, the current market cap is ₹1 billion. The FDV is 100× the market cap — massive dilution risk as new tokens unlock."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - Circulating supply ≠ total supply ≠ max supply; understand all three
+  - Deflationary tokens (BTC) get scarcer over time; most PoS tokens have ongoing inflation
+  - Bitcoin halvings reduce new issuance every ~4 years, approaching zero by 2140
+  - Ethereum's EIP-1559 burn can make ETH net-deflationary during high activity
+  - High FDV vs market cap = large future dilution — a red flag for newer tokens
+</InfoBox>

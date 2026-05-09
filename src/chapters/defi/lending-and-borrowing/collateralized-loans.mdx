@@ -1,0 +1,96 @@
+# Collateralised Loans
+
+In DeFi, every loan is overcollateralised — you must deposit more than you borrow. There are no credit scores, no income checks, and no personal liability.
+
+<InfoBox type="important">
+  Educational content only. Collateralised loans carry liquidation risk — you can lose your collateral. Not financial advice.
+</InfoBox>
+
+## Why Over-Collateralisation?
+
+Traditional banks verify your income and credit history before lending. DeFi protocols can't do this (they don't know who you are). Instead, they require you to lock up more value than you borrow.
+
+If you default (refuse to repay), the protocol automatically liquidates your collateral to cover the loan.
+
+## Key Terms
+
+**Collateral:** The asset you lock up (e.g., ETH, BTC, USDC)
+
+**Loan-to-Value (LTV) Ratio:** How much you can borrow relative to collateral
+
+- If ETH's max LTV on Aave is 80%, you can borrow up to $800 against $1,000 of ETH
+- Borrowing closer to max LTV increases liquidation risk
+
+**Health Factor:** A number representing how far your position is from liquidation
+
+- Health Factor > 1 = safe
+- Health Factor < 1 = liquidation triggered
+- Health Factor of 1.5 = 50% buffer before liquidation
+
+**Liquidation Threshold:** The LTV at which your position gets liquidated (typically higher than the max LTV — e.g., max LTV 80%, liquidation threshold 82.5%)
+
+## Example Walkthrough
+
+You hold 1 ETH worth ₹2,50,000. You want USDC without selling your ETH.
+
+1. Deposit 1 ETH as collateral on Aave
+2. Borrow up to 80% LTV = ₹2,00,000 in USDC
+3. To be safe, borrow only ₹1,50,000 (60% LTV) — higher health factor
+4. Use the USDC however you wish
+5. Pay back ₹1,50,000 + interest to reclaim your ETH
+
+**Why would anyone borrow against their own crypto instead of just selling?**
+- You believe ETH will increase in value — selling means missing those gains
+- Tax efficiency — borrowing is not a taxable event (selling is)
+- You need short-term liquidity without permanently exiting your position
+
+<InfoBox type="note">
+  This is a key crypto strategy — "hodl and borrow" — but it requires active monitoring. If ETH price drops 30%, your health factor falls and you risk liquidation.
+</InfoBox>
+
+## Liquidation Risk in Practice
+
+ETH at ₹2,50,000 → Borrowed ₹1,50,000 USDC (60% LTV)
+
+If ETH drops to ₹1,75,000:
+- Your LTV is now: 1,50,000 / 1,75,000 = 85.7% → exceeds liquidation threshold
+- Liquidators step in, repay your debt, receive your ETH at a discount (5–15% penalty)
+- You lose a portion of your ETH to cover the debt + penalty
+
+## Supported Collateral Types
+
+Different assets have different max LTV ratios based on their liquidity and volatility:
+
+<Table
+  headers={["Asset", "Typical Max LTV", "Why Lower for Volatile Assets"]}
+  rows={[
+    ["USDC / USDT", "75–90%", "Stable — low liquidation risk"],
+    ["ETH / BTC", "70–80%", "Moderately volatile"],
+    ["Mid-cap altcoins", "40–65%", "Higher volatility = higher margin of safety needed"],
+    ["Small-cap tokens", "0–40%", "Can drop 50–80% rapidly"],
+  ]}
+/>
+
+## Quick Check
+
+<Quiz
+  question="You deposit $1,000 worth of ETH on Aave with an 80% max LTV and borrow $600. ETH drops 50% to $500. What is your LTV now?"
+  options={[
+    "60%",
+    "80%",
+    "120%",
+    "50%"
+  ]}
+  correctIndex={2}
+  explanation="Your debt is still $600 (stablecoins don't change). Your collateral is now worth $500. LTV = 600/500 = 120%. This is well above the liquidation threshold — your position would have been liquidated before this point."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - DeFi loans are overcollateralised — you borrow less than you deposit
+  - LTV ratio determines how much you can borrow; health factor tracks liquidation risk
+  - Keep health factor well above 1 to avoid liquidation
+  - Common reason to borrow: get liquidity without selling your crypto position
+  - Falling collateral prices can trigger automatic liquidation with a penalty fee
+</InfoBox>

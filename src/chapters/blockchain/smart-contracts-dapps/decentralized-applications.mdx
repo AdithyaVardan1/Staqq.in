@@ -1,0 +1,88 @@
+# Decentralized Applications (dApps)
+
+A decentralised application (dApp) uses smart contracts on a blockchain as its backend, removing the need for a central server or company to operate it.
+
+<InfoBox type="important">
+  Educational content only. Not financial advice. Using dApps involves smart contract risk — always research before interacting.
+</InfoBox>
+
+## What Makes an App "Decentralised"?
+
+Traditional apps:
+- Frontend (website/app) → Backend server → Company-controlled database
+
+dApps:
+- Frontend (website/app) → Smart contracts on blockchain → Decentralised ledger
+
+The key difference: the backend logic runs on the blockchain, not on a company's servers. This means:
+
+- **No single point of failure** — the blockchain can't be shut down
+- **Permissionless** — anyone in the world can use it
+- **Transparent** — all logic is publicly verifiable on-chain
+- **Censorship-resistant** — no company can freeze your account
+
+<InfoBox type="note">
+  The frontend (the website you see) is often still hosted on a traditional server. A "fully decentralised" dApp would also host its frontend via decentralised storage like IPFS. Most popular dApps have centrally-hosted frontends for usability.
+</InfoBox>
+
+## How to Use a dApp
+
+1. Install a non-custodial wallet (e.g., MetaMask in your browser)
+2. Go to the dApp's website
+3. Click "Connect Wallet"
+4. Approve the connection in your wallet popup
+5. Interact with the dApp — all actions are blockchain transactions you sign in your wallet
+
+You are in full control — no sign-up, no account, no KYC.
+
+## Major dApp Categories and Examples
+
+<Table
+  headers={["Category", "Examples", "What They Do"]}
+  rows={[
+    ["Decentralised Exchanges", "Uniswap, Curve, SushiSwap", "Swap tokens without a central party"],
+    ["Lending/Borrowing", "Aave, Compound, MakerDAO", "Earn interest or borrow against collateral"],
+    ["NFT Marketplaces", "OpenSea, Blur, Magic Eden", "Buy, sell, trade NFTs"],
+    ["Derivatives", "dYdX, GMX", "Trade perpetuals and options on-chain"],
+    ["Insurance", "Nexus Mutual", "Smart contract and protocol risk coverage"],
+    ["Gaming", "Axie Infinity, Gods Unchained", "Own in-game assets as NFTs"],
+  ]}
+/>
+
+## dApp Risks
+
+**Smart contract risk:** Bugs in the code can be exploited. Over $3 billion was stolen from DeFi protocols in 2022 alone.
+
+**Rug pulls:** Malicious developers deploy a dApp, attract liquidity, then drain it.
+
+**Front-end attacks:** Even if the smart contract is safe, a compromised website can trick you into signing malicious transactions.
+
+**No customer support:** If you make a mistake or get exploited, there is no support team and no recourse.
+
+<InfoBox type="warning">
+  Only use dApps with smart contracts that have been audited by reputable security firms. Check DeFiLlama, CoinGecko, or the protocol's official documentation for audit links.
+</InfoBox>
+
+## Quick Check
+
+<Quiz
+  question="What connects a user to a dApp when they use it?"
+  options={[
+    "A bank account",
+    "A username and password",
+    "A non-custodial crypto wallet like MetaMask",
+    "A KYC-verified exchange account"
+  ]}
+  correctIndex={2}
+  explanation="dApps don't use traditional accounts. You connect your own crypto wallet (like MetaMask), which acts as your identity and lets you sign transactions directly with the smart contract."
+/>
+
+## Key Takeaways
+
+<InfoBox type="tip">
+  - dApps run their backend logic on blockchain smart contracts, not company servers
+  - They are permissionless — anyone with a wallet can use them
+  - You interact via a non-custodial wallet (MetaMask, etc.)
+  - Major categories: DEXes, lending, NFT markets, derivatives, gaming
+  - Smart contract bugs and rug pulls are real risks — only use audited protocols
+</InfoBox>

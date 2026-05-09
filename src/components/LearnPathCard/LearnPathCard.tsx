@@ -65,6 +65,31 @@ function PathIcon({ name }: { name: string }) {
           <rect x="17" y="5" width="2" height="2" />
         </svg>
       );
+    case "bitcoin":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.29 5.24m5.908 1.042.348-1.97M7.48 20.364l3.126-17.727" />
+        </svg>
+      );
+    case "network":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="5" r="2" />
+          <circle cx="5" cy="19" r="2" />
+          <circle cx="19" cy="19" r="2" />
+          <path d="M12 7v4M10.5 17.5l-3.5-1M13.5 17.5l3.5-1M10 15l-3 2.5M14 15l3 2.5" />
+          <line x1="12" y1="11" x2="7" y2="17" />
+          <line x1="12" y1="11" x2="17" y2="17" />
+        </svg>
+      );
+    case "defi":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+      );
     default:
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">

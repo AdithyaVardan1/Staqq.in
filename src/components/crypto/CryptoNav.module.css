@@ -1,33 +1,61 @@
+/* CryptoNav — violet themed, mirrors SignalNav */
+
 .nav {
+    position: relative;
     display: flex;
     gap: 4px;
-    padding: 4px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 12px;
-    margin-bottom: 36px;
+    padding: 6px;
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(168, 85, 247, 0.12);
+    border-radius: 9999px;
     width: fit-content;
     overflow-x: auto;
     scrollbar-width: none;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
 }
 .nav::-webkit-scrollbar { display: none; }
 
 .tab {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 8px 16px;
-    border-radius: 8px;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 9999px;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-muted);
     text-decoration: none;
     white-space: nowrap;
-    transition: all 0.15s;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
 }
-.tab:hover { color: var(--text-secondary); background: rgba(255, 255, 255, 0.04); }
+
+.tab:hover {
+    color: var(--text-secondary);
+}
+
 .active {
-    background: rgba(202, 255, 0, 0.08);
-    color: var(--primary-brand);
-    border: 1px solid rgba(202, 255, 0, 0.2);
+    color: #fff;
+}
+
+/* Framer-motion animated violet pill */
+.activeBg {
+    position: absolute;
+    inset: 0;
+    background: #a855f7;
+    border-radius: 9999px;
+    z-index: -1;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.35);
+}
+
+.tabIcon {
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.active .tabIcon {
+    opacity: 1;
 }
