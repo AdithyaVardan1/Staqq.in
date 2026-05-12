@@ -46,8 +46,8 @@ export function useLiveMarketData(
             }
         }
 
-        // First poll after a short delay (let the page render first)
-        timerRef.current = setTimeout(poll, 2000);
+        // First poll immediately
+        poll();
 
         return () => {
             cancelled = true;

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -38,15 +38,21 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
     const resolvedParams = use(params);
     const ticker = resolvedParams.ticker?.toUpperCase() || '';
     const router = useRouter();
+    const searchParams = useSearchParams();
+    
+    // Extract initial values from URL for "instant" load
+    const urlPrice = parseFloat(searchParams.get('p') || '0');
+    const urlChange = parseFloat(searchParams.get('c') || '0');
+    const urlChangePercent = parseFloat(searchParams.get('cp') || '0');
 
     // Initial dynamic state before fundamentals load
     const [data, setData] = useState({
         ticker: ticker,
         fullTicker: ticker.includes('.') ? ticker : `${ticker}.NS`,
         name: ticker,
-        price: 0,
-        change: 0,
-        changePercent: 0,
+        price: urlPrice,
+        change: urlChange,
+        changePercent: urlChangePercent,
         about: "Loading stock information...",
         sector: "---",
         industry: "---",
@@ -108,7 +114,7 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
         }
     };
 
-    const { price: displayPrice, change: liveChange, changePercent: liveChangePercent, status } = useLiveMarketData(ticker, data.price);
+    const { price: displayPrice, change: liveChange, changePercent: liveChangePercent, status } = useLiveMarketData(ticker, data.price, data.change, data.changePercent);
 
     // Use live values if they exist, otherwise fallback to initial data
     const currentChangeAmount = liveChange !== undefined ? liveChange : data.change;

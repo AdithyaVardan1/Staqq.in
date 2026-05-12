@@ -19,10 +19,6 @@
     from { opacity: 0; transform: translateY(20px) scale(0.97); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
 }
-@keyframes priceShimmer {
-    0%   { background-position: -200% center; }
-    100% { background-position:  200% center; }
-}
 
 .main {
     padding-top: 100px;
@@ -170,17 +166,9 @@
     letter-spacing: -0.04em;
     position: relative;
     z-index: 1;
-    background: linear-gradient(135deg, #fff 0%, var(--primary-brand) 50%, #a855f7 100%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: titleGradient 6s ease-in-out infinite alternate;
+    color: #fff;
 }
 
-@keyframes titleGradient {
-    0%   { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
 
 .tickerRow {
     display: flex;
@@ -233,11 +221,6 @@
     font-family: var(--font-outfit);
     color: #fff;
     letter-spacing: -0.03em;
-    background: linear-gradient(90deg, #fff 40%, rgba(202,255,0,0.6) 60%, #fff 80%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: priceShimmer 4s ease-in-out infinite;
 }
 
 .change {

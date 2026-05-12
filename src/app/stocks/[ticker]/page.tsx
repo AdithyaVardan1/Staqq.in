@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import StockDetailContent from './StockDetailContent';
 import { StructuredData, BreadcrumbStructuredData } from '@/components/StructuredData';
@@ -56,7 +57,9 @@ export default async function StockDetailPage({ params }: { params: Promise<{ ti
                 { name: 'Screener', item: 'https://staqqin.vercel.app/stocks/screener' },
                 { name: upperTicker, item: `https://staqqin.vercel.app/stocks/${ticker}` } 
             ]} />
-            <StockDetailContent params={params} />
+            <React.Suspense fallback={<div style={{ minHeight: '100vh', background: '#0a0a0a' }} />}>
+                <StockDetailContent params={params} />
+            </React.Suspense>
         </>
     );
 }

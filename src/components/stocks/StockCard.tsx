@@ -127,7 +127,7 @@ export const StockCard: React.FC<StockCardProps> = ({
                     </div>
                 </div>
 
-                <Link href={`/stocks/${ticker}`} className={styles.detailsLink}>
+                <Link href={`/stocks/${ticker}?p=${displayPrice}&c=${currentChangeAmount}&cp=${currentChange}`} className={styles.detailsLink}>
                     <Button variant="secondary" fullWidth size="sm" className={styles.detailsButton}>
                         View Details <ChevronRight size={14} />
                     </Button>

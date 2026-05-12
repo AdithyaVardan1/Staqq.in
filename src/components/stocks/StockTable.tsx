@@ -85,7 +85,7 @@ export const StockTable: React.FC<StockTableProps> = ({ stocks }) => {
                                     </div>
                                 </td>
                                 <td className={styles.tdAction}>
-                                    <Link href={`/stocks/${stock.ticker}`} className={styles.viewLink}>
+                                    <Link href={`/stocks/${stock.ticker}?p=${stock.price}&c=${stock.changeAmount || 0}&cp=${stock.change}`} className={styles.viewLink}>
                                         View <ChevronRight size={14} />
                                     </Link>
                                 </td>

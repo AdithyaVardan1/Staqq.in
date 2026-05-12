@@ -100,6 +100,11 @@ export async function GET(request: NextRequest) {
                             result.divYield = rawDiv / 1000000;
                         }
                     }
+
+                    // 1Y Price Performance from Angel One
+                    if (fundamentalData.PricePerformance?.['1Year']) {
+                        result.return1Y = parseFloat(fundamentalData.PricePerformance['1Year']);
+                    }
                 }
             }
         } catch (e) {

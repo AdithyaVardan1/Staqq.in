@@ -75,7 +75,7 @@ async function waitForLock(key: string): Promise<void> {
     }
 }
 
-async function getFundamentals(ticker: string): Promise<{
+async function getFundamentals(ticker: string, tokensMap: Map<string, any>): Promise<{
     marketCap: number; peRatio: number; sector: string; return1Y: number;
 } | null> {
     const key = `screener:fundamentals:${ticker}`;
@@ -85,13 +85,31 @@ async function getFundamentals(ticker: string): Promise<{
     }
 
     try {
+        // 1. Try Yahoo for the basics (Market Cap, PE)
         const q = await yahoo.getQuote(`${ticker}.NS`);
         if (!q) return null;
+
+        let return1Y = q.fiftyTwoWeekChangePercent || 0;
+
+        // 2. Try Angel One for more accurate 1Y performance if available
+        try {
+            const instrument = tokensMap.get(`NSE:${ticker}-EQ`);
+            if (instrument) {
+                const angelRes = await angelOne.getFundamentalData('NSE', String(instrument.token));
+                if (angelRes?.status && angelRes.data?.PricePerformance?.['1Year']) {
+                    return1Y = parseFloat(angelRes.data.PricePerformance['1Year']);
+                    console.log(`[AngelOne] 1Y Return for ${ticker}: ${return1Y}%`);
+                }
+            }
+        } catch (e: any) {
+            console.error(`[AngelOne Fundamentals Error] ${ticker}:`, e.message);
+        }
+
         const data = {
             marketCap: q.marketCap || 0,
             peRatio: q.trailingPE || q.forwardPE || 0,
             sector: q.sector || 'Unknown',
-            return1Y: q.fiftyTwoWeekChangePercent ?? 0,
+            return1Y,
         };
         await redis.set(key, JSON.stringify(data), FUNDAMENTALS_TTL);
         return data;
@@ -275,7 +293,7 @@ export async function GET(request: Request) {
             console.log(`[Screener Chunk] Found ${stocksWithPrice.length} stocks with price out of ${chunk.length}`);
 
             const fundamentalsArr = await Promise.allSettled(
-                stocksWithPrice.map(s => getFundamentals(s.symbol))
+                stocksWithPrice.map(s => getFundamentals(s.symbol, tokensMap))
             );
 
             // 5. Build enriched stocks and apply filters
@@ -291,7 +309,7 @@ export async function GET(request: Request) {
                 const marketCap = fundamentals?.marketCap || 0;
                 const peRatio = fundamentals?.peRatio || 0;
                 const stockSector = stock.sector || fundamentals?.sector || 'Unknown';
-                const return1YVal = fundamentals?.return1Y || 0;
+                const return1YVal = stock.return1Y || fundamentals?.return1Y || 0;
 
                 // Apply filters
                 if (price < priceMin || price > priceMax) continue;
