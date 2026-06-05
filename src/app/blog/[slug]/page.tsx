@@ -38,14 +38,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!post) return { title: 'Post Not Found' };
 
     return {
-        title: `${post.title} | Staqq Blog`,
-        description: post.description,
+        title: `${post.meta_title ?? post.title} | Staqq Blog`,
+        description: post.meta_description ?? post.description,
         openGraph: {
-            title: post.title,
-            description: post.description,
+            title: post.meta_title ?? post.title,
+            description: post.meta_description ?? post.description,
             type: 'article',
             publishedTime: post.published_at,
             modifiedTime: post.updated_at,
+            ...(post.featured_image_url ? { images: [post.featured_image_url] } : {}),
         },
     };
 }
@@ -74,7 +75,9 @@ export default async function BlogPostPage({ params }: Props) {
                 <article className={styles.article}>
                     <header className={styles.header}>
                         <span className={styles.badge}>
-                            {post.category === 'weekly-roundup' ? 'Weekly Roundup' : 'IPO Analysis'}
+                            {post.category === 'weekly-roundup' ? 'Weekly Roundup'
+                              : post.category === 'seo' ? 'Guide'
+                              : 'IPO Analysis'}
                         </span>
                         <h1 className={styles.title}>{post.title}</h1>
                         <p className={styles.description}>{post.description}</p>
@@ -91,7 +94,10 @@ export default async function BlogPostPage({ params }: Props) {
                     </header>
 
                     <div className={styles.content}>
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+                        {post.body_html
+                            ? <div dangerouslySetInnerHTML={{ __html: post.body_html }} />
+                            : <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+                        }
                     </div>
 
                     {post.ipo_slug && (
