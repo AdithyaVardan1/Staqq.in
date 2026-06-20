@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getNifty500, type NseStock } from '@/lib/nse';
 import { redis } from '@/lib/redis';
-
-export const dynamic = 'force-dynamic';
+import { cdnCache } from '@/lib/http-cache';
 
 const CACHE_TTL = 60;
 
@@ -26,7 +25,7 @@ export async function GET() {
         const cacheKey = 'trending:categories';
         const cached = await redis.get(cacheKey);
         if (cached) {
-            try { return NextResponse.json(JSON.parse(cached)); } catch { /* fall through */ }
+            try { return NextResponse.json(JSON.parse(cached), { headers: cdnCache(60) }); } catch { /* fall through */ }
         }
 
         const stocks = await getNifty500();
@@ -68,7 +67,7 @@ export async function GET() {
 
         const result = { categories };
         await redis.set(cacheKey, JSON.stringify(result), CACHE_TTL);
-        return NextResponse.json(result);
+        return NextResponse.json(result, { headers: cdnCache(60) });
 
     } catch (error: any) {
         console.error('[Trending] Error:', error.message);

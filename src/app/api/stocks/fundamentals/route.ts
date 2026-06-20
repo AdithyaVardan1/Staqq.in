@@ -8,6 +8,10 @@ import { checkAndIncrementUsage } from '@/lib/subscription';
 
 export const dynamic = 'force-dynamic';
 
+// Fundamentals (P/E, market cap, shareholding) move slowly — cache 6h so we
+// rarely hit Yahoo/Angel One. Live price is enriched on top from the price cache.
+const FUNDAMENTALS_TTL = 6 * 60 * 60;
+
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
@@ -30,12 +34,6 @@ export async function GET(request: NextRequest) {
             }
         }
 
-        // Apply Rate Limit (30 req/min for fundamentals)
-        const isAllowed = await checkRateLimit('fundamentals_api', 30, 60);
-        if (!isAllowed) {
-            return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
-        }
-
         // Check cache for full data
         const cacheKey = `full_${ticker}`;
         const cached = invalidate ? null : await stockCache.get(cacheKey);
@@ -45,6 +43,18 @@ export async function GET(request: NextRequest) {
                 fundamentals: cached,
                 source: 'cache'
             });
+        }
+
+        // Apply Rate Limit (30 req/min for fundamentals). On a cache miss only.
+        // If we're over the limit, serve the last cached value (even if stale)
+        // instead of failing — graceful degradation under load.
+        const isAllowed = await checkRateLimit('fundamentals_api', 30, 60);
+        if (!isAllowed) {
+            const stale = await stockCache.get(cacheKey);
+            if (stale) {
+                return NextResponse.json({ fundamentals: stale, source: 'stale' });
+            }
+            return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
         }
 
         console.log(`[Fundamentals API] Fetching data for: ${ticker}`);
@@ -126,8 +136,8 @@ export async function GET(request: NextRequest) {
             result.technicals = [];
         }
 
-        // Cache the final result
-        await stockCache.set(cacheKey, result);
+        // Cache the final result (6h — fundamentals move slowly)
+        await stockCache.set(cacheKey, result, FUNDAMENTALS_TTL);
 
         return NextResponse.json({
             fundamentals: result,

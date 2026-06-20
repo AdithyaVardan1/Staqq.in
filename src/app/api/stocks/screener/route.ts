@@ -5,8 +5,7 @@ import { redis } from '@/lib/redis';
 import { angelOne } from '@/lib/angelone';
 import { yahoo } from '@/lib/yahoo';
 import { isMarketOpen, secondsUntilMarketOpen } from '@/utils/market-hours';
-
-export const dynamic = 'force-dynamic';
+import { cdnCache } from '@/lib/http-cache';
 
 // ffmc thresholds in rupees (NSE classification)
 const LARGE_CAP = 200_000_000_000; // ₹20,000 Cr+
@@ -352,7 +351,7 @@ export async function GET(request: Request) {
             nextOffset: currentIdx,
             hasMore: currentIdx < universe.length,
             total: universe.length,
-        });
+        }, { headers: cdnCache(300) });
 
     } catch (err: any) {
         console.error('[Screener] Error:', err);

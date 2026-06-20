@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getAllPosts } from '@/lib/social';
 import { createAdminClient } from '@/utils/supabase/admin';
+import { cdnCache } from '@/lib/http-cache';
 
-export const dynamic = 'force-dynamic';
 export const revalidate = 300;
 
 export async function GET() {
@@ -21,7 +21,7 @@ export async function GET() {
             })(),
         ]);
 
-        return NextResponse.json({ posts, spikes: spikesResult });
+        return NextResponse.json({ posts, spikes: spikesResult }, { headers: cdnCache(300) });
     } catch (error: any) {
         console.error('[PulseFeed] Error:', error.message);
         return NextResponse.json({ posts: [], spikes: [] }, { status: 500 });

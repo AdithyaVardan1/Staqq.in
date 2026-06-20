@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { redis } from '@/lib/redis';
 import { checkRateLimit } from '@/lib/rate-limiter';
-
-export const dynamic = 'force-dynamic';
+import { cdnCache } from '@/lib/http-cache';
 
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
+const NEWS_CDN_TTL = 15 * 60; // match the 15-min Redis TTL
 
 export async function GET(request: Request) {
     try {
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
             const cached = await redis.get(cacheKey);
             if (cached) {
                 console.log(`[News API] Cache Hit: ${ticker}`);
-                return NextResponse.json(JSON.parse(cached));
+                return NextResponse.json(JSON.parse(cached), { headers: cdnCache(NEWS_CDN_TTL) });
             }
         } catch (e) {
             console.error('[News API] Redis check failed:', e);
@@ -89,7 +89,7 @@ export async function GET(request: Request) {
                 console.error('[News API] Redis set failed:', e);
             }
 
-            return NextResponse.json(finalResponse);
+            return NextResponse.json(finalResponse, { headers: cdnCache(NEWS_CDN_TTL) });
 
         } catch (fetchError: any) {
             clearTimeout(timeout);

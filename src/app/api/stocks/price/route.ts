@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { angelOne } from '@/lib/angelone';
 import { redis } from '@/lib/redis';
+import { cdnCache } from '@/lib/http-cache';
 import { isMarketOpen, secondsUntilMarketOpen } from '@/utils/market-hours';
 
-export const dynamic = 'force-dynamic';
-
 const PRICE_CACHE_TTL_LIVE = 10; // 10s during market hours
+const PRICE_CDN_TTL = 15; // edge-cache live prices briefly; closed market caches longer below
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
@@ -24,8 +24,8 @@ export async function GET(req: NextRequest) {
         try {
             const parsed = JSON.parse(cached);
             // Market is closed — cached closing price is the right answer, no need to hit Angel One
-            if (!marketOpen) return NextResponse.json({ ...parsed, marketClosed: true });
-            return NextResponse.json(parsed);
+            if (!marketOpen) return NextResponse.json({ ...parsed, marketClosed: true }, { headers: cdnCache(300) });
+            return NextResponse.json(parsed, { headers: cdnCache(PRICE_CDN_TTL) });
         } catch { /* fall through */ }
     }
 
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
             // If market just closed by the time we get the response, cache until next open
             const ttl = isMarketOpen() ? PRICE_CACHE_TTL_LIVE : secondsUntilMarketOpen();
             await redis.set(cacheKey, JSON.stringify(result), ttl);
-            return NextResponse.json(result);
+            return NextResponse.json(result, { headers: cdnCache(PRICE_CDN_TTL) });
         }
 
         return NextResponse.json({ error: 'Price unavailable' }, { status: 503 });

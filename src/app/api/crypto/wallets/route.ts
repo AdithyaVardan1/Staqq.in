@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getWalletBuys, detectChain } from '@/lib/wallet-tracker';
+import { cdnCache } from '@/lib/http-cache';
 
-export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Solana RPC needs more time
 
 export async function GET(req: NextRequest) {
@@ -19,5 +19,5 @@ export async function GET(req: NextRequest) {
     }
 
     const result = await getWalletBuys(address, detected);
-    return NextResponse.json(result);
+    return NextResponse.json(result, { headers: cdnCache(120) });
 }

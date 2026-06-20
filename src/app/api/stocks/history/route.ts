@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { angelOne } from '@/lib/angelone';
 import { redis } from '@/lib/redis';
-
-export const dynamic = 'force-dynamic';
+import { cdnCache } from '@/lib/http-cache';
 
 // Angel One limits: 3 req/sec, 180/min, 5,000/hour for getCandleData
 // These TTLs ensure we never hit rate limits even with many concurrent users.
@@ -53,11 +52,12 @@ export async function GET(req: NextRequest) {
     if (!ticker) return NextResponse.json({ error: 'Ticker required' }, { status: 400 });
 
     const cacheKey = `history:${ticker}:${range}`;
+    const cdnTtl = CACHE_TTL[range] ?? 3600;
 
     // L1/L2 cache check — most requests end here
     const cached = await redis.get(cacheKey);
     if (cached) {
-        try { return NextResponse.json(JSON.parse(cached)); } catch { /* fall through */ }
+        try { return NextResponse.json(JSON.parse(cached), { headers: cdnCache(cdnTtl) }); } catch { /* fall through */ }
     }
 
     // Deduplicate concurrent requests for the same ticker+range
@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
 
     try {
         const result = await fetchPromise;
-        return NextResponse.json(result);
+        return NextResponse.json(result, { headers: cdnCache(cdnTtl) });
     } catch (error: any) {
         console.error('[History]', ticker, range, error.message);
         return NextResponse.json({ error: 'History unavailable' }, { status: 500 });

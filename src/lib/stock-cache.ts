@@ -73,7 +73,7 @@ class StockCache {
         return null;
     }
 
-    async set(key: string, data: any): Promise<void> {
+    async set(key: string, data: any, ttlSeconds?: number): Promise<void> {
         // 1. Update Memory & File
         this.memoryCache.set(key, { data, timestamp: Date.now() });
         this.saveToFile(); // Persist immediately for dev safety (or debounce in prod)
@@ -81,7 +81,7 @@ class StockCache {
         // 2. Update Redis (Fire & Forget)
         try {
             if (this.isRedisAvailable) {
-                await redis.set(`stock_cache:${key}`, JSON.stringify(data), this.TTL);
+                await redis.set(`stock_cache:${key}`, JSON.stringify(data), ttlSeconds ?? this.TTL);
             }
         } catch (e) {
             // console.warn('[StockCache] Redis set failed');

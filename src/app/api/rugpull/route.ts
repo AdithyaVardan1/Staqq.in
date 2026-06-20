@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { analyzeToken, type SupportedChain, CHAIN_IDS } from '@/lib/goplus';
-
-export const dynamic = 'force-dynamic';
+import { cdnCache } from '@/lib/http-cache';
 
 const VALID_CHAINS = Object.keys(CHAIN_IDS) as SupportedChain[];
 
@@ -20,7 +19,8 @@ export async function GET(request: Request) {
 
     try {
         const result = await analyzeToken(chain, address);
-        return NextResponse.json(result);
+        // Token safety attributes change slowly; cache per address/chain for 10 min
+        return NextResponse.json(result, { headers: cdnCache(600) });
     } catch (error: any) {
         console.error('[Rugpull API] Error:', error.message);
         return NextResponse.json({ error: error.message || 'Analysis failed' }, { status: 500 });

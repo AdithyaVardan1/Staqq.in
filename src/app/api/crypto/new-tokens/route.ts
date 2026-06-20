@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/utils/supabase/admin';
 import { analyzeToken, type SupportedChain } from '@/lib/goplus';
+import { cdnCache } from '@/lib/http-cache';
 
-export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 interface DexProfile {
@@ -71,7 +71,7 @@ export async function GET() {
         const profiles = await fetchLatestProfiles();
 
         if (profiles.length === 0) {
-            return NextResponse.json({ tokens: [] });
+            return NextResponse.json({ tokens: [] }, { headers: cdnCache(300) });
         }
 
         const results = await Promise.allSettled(
@@ -144,7 +144,7 @@ export async function GET() {
             .map(r => (r as any).value)
             .sort((a, b) => (a.safety_score ?? 50) - (b.safety_score ?? 50)); // safest first
 
-        return NextResponse.json({ tokens, count: tokens.length });
+        return NextResponse.json({ tokens, count: tokens.length }, { headers: cdnCache(300) });
     } catch (err: any) {
         console.error('[NewTokens API]', err.message);
         return NextResponse.json({ error: 'Failed to fetch new tokens' }, { status: 500 });

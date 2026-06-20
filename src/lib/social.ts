@@ -141,7 +141,7 @@ async function loadTwitterPosts(): Promise<SocialPost[]> {
         if (!supabase) return [];
         const { data, error } = await supabase
             .from('tweets')
-            .select('*')
+            .select('post_id, title, body, url, score, comments, community, author, created_at_ts, tickers, is_hot, image')
             .gte('created_at_ts', Math.floor(Date.now() / 1000) - 86400)
             .order('created_at_ts', { ascending: false })
             .limit(100);
@@ -201,6 +201,10 @@ async function loadTwitterPosts(): Promise<SocialPost[]> {
 // summarize_news.py    — RSS articles → Groq      → source='news'
 // Both write to `market_pulse`. Raw source content never hits the frontend.
 
+// Only the columns rowToPulse reads — the table also stores raw source content
+// (full Reddit threads / article text) that must never be shipped to the client.
+const PULSE_COLS = 'id, date, ticker, source, headline, summary, sentiment, sentiment_score, post_count, topics, created_at';
+
 function rowToPulse(row: any): MarketPulse {
     return {
         id:            row.id,
@@ -225,7 +229,7 @@ export async function getMarketPulse(limit = 20): Promise<MarketPulse[]> {
 
         const { data, error } = await supabase
             .from('market_pulse')
-            .select('*')
+            .select(PULSE_COLS)
             .gte('date', sevenDaysAgo)
             .order('created_at', { ascending: false })
             .limit(limit);
@@ -249,7 +253,7 @@ export async function getSocialPulses(limit = 8): Promise<MarketPulse[]> {
 
         const { data } = await supabase
             .from('market_pulse')
-            .select('*')
+            .select(PULSE_COLS)
             .eq('source', 'reddit')
             .gte('date', sevenDaysAgo)
             .order('created_at', { ascending: false })
@@ -268,7 +272,7 @@ export async function getNewsPulses(limit = 8): Promise<MarketPulse[]> {
 
         const { data } = await supabase
             .from('market_pulse')
-            .select('*')
+            .select(PULSE_COLS)
             .eq('source', 'news')
             .order('created_at', { ascending: false })
             .limit(limit);
