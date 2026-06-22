@@ -1,5 +1,6 @@
 import { redis } from './redis';
 import { createAdminClient } from '@/utils/supabase/admin';
+import { BETA_UNLOCK_ALL, BETA_PRO_FEATURES } from './beta';
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -42,6 +43,18 @@ const USAGE_PREFIX = 'usage:';
 
 /** Get full subscription info for a user (cached in Redis for 5 min) */
 export async function getSubscription(userId: string): Promise<SubscriptionInfo> {
+    // Free beta: everyone gets the full feature set, no DB lookup needed.
+    if (BETA_UNLOCK_ALL) {
+        return {
+            tier: 'pro',
+            planId: 'beta',
+            status: 'active',
+            features: { ...BETA_PRO_FEATURES },
+            periodEnd: null,
+            cancelAtPeriodEnd: false,
+        };
+    }
+
     // Try Redis cache first
     const cached = await redis.get(`${CACHE_PREFIX}${userId}`);
     if (cached) {

@@ -206,6 +206,97 @@ export function estimateAllotmentProbability(subscriptionNum: number | null, cat
     return { probability, label, color };
 }
 
+// ─── Plain-language explainers ──────────────────────────────────────
+// Turn raw IPO numbers into sentences a first-time investor understands.
+
+/** Describe subscription demand in plain words. */
+export function getSubscriptionDemand(subscriptionNum: number | null): {
+    label: string; desc: string; color: string;
+} {
+    if (subscriptionNum === null || subscriptionNum <= 0) {
+        return { label: 'No demand data yet', desc: 'Subscription figures appear once bidding opens.', color: '#71717A' };
+    }
+    if (subscriptionNum < 1) {
+        return {
+            label: 'Undersubscribed',
+            desc: `Investors applied for less than the shares on offer (${subscriptionNum}× of the issue). Weak demand.`,
+            color: '#f87171',
+        };
+    }
+    if (subscriptionNum < 3) {
+        return {
+            label: 'Healthy demand',
+            desc: `Investors applied for ${subscriptionNum}× the shares available. Comfortably covered.`,
+            color: '#4ade80',
+        };
+    }
+    if (subscriptionNum < 10) {
+        return {
+            label: 'Strong demand',
+            desc: `Investors applied for ${subscriptionNum}× the shares available. Solid interest.`,
+            color: '#22c55e',
+        };
+    }
+    if (subscriptionNum < 50) {
+        return {
+            label: 'Very strong demand',
+            desc: `Investors applied for ${subscriptionNum}× the shares available. Allotment will be hard to get.`,
+            color: '#22c55e',
+        };
+    }
+    return {
+        label: 'Frenzied demand',
+        desc: `Investors applied for ${subscriptionNum}× the shares available. Among the most in-demand IPOs.`,
+        color: '#16a34a',
+    };
+}
+
+/** Plain-language sentence for what the GMP implies about listing day. */
+export function getExpectedListingText(price: number | null, gmpPercent: number | null, estListing: number | null): string {
+    if (gmpPercent === null || price === null) {
+        return 'There is no grey market signal yet, so listing gains are hard to estimate.';
+    }
+    const listingText = estListing ? ` around ₹${estListing}` : '';
+    if (gmpPercent > 0) {
+        return `The grey market is paying a premium, suggesting it could list${listingText} — roughly +${gmpPercent}% above the ₹${price} issue price. This is unofficial and can change daily.`;
+    }
+    if (gmpPercent < 0) {
+        return `The grey market is trading at a discount, suggesting it could list${listingText} — about ${gmpPercent}% below the ₹${price} issue price. Demand looks weak.`;
+    }
+    return `The grey market signal is flat, suggesting it may list near its ₹${price} issue price.`;
+}
+
+/** A single plain-language verdict combining sentiment, demand and allotment odds. */
+export function getIPOPlainVerdict(ipo: IPOData): { headline: string; body: string; color: string } {
+    const sentiment = getGmpSentiment(ipo.gmpPercent);
+    const demand = getSubscriptionDemand(ipo.subscriptionNum);
+
+    const parts: string[] = [];
+
+    if (ipo.gmpPercent !== null) {
+        parts.push(getExpectedListingText(ipo.price, ipo.gmpPercent, ipo.estListing));
+    }
+    if (ipo.subscriptionNum && ipo.subscriptionNum > 0) {
+        parts.push(demand.desc);
+        const allotment = estimateAllotmentProbability(ipo.subscriptionNum, ipo.category);
+        parts.push(`Your estimated chance of getting an allotment in the retail category is about ${allotment.probability}% (${allotment.label.toLowerCase()}).`);
+    }
+
+    let headline: string;
+    if (ipo.gmpPercent === null && !ipo.subscriptionNum) {
+        headline = 'Not enough data to assess yet';
+        parts.push('Grey market and subscription figures usually appear closer to the open date.');
+    } else if ((ipo.gmpPercent ?? 0) >= 10 && (ipo.subscriptionNum ?? 0) >= 3) {
+        headline = 'Strong listing-gain signals';
+    } else if ((ipo.gmpPercent ?? 0) <= -5 || (ipo.subscriptionNum !== null && ipo.subscriptionNum < 1)) {
+        headline = 'Weak signals — be cautious';
+    } else {
+        headline = 'Mixed signals';
+    }
+
+    return { headline, body: parts.join(' '), color: sentiment.color };
+}
+
 // ─── Top Movers & Rankings ──────────────────────────────────────────
 
 export function getTopGmpMovers(ipos: IPOData[], limit = 5) {

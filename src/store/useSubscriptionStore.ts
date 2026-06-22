@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { BETA_UNLOCK_ALL, BETA_PRO_FEATURES } from '@/lib/beta';
 
 export type SubscriptionTier = 'free' | 'pro';
 
@@ -44,20 +45,38 @@ const DEFAULT_FEATURES: PlanFeatures = {
     ipo_score: false,
 };
 
-export const useSubscriptionStore = create<SubscriptionState>((set, get) => ({
-    tier: 'free',
-    planId: 'free',
+// During the free beta, every visitor (even anonymous) is treated as Pro.
+const BETA_STATE = {
+    tier: 'pro' as SubscriptionTier,
+    planId: 'beta',
     status: 'active',
-    features: DEFAULT_FEATURES,
+    features: { ...BETA_PRO_FEATURES },
+    periodEnd: null,
+    cancelAtPeriodEnd: false,
+    usage: { stock_lookups: { current: 0, limit: -1 } },
+    loading: false,
+    lastFetched: Date.now(),
+};
+
+export const useSubscriptionStore = create<SubscriptionState>((set, get) => ({
+    tier: BETA_UNLOCK_ALL ? 'pro' : 'free',
+    planId: BETA_UNLOCK_ALL ? 'beta' : 'free',
+    status: 'active',
+    features: BETA_UNLOCK_ALL ? { ...BETA_PRO_FEATURES } : DEFAULT_FEATURES,
     periodEnd: null,
     cancelAtPeriodEnd: false,
     usage: {
-        stock_lookups: { current: 0, limit: 5 },
+        stock_lookups: { current: 0, limit: BETA_UNLOCK_ALL ? -1 : 5 },
     },
     loading: false,
     lastFetched: null,
 
     fetch: async () => {
+        // Free beta: everyone is Pro, no need to hit the API.
+        if (BETA_UNLOCK_ALL) {
+            set(BETA_STATE);
+            return;
+        }
         const now = Date.now();
         const last = get().lastFetched;
         // Throttle: 1 request per 5 minutes

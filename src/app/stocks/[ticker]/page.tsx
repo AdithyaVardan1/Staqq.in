@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ ticker: s
             title,
             description,
             type: 'website',
-            url: `https://staqqin.vercel.app/stocks/${ticker}`,
+            url: `https://staqq.in/stocks/${ticker}`,
             images: [`/api/og/stock?ticker=${upperTicker}`]
         },
         twitter: {
@@ -45,7 +45,7 @@ export default async function StockDetailPage({ params }: { params: Promise<{ ti
         'provider': {
             '@type': 'Organization',
             'name': 'Staqq',
-            'url': 'https://staqqin.vercel.app'
+            'url': 'https://staqq.in'
         }
     };
 
@@ -53,9 +53,9 @@ export default async function StockDetailPage({ params }: { params: Promise<{ ti
         <>
             <StructuredData schema={stockJsonLd} />
             <BreadcrumbStructuredData items={[
-                { name: 'Home', item: 'https://staqqin.vercel.app' },
-                { name: 'Screener', item: 'https://staqqin.vercel.app/stocks/screener' },
-                { name: upperTicker, item: `https://staqqin.vercel.app/stocks/${ticker}` } 
+                { name: 'Home', item: 'https://staqq.in' },
+                { name: 'Screener', item: 'https://staqq.in/stocks/screener' },
+                { name: upperTicker, item: `https://staqq.in/stocks/${ticker}` } 
             ]} />
             <React.Suspense fallback={<div style={{ minHeight: '100vh', background: '#0a0a0a' }} />}>
                 <StockDetailContent params={params} />

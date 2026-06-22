@@ -6,7 +6,13 @@ import { Badge } from '@/components/ui/Badge';
 import { ArrowLeft, TrendingUp, TrendingDown, Flame, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { getIPOBySlug, getAllIPOs } from '@/lib/ipo';
-import { estimateAllotmentProbability, getGmpSentiment } from '@/lib/ipoAnalytics';
+import {
+    estimateAllotmentProbability,
+    getGmpSentiment,
+    getSubscriptionDemand,
+    getExpectedListingText,
+    getIPOPlainVerdict,
+} from '@/lib/ipoAnalytics';
 import { GmpSentimentBadge } from '@/components/ipo/GmpSentimentBadge';
 import styles from './page.module.css';
 
@@ -50,7 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             title, 
             description, 
             type: 'website', 
-            url: `https://staqqin.vercel.app/ipo/${slug}`,
+            url: `https://staqq.in/ipo/${slug}`,
             images: [`/api/og/ipo?${ogParams.toString()}`] 
         },
         twitter: { 
@@ -73,6 +79,10 @@ export default async function IPODetail({ params }: { params: Promise<{ slug: st
     const gmpPositive = (ipo.gmpPercent ?? 0) > 0;
     const gmpNegative = (ipo.gmpPercent ?? 0) < 0;
 
+    const verdict = getIPOPlainVerdict(ipo);
+    const demand = getSubscriptionDemand(ipo.subscriptionNum);
+    const listingExplain = getExpectedListingText(ipo.price, ipo.gmpPercent, ipo.estListing);
+
     const statusVariant = ipo.status === 'Live' ? 'brand'
         : ipo.status === 'Upcoming' ? 'neutral'
             : 'success';
@@ -86,7 +96,7 @@ export default async function IPODetail({ params }: { params: Promise<{ slug: st
         provider: {
             '@type': 'Organization',
             name: "Staqq",
-            url: "https://staqqin.vercel.app"
+            url: "https://staqq.in"
         },
         ...(ipo.price && { offers: { '@type': 'Offer', price: ipo.price, priceCurrency: 'INR' } }),
     };
@@ -136,9 +146,9 @@ export default async function IPODetail({ params }: { params: Promise<{ slug: st
         <main className={styles.main}>
             <StructuredData schema={[ipoJsonLd, faqJsonLd]} />
             <BreadcrumbStructuredData items={[
-                { name: 'Home', item: 'https://staqqin.vercel.app' },
-                { name: 'IPO Hub', item: 'https://staqqin.vercel.app/ipo' },
-                { name: ipo.name, item: `https://staqqin.vercel.app/ipo/${slug}` }
+                { name: 'Home', item: 'https://staqq.in' },
+                { name: 'IPO Hub', item: 'https://staqq.in/ipo' },
+                { name: ipo.name, item: `https://staqq.in/ipo/${slug}` }
             ]} />
             <div className="container">
                 {/* Breadcrumb & Actions */}
@@ -191,6 +201,19 @@ export default async function IPODetail({ params }: { params: Promise<{ slug: st
                 <div className={styles.grid}>
                     {/* Left Column */}
                     <div className={styles.colMain}>
+                        {/* What this means — plain-language verdict */}
+                        <Card
+                            className={styles.verdictCard}
+                            style={{ '--verdict-color': verdict.color } as React.CSSProperties}
+                        >
+                            <div className={styles.verdictHead}>
+                                <CheckCircle size={18} style={{ color: verdict.color }} />
+                                <span className={styles.verdictHeadline}>{verdict.headline}</span>
+                                <span className={styles.verdictTag}>What this means</span>
+                            </div>
+                            <p className={styles.verdictBody}>{verdict.body}</p>
+                        </Card>
+
                         {/* GMP Card */}
                         <Card className={styles.sectionCard}>
                             <h2 className={styles.cardTitle}>Grey Market Premium (GMP)</h2>
@@ -214,6 +237,11 @@ export default async function IPODetail({ params }: { params: Promise<{ slug: st
                                     </div>
                                 )}
                             </div>
+                            <p className={styles.explainer}>
+                                <span className={styles.explainerStrong}>What is GMP? </span>
+                                The Grey Market Premium is the unofficial price investors pay to buy the
+                                shares before they list. {listingExplain}
+                            </p>
                             <p className={styles.disclaimer}>
                                 * Grey Market Premium is unofficial and non-binding.
                             </p>
@@ -223,9 +251,20 @@ export default async function IPODetail({ params }: { params: Promise<{ slug: st
                         {ipo.subscription && (
                             <Card className={styles.sectionCard}>
                                 <h2 className={styles.cardTitle}>Subscription Status</h2>
-                                <div className={styles.subHero}>
+                                <div className={styles.subTopRow}>
                                     <span className={styles.subHeroVal}>{ipo.subscription}</span>
+                                    <span
+                                        className={styles.demandPill}
+                                        style={{ color: demand.color, background: `${demand.color}1a`, border: `1px solid ${demand.color}33` }}
+                                    >
+                                        {demand.label}
+                                    </span>
                                 </div>
+                                <p className={styles.explainer}>
+                                    <span className={styles.explainerStrong}>What does this mean? </span>
+                                    {demand.desc} A higher multiple means more competition, so allotment
+                                    becomes harder to get.
+                                </p>
                             </Card>
                         )}
                     </div>
@@ -322,8 +361,11 @@ export default async function IPODetail({ params }: { params: Promise<{ slug: st
                                             {allotment.label}
                                         </div>
                                     </div>
-                                    <div style={{ fontSize: '0.75rem', color: '#666', marginTop: '12px', textAlign: 'center' }}>
-                                        Based on {ipo.subscriptionNum}x retail subscription
+                                    <div className={styles.allotmentExplain}>
+                                        Your rough odds of being allotted shares if you apply in the retail
+                                        category, based on {ipo.subscriptionNum}× subscription. The more
+                                        people apply, the lower everyone&apos;s chance. This is an estimate,
+                                        not a guarantee.
                                     </div>
                                 </Card>
                             );

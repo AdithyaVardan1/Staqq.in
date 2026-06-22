@@ -7,6 +7,7 @@ import Script from 'next/script';
 import { useSubscription } from '@/hooks/useSubscription';
 import { createBrowserClient } from '@supabase/ssr';
 import { useRouter } from 'next/navigation';
+import { BETA_UNLOCK_ALL } from '@/lib/beta';
 import styles from './page.module.css';
 
 const supabase = createBrowserClient(
@@ -149,6 +150,11 @@ export default function PricingPage() {
             <div className="container">
                 {/* Hero */}
                 <section className={styles.hero}>
+                    {BETA_UNLOCK_ALL && (
+                        <div className={styles.betaBanner}>
+                            🎉 Everything&apos;s free during our beta — every Pro feature is unlocked, no payment needed.
+                        </div>
+                    )}
                     <h1 className={styles.heroTitle}>
                         Unlock the full <span>terminal</span>
                     </h1>
@@ -230,7 +236,11 @@ export default function PricingPage() {
                                 </li>
                             ))}
                         </ul>
-                        {isPro ? (
+                        {BETA_UNLOCK_ALL ? (
+                            <Link href="/ipo" className={`${styles.planCta} ${styles.ctaFree}`}>
+                                Free during beta — explore now
+                            </Link>
+                        ) : isPro ? (
                             <div className={`${styles.planCta} ${styles.ctaFree}`}>
                                 You&apos;re on Pro
                             </div>

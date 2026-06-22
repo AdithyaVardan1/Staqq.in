@@ -112,6 +112,22 @@ export default async function IPODashboard() {
                     </div>
                 </IPOLinksAnimator>
 
+                {/* ── New-to-IPOs explainer ── */}
+                <IPOLinksAnimator>
+                    <div className={styles.explainStrip}>
+                        <span className={styles.explainTitle}>New to IPOs?</span>
+                        <div className={styles.explainItem}>
+                            <strong>GMP</strong> — the unofficial grey-market price, a rough hint of listing-day gains.
+                        </div>
+                        <div className={styles.explainItem}>
+                            <strong>Subscription</strong> — how many times the shares were applied for. Higher = more demand.
+                        </div>
+                        <div className={styles.explainItem}>
+                            <strong>Allotment odds</strong> — your rough chance of actually getting shares if you apply.
+                        </div>
+                    </div>
+                </IPOLinksAnimator>
+
                 {/* ── Performance Intelligence ── */}
                 <IPOSectionAnimator delay={0}>
                     <div className={styles.sectionHeader}>

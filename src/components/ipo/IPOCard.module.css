@@ -211,6 +211,12 @@
     color: var(--text-primary);
 }
 
+.demandTag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-left: 4px;
+}
+
 .ratingRow {
     display: flex;
     gap: 2px;

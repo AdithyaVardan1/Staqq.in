@@ -7,6 +7,8 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { ArrowUpRight, TrendingUp, TrendingDown, Calendar, Flame, Crown } from 'lucide-react';
 import type { IPOData } from '@/lib/ipo';
 import { calculateIPOScore, getScoreGradient } from '@/lib/ipoScore';
+import { getSubscriptionDemand } from '@/lib/ipoAnalytics';
+import { BETA_UNLOCK_ALL } from '@/lib/beta';
 import styles from './IPOCard.module.css';
 
 interface IPOCardProps {
@@ -15,6 +17,7 @@ interface IPOCardProps {
 }
 
 export const IPOCard: React.FC<IPOCardProps> = ({ ipo, showScore = false }) => {
+    const revealScore = showScore || BETA_UNLOCK_ALL;
     const score = calculateIPOScore(ipo);
     const isLive = ipo.status === 'Live';
     const isUpcoming = ipo.status === 'Upcoming';
@@ -64,7 +67,7 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, showScore = false }) => {
                             <Badge variant="outline" size="sm">
                                 {ipo.category}
                             </Badge>
-                            {showScore ? (
+                            {revealScore ? (
                                 <div
                                     className={styles.scoreBadge}
                                     style={{ background: getScoreGradient(score.overall) }}
@@ -117,18 +120,26 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, showScore = false }) => {
                         )}
                     </div>
 
-                    {ipo.subscriptionNum !== null && ipo.subscriptionNum > 0 && (
-                        <div className={styles.subscription}>
-                            <div className={styles.subHeader}>
-                                <span className={styles.label}>Subscription</span>
-                                <span className={styles.subValue}>{ipo.subscriptionNum}x</span>
+                    {ipo.subscriptionNum !== null && ipo.subscriptionNum > 0 && (() => {
+                        const demand = getSubscriptionDemand(ipo.subscriptionNum);
+                        return (
+                            <div className={styles.subscription}>
+                                <div className={styles.subHeader}>
+                                    <span className={styles.label}>Subscription</span>
+                                    <span className={styles.subValue}>
+                                        {ipo.subscriptionNum}x
+                                        <span className={styles.demandTag} style={{ color: demand.color }}>
+                                            · {demand.label}
+                                        </span>
+                                    </span>
+                                </div>
+                                <ProgressBar
+                                    progress={Math.min(ipo.subscriptionNum * 10, 100)}
+                                    variant={ipo.subscriptionNum >= 10 ? 'success' : isLive ? 'brand' : 'neutral'}
+                                />
                             </div>
-                            <ProgressBar
-                                progress={Math.min(ipo.subscriptionNum * 10, 100)}
-                                variant={ipo.subscriptionNum >= 10 ? 'success' : isLive ? 'brand' : 'neutral'}
-                            />
-                        </div>
-                    )}
+                        );
+                    })()}
 
                     {ipo.rating > 0 && (
                         <div className={styles.ratingRow}>

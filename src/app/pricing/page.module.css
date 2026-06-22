@@ -283,3 +283,16 @@
         padding: 24px;
     }
 }
+
+/* ── Beta banner ── */
+.betaBanner {
+    display: inline-block;
+    margin: 0 auto 1.25rem;
+    padding: 10px 20px;
+    background: rgba(202,255,0,0.08);
+    border: 1px solid rgba(202,255,0,0.25);
+    border-radius: 999px;
+    color: #caff00;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
