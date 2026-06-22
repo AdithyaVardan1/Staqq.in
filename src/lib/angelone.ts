@@ -24,6 +24,8 @@ export interface MarketQuote {
     low: number;
     open: number;
     volume: number;
+    week52High: number;
+    week52Low: number;
 }
 
 export class AngelOneService {
@@ -238,6 +240,8 @@ export class AngelOneService {
                             low: parseFloat(item.low || '0'),
                             open: parseFloat(item.open || '0'),
                             volume: parseInt(item.tradeVolume || '0', 10),
+                            week52High: parseFloat(item['52WeekHigh'] || '0'),
+                            week52Low: parseFloat(item['52WeekLow'] || '0'),
                         };
                     }
                 }
@@ -266,6 +270,8 @@ export class AngelOneService {
                                         low: parseFloat(item.low || '0'),
                                         open: parseFloat(item.open || '0'),
                                         volume: parseInt(item.tradeVolume || '0', 10),
+                                        week52High: parseFloat(item['52WeekHigh'] || '0'),
+                                        week52Low: parseFloat(item['52WeekLow'] || '0'),
                                     };
                                 }
                             }

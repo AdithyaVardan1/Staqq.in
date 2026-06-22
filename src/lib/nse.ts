@@ -1,14 +1,19 @@
-import { NseIndia } from 'stock-nse-india';
 import { redis } from './redis';
+import { angelOne } from './angelone';
+import nifty500List from '@/data/nifty500.json';
 
-const nse = new NseIndia();
-
-// Data lives in cache for 5 minutes, but is considered "fresh" for only 60s.
-// After 60s, the next request triggers a background refresh while still
-// serving the stale-but-not-expired data instantly. Cold start (>5min or
-// first ever request) is the only time a user waits on a live NSE fetch.
+// The stock universe (which 500 names + their sectors) is static reference data
+// bundled in the repo — NSE's live index API blocks cloud IPs, so we no longer
+// depend on it. Every live number (price, change, volume, 52-week range) comes
+// from Angel One, which is reliable from the server.
+//
+// Data lives in cache for 5 minutes, "fresh" for 55s. After 55s the next request
+// triggers a background refresh while serving the stale-but-not-expired data.
 const DATA_TTL = 300;  // keep data in cache 5 minutes
 const FRESH_TTL = 55;  // background refresh triggers after 55s
+
+interface Constituent { symbol: string; name: string; sector: string; }
+const UNIVERSE = nifty500List as Constituent[];
 
 export interface NseStock {
     symbol: string;
@@ -28,28 +33,47 @@ export interface NseStock {
 
 let refreshPromise: Promise<NseStock[]> | null = null;
 
-async function fetchFromNse(): Promise<NseStock[]> {
-    const data = await nse.getEquityStockIndices('NIFTY 500');
-    const stocks: NseStock[] = (data.data as any[])
-        .filter((s) => s.meta && s.series === 'EQ' && s.lastPrice > 0)
-        .map((s) => ({
-            symbol: s.symbol as string,
-            name: (s.meta?.companyName || s.symbol) as string,
-            sector: (s.meta?.industry || 'Unknown') as string,
-            price: s.lastPrice as number,
-            change: s.pChange as number,
-            changeAmount: s.change as number,
-            volume: s.totalTradedVolume as number,
-            marketCap: s.ffmc as number,
-            yearHigh: s.yearHigh as number,
-            yearLow: s.yearLow as number,
-            return1Y: (s.perChange365d || 0) as number,
-            nearHigh: s.nearWKH as number,
-            nearLow: s.nearWKL as number,
-        }));
+async function fetchFromAngel(): Promise<NseStock[]> {
+    // Resolve Angel One tokens for every constituent from the instrument master.
+    const tokensMap = await angelOne.getInstrumentTokens();
+    const nseTokens: string[] = [];
+    const tokenToTicker: Record<string, string> = {};
+    for (const c of UNIVERSE) {
+        const inst = tokensMap.get(`NSE:${c.symbol}-EQ`);
+        if (inst?.token) {
+            nseTokens.push(String(inst.token));
+            tokenToTicker[String(inst.token)] = c.symbol;
+        }
+    }
+
+    // One batch of live quotes for the whole universe (50 tokens per call).
+    const quotes = await angelOne.batchMarketData(nseTokens, tokenToTicker);
+
+    const stocks: NseStock[] = UNIVERSE.map((c) => {
+        const q = quotes[c.symbol];
+        const price = q?.ltp ?? 0;
+        const yearHigh = q?.week52High ?? 0;
+        const yearLow = q?.week52Low ?? 0;
+        return {
+            symbol: c.symbol,
+            name: c.name,
+            sector: c.sector,
+            price,
+            change: q?.percentChange ?? 0,
+            changeAmount: q?.netChange ?? 0,
+            volume: q?.volume ?? 0,
+            marketCap: 0, // enriched per-stock from fundamentals (Yahoo) downstream
+            yearHigh,
+            yearLow,
+            return1Y: 0,  // enriched per-stock from fundamentals downstream
+            // % below 52w high (0 = at high); large when far below
+            nearHigh: yearHigh > 0 ? ((yearHigh - price) / yearHigh) * 100 : 999,
+            // negated % above 52w low (0 = at low) to match prior sign convention
+            nearLow: yearLow > 0 ? -((price - yearLow) / yearLow) * 100 : -999,
+        };
+    }).filter((s) => s.price > 0);
 
     const payload = JSON.stringify(stocks);
-    // Write data and freshness marker in parallel
     await Promise.all([
         redis.set('nse:nifty500:data', payload, DATA_TTL),
         redis.set('nse:nifty500:fresh', '1', FRESH_TTL),
@@ -66,13 +90,13 @@ export async function getNifty500(): Promise<NseStock[]> {
     if (cached) {
         if (!isFresh && !refreshPromise) {
             // Stale — kick off background refresh, serve current data now
-            refreshPromise = fetchFromNse().finally(() => { refreshPromise = null; });
+            refreshPromise = fetchFromAngel().finally(() => { refreshPromise = null; });
         }
         try { return JSON.parse(cached); } catch { /* fall through to live fetch */ }
     }
 
     // Cold start — wait for live data (only happens once per 5 minutes max)
     if (refreshPromise) return refreshPromise;
-    refreshPromise = fetchFromNse().finally(() => { refreshPromise = null; });
+    refreshPromise = fetchFromAngel().finally(() => { refreshPromise = null; });
     return refreshPromise;
 }
