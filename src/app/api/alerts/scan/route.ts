@@ -3,6 +3,7 @@ import { scanForSpikes } from '@/lib/spikeDetector';
 import { createAdminClient } from '@/utils/supabase/admin';
 import { getEmailProvider } from '@/lib/email';
 import { buildSpikeAlertEmail } from '@/lib/emailTemplates/spikeAlert';
+import { verifyCronRequest } from '@/lib/cron-auth';
 
 export const maxDuration = 30;
 
@@ -31,8 +32,7 @@ async function sendWithRetry(
 }
 
 export async function POST(req: NextRequest) {
-    const secret = req.headers.get('x-cron-secret');
-    if (!secret || secret !== process.env.CRON_SECRET) {
+    if (!(await verifyCronRequest(req))) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

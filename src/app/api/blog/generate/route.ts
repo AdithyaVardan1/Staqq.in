@@ -2,13 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAllIPOs } from '@/lib/ipo';
 import { generateIPOAnalysis, generateWeeklyRoundup } from '@/lib/blogGenerator';
 import { createAdminClient } from '@/utils/supabase/admin';
+import { verifyCronRequest } from '@/lib/cron-auth';
 
 export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
-    // Verify cron secret (same as other cron jobs)
-    const cronSecret = req.headers.get('x-cron-secret');
-    if (cronSecret !== process.env.CRON_SECRET) {
+    if (!(await verifyCronRequest(req))) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

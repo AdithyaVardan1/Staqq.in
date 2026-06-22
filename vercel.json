@@ -1,16 +1,4 @@
 {
-    "crons": [
-        {
-            "path": "/api/alerts/scan",
-            "schedule": "30 3 * * *"
-        },
-        {
-            "path": "/api/morning-brief",
-            "schedule": "0 2 * * 1-6"
-        },
-        {
-            "path": "/api/blog/generate",
-            "schedule": "0 4 * * *"
-        }
-    ]
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "comment": "Scheduled jobs run via Upstash QStash (see scripts/setup-qstash.mjs), not Vercel cron. Vercel Hobby crons only fire once/day and send GET, which these POST endpoints reject."
 }

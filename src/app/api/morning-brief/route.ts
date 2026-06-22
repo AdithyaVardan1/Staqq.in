@@ -3,14 +3,14 @@ import { generateMorningBrief } from '@/lib/morningBrief';
 import { buildMorningBriefEmail } from '@/lib/emailTemplates/morningBrief';
 import { getEmailProvider } from '@/lib/email';
 import { createAdminClient } from '@/utils/supabase/admin';
+import { verifyCronRequest } from '@/lib/cron-auth';
 
 export const maxDuration = 60;
 
 const FROM = process.env.EMAIL_FROM ?? 'Staqq <morning@staqq.in>';
 
 export async function POST(req: NextRequest) {
-    const cronSecret = req.headers.get('x-cron-secret');
-    if (cronSecret !== process.env.CRON_SECRET) {
+    if (!(await verifyCronRequest(req))) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
