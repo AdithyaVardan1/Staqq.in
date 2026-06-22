@@ -39,27 +39,17 @@ function bucketKey(ticker: string, bucketTs: number): string {
 // ─── Core Functions ──────────────────────────────────────────────────
 
 async function recordMentions(tickerCounts: Record<string, number>): Promise<boolean> {
-    const client = redis.getClient();
-    if (!client) {
-        console.error('[SpikeDetector] Redis unavailable — cannot record mentions');
-        return false;
-    }
-
     const currentBucket = getBucketTs();
+    const entries = Object.entries(tickerCounts).map(([ticker, count]) => ({
+        key: bucketKey(ticker, currentBucket),
+        amount: count,
+    }));
 
-    try {
-        const pipeline = client.pipeline();
-        for (const [ticker, count] of Object.entries(tickerCounts)) {
-            const key = bucketKey(ticker, currentBucket);
-            pipeline.incrby(key, count);
-            pipeline.expire(key, BUCKET_TTL);
-        }
-        await pipeline.exec();
-        return true;
-    } catch (err) {
-        console.error('[SpikeDetector] Failed to record mentions:', err);
-        return false;
+    const ok = await redis.recordCounts(entries, BUCKET_TTL);
+    if (!ok) {
+        console.error('[SpikeDetector] Redis unavailable — cannot record mentions');
     }
+    return ok;
 }
 
 async function getTickerStats(ticker: string): Promise<{
@@ -67,30 +57,24 @@ async function getTickerStats(ticker: string): Promise<{
     baselineAvg: number;
     totalBucketsWithData: number;
 } | null> {
-    const client = redis.getClient();
-    if (!client) return null;
-
     const currentBucket = getBucketTs();
 
     try {
-        const pipeline = client.pipeline();
-        // Current bucket
-        pipeline.get(bucketKey(ticker, currentBucket));
-        // Past 96 buckets (24h)
+        // Current bucket + past 96 buckets (24h), fetched in a single MGET.
+        const keys = [bucketKey(ticker, currentBucket)];
         for (let i = 1; i <= WINDOW_BUCKETS; i++) {
-            pipeline.get(bucketKey(ticker, currentBucket - i * BUCKET_MS));
+            keys.push(bucketKey(ticker, currentBucket - i * BUCKET_MS));
         }
-        const results = await pipeline.exec();
-        if (!results) return null;
+        const results = await redis.mget(keys);
 
-        const current = parseInt((results[0]?.[1] as string) || '0', 10);
+        const current = parseInt(results[0] || '0', 10);
 
         // Include ALL past buckets (including zeros) for accurate baseline.
         // But track how many buckets had any data to detect cold start.
         let total = 0;
         let bucketsWithData = 0;
         for (let i = 1; i <= WINDOW_BUCKETS; i++) {
-            const val = parseInt((results[i]?.[1] as string) || '0', 10);
+            const val = parseInt(results[i] || '0', 10);
             total += val;
             if (val > 0) bucketsWithData++;
         }
@@ -108,16 +92,9 @@ async function getTickerStats(ticker: string): Promise<{
 // Atomic cooldown: SET NX returns true only if key didn't exist.
 // This prevents race conditions between check and set.
 async function trySetCooldown(ticker: string): Promise<boolean> {
-    const client = redis.getClient();
-    if (!client) return false;
-
-    try {
-        // SET key value EX ttl NX — only sets if key doesn't exist
-        const result = await client.set(`spike:cooldown:${ticker}`, '1', 'EX', COOLDOWN_TTL, 'NX');
-        return result === 'OK'; // true = we set it (no prior cooldown), false = already cooling down
-    } catch {
-        return false;
-    }
+    // true = we set it (no prior cooldown); false = already cooling down or Redis down
+    const result = await redis.setNx(`spike:cooldown:${ticker}`, '1', COOLDOWN_TTL);
+    return result === true;
 }
 
 // ─── Main Scan ───────────────────────────────────────────────────────

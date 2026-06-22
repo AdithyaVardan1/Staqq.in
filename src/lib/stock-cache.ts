@@ -92,13 +92,8 @@ class StockCache {
         this.memoryCache.clear();
         if (fs.existsSync(CACHE_FILE)) fs.unlinkSync(CACHE_FILE);
 
-        const client = redis.getClient();
-        if (client) {
-            try {
-                const keys = await client.keys('stock_cache:*');
-                if (keys.length > 0) await client.del(...keys);
-            } catch (e) { }
-        }
+        const keys = await redis.keys('stock_cache:*');
+        if (keys.length > 0) await redis.delMany(keys);
     }
 }
 

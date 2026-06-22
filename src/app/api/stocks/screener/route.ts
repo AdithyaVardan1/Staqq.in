@@ -44,14 +44,9 @@ function matchesSector(filterValue: string, stockSector: string): boolean {
 // Prevents multiple concurrent cold-cache fetches for the same batch.
 // Returns true if lock was acquired, false if someone else already holds it.
 async function acquireLock(key: string): Promise<boolean> {
-    const client = redis.getClient();
-    if (!client) return true; // Redis down → allow fetch (no protection, but works)
-    try {
-        const result = await client.set(`lock:${key}`, '1', 'EX', FETCH_LOCK_TTL, 'NX');
-        return result === 'OK';
-    } catch {
-        return true; // fail open
-    }
+    const result = await redis.setNx(`lock:${key}`, '1', FETCH_LOCK_TTL);
+    // null = Redis unavailable → fail open (allow fetch, no protection)
+    return result ?? true;
 }
 
 async function releaseLock(key: string) {
@@ -64,12 +59,8 @@ async function waitForLock(key: string): Promise<void> {
     const poll = 300;
     let waited = 0;
     while (waited < maxWait) {
-        const client = redis.getClient();
-        if (!client) return;
-        try {
-            const held = await client.exists(`lock:${key}`);
-            if (!held) return;
-        } catch { return; }
+        const held = await redis.exists(`lock:${key}`);
+        if (!held) return; // released, or Redis unavailable → stop waiting
         await new Promise(r => setTimeout(r, poll));
         waited += poll;
     }

@@ -18,31 +18,16 @@ export class SessionManager {
      * Returns the count of unique users active in the last N minutes.
      */
     async getActiveUserCount(minutes: number = 15): Promise<number> {
-        const client = redis.getClient();
-        if (!client) return 0;
-        // zcount is read-only safe, but better to wrap if we strictly want no crashes.
-        // For now, raw access for zcount is okay as it's less critical, 
-        // OR we can add zcount to redis.ts. Let's stick to safe access pattern where possible.
-        // Actually, let's just try/catch here to be ultra safe if we use raw client.
-        try {
-            const now = Date.now();
-            const cutoff = now - (minutes * 60 * 1000);
-            return await client.zcount(ACTIVE_USERS_KEY, cutoff, '+inf');
-        } catch (e) {
-            return 0;
-        }
+        const cutoff = Date.now() - (minutes * 60 * 1000);
+        return redis.zcount(ACTIVE_USERS_KEY, cutoff, '+inf');
     }
 
     /**
      * Cleans up users inactive for more than 1 hour (maintenance)
      */
     async cleanupInactiveUsers() {
-        const client = redis.getClient();
-        if (!client) return;
-        try {
-            const oneHourAgo = Date.now() - (60 * 60 * 1000);
-            await client.zremrangebyscore(ACTIVE_USERS_KEY, '-inf', oneHourAgo);
-        } catch (e) { }
+        const oneHourAgo = Date.now() - (60 * 60 * 1000);
+        await redis.zremrangebyscore(ACTIVE_USERS_KEY, '-inf', oneHourAgo);
     }
 
     /**
