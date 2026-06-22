@@ -41,12 +41,12 @@
   --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
   /* Spacing */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  --spacing-2xl: 3rem;
+  --spacing-xl: 2.5rem;
+  --spacing-2xl: 4rem;
 
   /* Animation */
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -55,12 +55,15 @@
 html {
   font-size: 90%;
   /* Scale down UI to match 90% zoom preference */
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -70,6 +73,22 @@ body {
   overflow-x: hidden;
   scrollbar-gutter: stable;
   -webkit-font-smoothing: antialiased;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom)); /* Dynamic buffer for BottomNav */
+  }
+  
+  button, a {
+    min-height: 44px; /* Standard Apple/Google recommendation */
+    touch-action: manipulation;
+  }
+  
+  .container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
 }
 
 h1,

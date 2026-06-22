@@ -202,7 +202,16 @@
 }
 
 @media (max-width: 640px) {
-    .title { font-size: 1.7rem; }
+    .layout { padding-top: 80px; }
+    .title { 
+        font-size: 2.2rem; 
+        letter-spacing: -0.04em; 
+        line-height: 1.0; 
+        margin-bottom: 0.75rem; 
+    }
+    .subtitle { font-size: 0.9rem; line-height: 1.5; opacity: 0.6; }
+    .pageHeader { gap: 16px; padding-bottom: 24px; margin-bottom: 24px; border-bottom-color: rgba(255,255,255,0.06); }
+    .headerBadge { display: none; } /* Hide small badge on mobile to reduce clutter */
     .headerRight { display: none; }
-    .navWrapper { overflow-x: auto; }
+    .navWrapper { margin-bottom: 20px; }
 }

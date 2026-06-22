@@ -101,11 +101,16 @@
 
 .name {
     font-size: 1rem;
+    font-weight: 700;
     line-height: 1.2;
-    max-width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+    .name { max-width: 140px; font-size: 0.95rem; }
+    .logoPlaceholder { width: 36px; height: 36px; font-size: 0.85rem; }
 }
 
 .dates {
@@ -152,8 +157,14 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm) var(--spacing-md);
     background: rgba(255, 255, 255, 0.03);
-    padding: var(--spacing-sm);
-    border-radius: 8px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: 12px;
+}
+
+@media (max-width: 640px) {
+    .body { gap: var(--spacing-sm); padding: var(--spacing-sm); }
+    .value { font-size: 0.82rem; }
+    .gmpValue { font-size: 0.8rem; }
 }
 
 .label {

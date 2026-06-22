@@ -1,0 +1,198 @@
+.bottomNav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(24px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 1000;
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+    .bottomNav {
+        display: none;
+    }
+}
+
+.inner {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    height: 64px;
+    padding: 0 4px;
+}
+
+.navItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--text-muted);
+    gap: 2px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.active .label {
+    color: var(--primary-brand);
+}
+
+.label {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/* More Menu Overlay */
+.menuOverlay {
+    position: absolute;
+    bottom: 84px;
+    left: 12px;
+    right: 12px;
+    background: rgba(18, 18, 18, 0.98);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    z-index: -1;
+}
+
+.menuHeader {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.upgradeBtn {
+    font-size: 0.7rem !important;
+    padding: 0 12px !important;
+    height: 28px !important;
+    border-color: rgba(202, 255, 0, 0.3) !important;
+    color: var(--primary-brand) !important;
+}
+
+.menuHeader h3 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.menuGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.menuSectionTitle {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.menuItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.menuItem:active {
+    transform: scale(0.98);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.menuIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(202, 255, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-brand);
+}
+
+.menuLabel {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.iconWrapper {
+    transition: transform 0.2s ease;
+}
+
+.active {
+    color: var(--primary-brand);
+}
+
+.active .iconWrapper {
+    transform: translateY(-2px);
+    color: var(--primary-brand);
+}
+
+.active .label {
+    color: var(--primary-brand);
+}
+
+/* Search Floating Action Button */
+.searchFab {
+    position: fixed;
+    bottom: 84px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: var(--primary-brand);
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    box-shadow: 0 8px 24px rgba(202, 255, 0, 0.3);
+    z-index: 999;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.searchFab:active {
+    transform: scale(0.9) rotate(5deg);
+}
+
+@media (min-width: 768px) {
+    .searchFab {
+        display: none;
+    }
+}
+
+/* Special styling for signals/intel if needed */
+:global(.themeViolet) .active {
+    color: var(--secondary-brand);
+}
+
+:global(.themeViolet) .searchFab {
+    background: var(--secondary-brand);
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+}

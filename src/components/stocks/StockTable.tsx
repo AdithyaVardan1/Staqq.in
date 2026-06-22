@@ -18,6 +18,9 @@ export const StockTable: React.FC<StockTableProps> = ({ stocks }) => {
 
     return (
         <div className={styles.container}>
+            <div className={styles.scrollHint}>
+                <ChevronRight size={14} /> Swipe to see more
+            </div>
             <table className={styles.table}>
                 <thead>
                     <tr>

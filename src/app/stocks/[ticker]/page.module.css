@@ -74,6 +74,21 @@
     margin-bottom: var(--spacing-lg);
     position: relative;
     z-index: 1;
+    gap: 12px;
+}
+
+@media (max-width: 640px) {
+    .navBar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .actions {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        scrollbar-width: none;
+    }
+    .actions::-webkit-scrollbar { display: none; }
 }
 
 .backLink {
@@ -119,6 +134,14 @@
     z-index: 1;
     animation: heroFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0s both,
                borderGlow 6s ease-in-out 1s infinite;
+}
+
+@media (max-width: 768px) {
+    .headerSection {
+        padding: 1.5rem;
+        border-radius: 16px;
+        margin-bottom: var(--spacing-lg);
+    }
 }
 
 .headerSection::before {
@@ -229,6 +252,16 @@
     gap: 6px;
     font-weight: 700;
     font-size: 1.25rem;
+}
+
+@media (max-width: 640px) {
+    .nameRow { gap: 12px; margin-bottom: 1rem; }
+    .logoAndTitle { gap: 12px; }
+    .title { font-size: 1.5rem; }
+    .priceRow { gap: 12px; }
+    .price { font-size: 1.8rem; }
+    .change { font-size: 1rem; }
+    .tickerBadge { display: none; }
 }
 
 /* Chart Card */

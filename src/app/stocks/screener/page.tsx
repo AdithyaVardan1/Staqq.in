@@ -12,6 +12,7 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { useDebounce } from '@/hooks/useDebounce';
 import { LayoutGrid, List, ArrowUpDown, Loader2, AlertCircle, Activity, SlidersHorizontal } from 'lucide-react';
 import clsx from 'clsx';
+import { MobileFilters } from './MobileFilters';
 import styles from './page.module.css';
 
 interface Stock {
@@ -304,9 +305,18 @@ export default function StockScreener() {
                     {/* Results */}
                     <div className={styles.results}>
                         <div className={styles.toolbar}>
-                            {total > 0 && !isLoading && (
-                                <span className={styles.resultCount}>{total} stocks</span>
-                            )}
+                            <div className={styles.toolbarLeft}>
+                                {total > 0 && !isLoading && (
+                                    <span className={styles.resultCount}>{total} stocks</span>
+                                )}
+                                <MobileFilters 
+                                    filters={filters} 
+                                    setFilters={setFilters} 
+                                    activeFilterCount={activeFilterCount}
+                                    initialFilters={INITIAL_FILTERS}
+                                    sectors={SECTORS}
+                                />
+                            </div>
                             <div className={styles.toolbarRight}>
                                 {/* Sort */}
                                 <div className={styles.sortWrap}>

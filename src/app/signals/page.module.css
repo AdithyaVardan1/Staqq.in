@@ -28,15 +28,15 @@
 .spikeBanner {
     display: flex;
     align-items: center;
-    gap: 12px;
-    width: fit-content;
+    gap: 8px;
+    width: 100%;
     margin: 0 0 24px;
-    padding: 10px 20px;
+    padding: 12px 16px;
     background: rgba(10, 10, 10, 0.8);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border: 1px solid rgba(202, 255, 0, 0.18);
-    border-radius: 9999px;
+    border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 16px rgba(202, 255, 0, 0.04);
     flex-wrap: wrap;
     animation: heroFadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
@@ -200,4 +200,7 @@
         grid-auto-rows: auto;
     }
     .heroSlot { height: auto; }
+    .colHeader { margin-top: 1rem; }
+    .colCount { display: none; }
+    .spikeSetup { width: 100%; border-left: none; margin-left: 0; padding-left: 0; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
 }
