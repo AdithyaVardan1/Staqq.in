@@ -4,9 +4,10 @@
  * background jobs. Run once after setting up QStash, and again whenever the
  * schedule list below changes.
  *
- * Usage:
- *   QSTASH_TOKEN=xxxx node scripts/setup-qstash.mjs
- *   QSTASH_TOKEN=xxxx SITE_URL=https://www.staqq.in node scripts/setup-qstash.mjs
+ * Usage (use the token + URL from ONE QStash region — must match the signing
+ * keys set in Vercel):
+ *   QSTASH_TOKEN=xxxx QSTASH_URL=https://qstash-us-east-1.upstash.io node scripts/setup-qstash.mjs
+ *   # SITE_URL defaults to https://www.staqq.in
  *
  * QStash signs every request with your account signing keys, so the target
  * endpoints authenticate via verifyCronRequest() — no shared secret is sent.
@@ -15,7 +16,8 @@
 
 const TOKEN = process.env.QSTASH_TOKEN;
 const SITE_URL = (process.env.SITE_URL || 'https://www.staqq.in').replace(/\/$/, '');
-const QSTASH = 'https://qstash.upstash.io/v2/schedules';
+const QSTASH_BASE = (process.env.QSTASH_URL || 'https://qstash.upstash.io').replace(/\/$/, '');
+const QSTASH = `${QSTASH_BASE}/v2/schedules`;
 
 if (!TOKEN) {
     console.error('✗ QSTASH_TOKEN env var is required. Get it from the Upstash QStash dashboard.');
