@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { angelOne } from '@/lib/angelone';
 import { redis } from '@/lib/redis';
 import { cdnCache } from '@/lib/http-cache';
+import { getNifty500 } from '@/lib/nse';
 import { isMarketOpen, secondsUntilMarketOpen } from '@/utils/market-hours';
 
 const PRICE_CACHE_TTL_LIVE = 10; // 10s during market hours
@@ -54,10 +55,34 @@ export async function GET(req: NextRequest) {
             return NextResponse.json(result, { headers: cdnCache(PRICE_CDN_TTL) });
         }
 
+        // Single-quote endpoint returned nothing (Angel One sometimes leaves a lone
+        // token "unfetched"). Fall back to the cached NIFTY 500 universe, which gets
+        // prices via the batch endpoint that works reliably.
+        const fromUniverse = await priceFromUniverse(ticker);
+        if (fromUniverse) {
+            const ttl = isMarketOpen() ? PRICE_CACHE_TTL_LIVE : secondsUntilMarketOpen();
+            await redis.set(cacheKey, JSON.stringify(fromUniverse), ttl);
+            return NextResponse.json(fromUniverse, { headers: cdnCache(PRICE_CDN_TTL) });
+        }
+
         return NextResponse.json({ error: 'Price unavailable' }, { status: 503 });
 
     } catch (error: any) {
         console.error('[API/Price] Error:', error.message);
+        // Last resort before erroring: the cached universe
+        const fromUniverse = await priceFromUniverse(ticker);
+        if (fromUniverse) return NextResponse.json(fromUniverse, { headers: cdnCache(PRICE_CDN_TTL) });
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
+}
+
+async function priceFromUniverse(ticker: string) {
+    try {
+        const universe = await getNifty500();
+        const u = universe.find(s => s.symbol === ticker.toUpperCase());
+        if (u && u.price > 0) {
+            return { ticker, price: u.price, change: u.changeAmount, changePercent: u.change };
+        }
+    } catch { /* ignore */ }
+    return null;
 }
