@@ -175,6 +175,57 @@ export class YahooFinanceService {
         }
     }
 
+    /**
+     * Historical price series for charts. Free via Yahoo and not subject to
+     * Angel One's tight rate limits, so we offload all history here.
+     */
+    public async getChart(ticker: string, range: string): Promise<
+        { date: string; value: number; open: number; high: number; low: number; volume: number }[]
+    > {
+        const symbol = ticker.endsWith('.NS') || ticker.endsWith('.BO') ? ticker : `${ticker}.NS`;
+
+        // range -> { daysBack, interval } (Yahoo intraday: 5m ~60d, daily otherwise)
+        const CFG: Record<string, { daysBack: number; interval: string }> = {
+            '1D':  { daysBack: 2,    interval: '5m'  },
+            '1W':  { daysBack: 7,    interval: '30m' },
+            '1M':  { daysBack: 31,   interval: '1d'  },
+            '3M':  { daysBack: 93,   interval: '1d'  },
+            '6M':  { daysBack: 186,  interval: '1d'  },
+            '1Y':  { daysBack: 366,  interval: '1d'  },
+            '5Y':  { daysBack: 1825, interval: '1wk' },
+            'ALL': { daysBack: 3650, interval: '1mo' },
+        };
+        const { daysBack, interval } = CFG[range] || CFG['1M'];
+        const intraday = interval.endsWith('m') || interval.endsWith('h');
+
+        try {
+            const yf = await this.getClient();
+            const period1 = new Date(Date.now() - daysBack * 86400 * 1000);
+            const result: any = await yf.chart(symbol, { period1, interval });
+            const quotes: any[] = result?.quotes || [];
+
+            return quotes
+                .filter(q => q.close != null)
+                .map(q => {
+                    const d = new Date(q.date);
+                    const label = intraday
+                        ? d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false })
+                        : d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+                    return {
+                        date: label,
+                        value: q.close,
+                        open: q.open ?? q.close,
+                        high: q.high ?? q.close,
+                        low: q.low ?? q.close,
+                        volume: q.volume ?? 0,
+                    };
+                });
+        } catch (error: any) {
+            console.error(`[Yahoo] Chart error for ${symbol} (${range}):`, error.message);
+            return [];
+        }
+    }
+
     public async getBatchQuotes(tickers: string[]): Promise<Record<string, any>> {
         const results: Record<string, any> = {};
         const symbols = tickers.map(t => t.endsWith('.NS') ? t : `${t}.NS`);
