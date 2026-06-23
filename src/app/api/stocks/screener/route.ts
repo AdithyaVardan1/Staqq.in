@@ -250,10 +250,20 @@ export async function GET(request: Request) {
             for (const stock of chunk) {
                 const hit = await getPriceCached(stock.symbol);
                 if (hit) priceHits[stock.symbol] = hit;
+                // The universe (getNifty500) already carries live Angel One prices,
+                // which work even when the market is closed. Use them so the screener
+                // isn't empty on a cold cache outside market hours.
+                else if (stock.price > 0) {
+                    priceHits[stock.symbol] = {
+                        price: stock.price,
+                        change: stock.change,
+                        changeAmount: stock.changeAmount,
+                    };
+                }
                 else priceMisses.push(stock.symbol);
             }
 
-            // 2. Batch-fetch price misses from Angel One — only during market hours
+            // 2. Batch-fetch any still-missing prices from Angel One — only during market hours
             if (priceMisses.length > 0 && isMarketOpen()) {
                 const fresh = await fetchAngelOnePrices(priceMisses, tokensMap);
                 for (const [ticker, data] of Object.entries(fresh)) {

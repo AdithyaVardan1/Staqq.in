@@ -29,11 +29,9 @@ export async function GET(req: NextRequest) {
         } catch { /* fall through */ }
     }
 
-    // Market closed and nothing cached — nothing useful to fetch from Angel One
-    if (!marketOpen) {
-        return NextResponse.json({ error: 'Market closed, no cached price available' }, { status: 503 });
-    }
-
+    // Nothing cached — fetch from Angel One. It returns the last close when the
+    // market is closed, so this works outside market hours too (and warms the
+    // cache until the next open).
     try {
         const instrument = await angelOne.findInstrument(ticker);
         if (!instrument) {
