@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { angelOne } from '@/lib/angelone';
 import { redis } from '@/lib/redis';
 import { cdnCache } from '@/lib/http-cache';
-import { getNifty500 } from '@/lib/nse';
+import { yahoo } from '@/lib/yahoo';
 import { isMarketOpen, secondsUntilMarketOpen } from '@/utils/market-hours';
 
 const PRICE_CACHE_TTL_LIVE = 10; // 10s during market hours
@@ -55,33 +55,39 @@ export async function GET(req: NextRequest) {
             return NextResponse.json(result, { headers: cdnCache(PRICE_CDN_TTL) });
         }
 
-        // Single-quote endpoint returned nothing (Angel One sometimes leaves a lone
-        // token "unfetched"). Fall back to the cached NIFTY 500 universe, which gets
-        // prices via the batch endpoint that works reliably.
-        const fromUniverse = await priceFromUniverse(ticker);
-        if (fromUniverse) {
+        // Angel One's single-quote endpoint often leaves a lone token "unfetched"
+        // (esp. when the screener's batches eat its rate budget). Fall back to
+        // Yahoo — free, reliable, ~15-min delayed — so the page always has a price.
+        const fromYahoo = await priceFromYahoo(ticker);
+        if (fromYahoo) {
             const ttl = isMarketOpen() ? PRICE_CACHE_TTL_LIVE : secondsUntilMarketOpen();
-            await redis.set(cacheKey, JSON.stringify(fromUniverse), ttl);
-            return NextResponse.json(fromUniverse, { headers: cdnCache(PRICE_CDN_TTL) });
+            await redis.set(cacheKey, JSON.stringify(fromYahoo), ttl);
+            return NextResponse.json(fromYahoo, { headers: cdnCache(PRICE_CDN_TTL) });
         }
 
         return NextResponse.json({ error: 'Price unavailable' }, { status: 503 });
 
     } catch (error: any) {
         console.error('[API/Price] Error:', error.message);
-        // Last resort before erroring: the cached universe
-        const fromUniverse = await priceFromUniverse(ticker);
-        if (fromUniverse) return NextResponse.json(fromUniverse, { headers: cdnCache(PRICE_CDN_TTL) });
+        // Last resort before erroring: Yahoo
+        const fromYahoo = await priceFromYahoo(ticker);
+        if (fromYahoo) return NextResponse.json(fromYahoo, { headers: cdnCache(PRICE_CDN_TTL) });
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
 
-async function priceFromUniverse(ticker: string) {
+async function priceFromYahoo(ticker: string) {
     try {
-        const universe = await getNifty500();
-        const u = universe.find(s => s.symbol === ticker.toUpperCase());
-        if (u && u.price > 0) {
-            return { ticker, price: u.price, change: u.changeAmount, changePercent: u.change };
+        const upper = ticker.toUpperCase();
+        const sym = upper.endsWith('.NS') || upper.endsWith('.BO') ? upper : `${upper}.NS`;
+        const q = await yahoo.getQuote(sym);
+        if (q?.regularMarketPrice) {
+            return {
+                ticker,
+                price: q.regularMarketPrice,
+                change: q.regularMarketChange ?? 0,
+                changePercent: q.regularMarketChangePercent ?? 0,
+            };
         }
     } catch { /* ignore */ }
     return null;
