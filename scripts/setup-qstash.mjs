@@ -24,11 +24,12 @@ if (!TOKEN) {
     process.exit(1);
 }
 
-// destination path -> cron (UTC)
+// destination path -> cron (UTC). Market hours 9:15–15:30 IST = 03:45–10:00 UTC.
 const SCHEDULES = [
-    { path: '/api/alerts/scan',   cron: '*/15 * * * *' }, // every 15 min — the alert promise
-    { path: '/api/morning-brief', cron: '0 2 * * 1-6'  }, // Mon–Sat 02:00 UTC
-    { path: '/api/blog/generate', cron: '0 4 * * *'    }, // daily 04:00 UTC
+    { path: '/api/stocks/refresh', cron: '*/2 3-10 * * 1-5' }, // live prices: every 2 min, weekdays, market hours
+    { path: '/api/alerts/scan',    cron: '*/15 * * * *'     }, // every 15 min — the alert promise
+    { path: '/api/morning-brief',  cron: '0 2 * * 1-6'      }, // Mon–Sat 02:00 UTC
+    { path: '/api/blog/generate',  cron: '0 4 * * *'        }, // daily 04:00 UTC
 ];
 
 const auth = { Authorization: `Bearer ${TOKEN}` };

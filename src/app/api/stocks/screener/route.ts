@@ -4,6 +4,7 @@ import { getTrendingTickers } from '@/lib/social';
 import { redis } from '@/lib/redis';
 import { angelOne } from '@/lib/angelone';
 import { yahoo } from '@/lib/yahoo';
+import { readSnapshot } from '@/lib/priceSnapshot';
 import { isMarketOpen, secondsUntilMarketOpen } from '@/utils/market-hours';
 import { cdnCache } from '@/lib/http-cache';
 
@@ -229,12 +230,11 @@ export async function GET(request: Request) {
         // Static NIFTY 500 list — always available, never empty, no Angel One dependency.
         const universe = getUniverseList();
 
-        // Instrument master is only needed for the (optional) Angel One live path.
-        // If it's unavailable we still price everything via Yahoo, so don't block.
-        const tokensMap = await angelOne.getInstrumentTokens().catch(() => null);
+        // Live prices come from the background-refreshed snapshot (1 read for the
+        // whole universe). Yahoo is only a fallback for symbols not yet in it.
+        const snapshot = await readSnapshot();
 
         // Depth-search: scan stocks starting at offset
-        // Strategy: try Angel One batch first; fallback to Yahoo per-ticker if AO returns nothing.
         const MAX_SCAN = 200;
         const CHUNK_SIZE = 20; // smaller chunks for faster iteration
         const matchedStocks: any[] = [];
@@ -244,39 +244,29 @@ export async function GET(request: Request) {
             const chunk = universe.slice(currentIdx, currentIdx + CHUNK_SIZE);
             if (chunk.length === 0) break;
 
-            // 1. Check per-ticker price cache first
+            // 1. Read prices from the live snapshot
             const priceMisses: string[] = [];
             const priceHits: Record<string, { price: number; change: number; changeAmount: number }> = {};
 
             for (const stock of chunk) {
-                const hit = await getPriceCached(stock.symbol);
-                if (hit) priceHits[stock.symbol] = hit;
+                const p = snapshot?.data[stock.symbol];
+                if (p && p.price > 0) {
+                    priceHits[stock.symbol] = { price: p.price, change: p.change, changeAmount: p.changeAmount };
+                }
                 else priceMisses.push(stock.symbol);
             }
 
-            // 2. During market hours, try Angel One batch first for live prices
-            if (priceMisses.length > 0 && isMarketOpen() && tokensMap) {
-                const fresh = await fetchAngelOnePrices(priceMisses, tokensMap);
-                for (const [ticker, data] of Object.entries(fresh)) {
-                    priceHits[ticker] = data;
-                    await storePriceCache(ticker, data);
-                }
-            }
-
-            // 3. Yahoo batch for anything still missing — reliable, works any time
-            //    (this is what keeps the screener populated when Angel One throttles)
-            const stillMissing = priceMisses.filter(t => !priceHits[t]);
-            if (stillMissing.length > 0) {
-                const yq = await yahoo.getBatchQuotes(stillMissing);
+            // 2. Yahoo batch for anything the snapshot doesn't have yet (e.g. before
+            //    the first refresh has run) — keeps the screener populated regardless.
+            if (priceMisses.length > 0) {
+                const yq = await yahoo.getBatchQuotes(priceMisses);
                 for (const [t, q] of Object.entries(yq)) {
                     if (q.currentPrice > 0) {
-                        const data = {
+                        priceHits[t] = {
                             price: q.currentPrice,
                             change: q.regularMarketChangePercent,
                             changeAmount: q.regularMarketChange,
                         };
-                        priceHits[t] = data;
-                        await storePriceCache(t, data);
                     }
                 }
             }
@@ -287,7 +277,7 @@ export async function GET(request: Request) {
             console.log(`[Screener Chunk] Found ${stocksWithPrice.length} stocks with price out of ${chunk.length}`);
 
             const fundamentalsArr = await Promise.allSettled(
-                stocksWithPrice.map(s => getFundamentals(s.symbol, tokensMap))
+                stocksWithPrice.map(s => getFundamentals(s.symbol, null))
             );
 
             // 5. Build enriched stocks and apply filters

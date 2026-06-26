@@ -3,6 +3,7 @@ import { angelOne } from '@/lib/angelone';
 import { redis } from '@/lib/redis';
 import { cdnCache } from '@/lib/http-cache';
 import { yahoo } from '@/lib/yahoo';
+import { getSnapshotPrice } from '@/lib/priceSnapshot';
 import { isMarketOpen, secondsUntilMarketOpen } from '@/utils/market-hours';
 
 const PRICE_CACHE_TTL_LIVE = 10; // 10s during market hours
@@ -30,9 +31,18 @@ export async function GET(req: NextRequest) {
         } catch { /* fall through */ }
     }
 
-    // Nothing cached — fetch from Angel One. It returns the last close when the
-    // market is closed, so this works outside market hours too (and warms the
-    // cache until the next open).
+    // The background refresh keeps a live snapshot of the whole universe — read
+    // that before hitting any external API. This is the common, fast, reliable path.
+    const snap = await getSnapshotPrice(ticker);
+    if (snap) {
+        return NextResponse.json(
+            { ticker, price: snap.price, change: snap.changeAmount, changePercent: snap.change },
+            { headers: cdnCache(PRICE_CDN_TTL) },
+        );
+    }
+
+    // Snapshot miss (e.g. not in the universe, or before the first refresh) —
+    // fetch from Angel One directly, then Yahoo.
     try {
         const instrument = await angelOne.findInstrument(ticker);
         if (!instrument) {
