@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
-import { getNifty500 } from '@/lib/nse';
+import { getUniverseList } from '@/lib/nse';
 import { getTrendingTickers } from '@/lib/social';
 import { redis } from '@/lib/redis';
 import { angelOne } from '@/lib/angelone';
 import { yahoo } from '@/lib/yahoo';
 import { isMarketOpen, secondsUntilMarketOpen } from '@/utils/market-hours';
 import { cdnCache } from '@/lib/http-cache';
+
+export const maxDuration = 60; // Yahoo batch pricing can take a few seconds on a cold cache
 
 // ffmc thresholds in rupees (NSE classification)
 const LARGE_CAP = 200_000_000_000; // ₹20,000 Cr+
@@ -66,7 +68,7 @@ async function waitForLock(key: string): Promise<void> {
     }
 }
 
-async function getFundamentals(ticker: string, tokensMap: Map<string, any>): Promise<{
+async function getFundamentals(ticker: string, tokensMap: Map<string, any> | null): Promise<{
     marketCap: number; peRatio: number; sector: string; return1Y: number;
 } | null> {
     const key = `screener:fundamentals:${ticker}`;
@@ -84,7 +86,7 @@ async function getFundamentals(ticker: string, tokensMap: Map<string, any>): Pro
 
         // 2. Try Angel One for more accurate 1Y performance if available
         try {
-            const instrument = tokensMap.get(`NSE:${ticker}-EQ`);
+            const instrument = tokensMap?.get(`NSE:${ticker}-EQ`);
             if (instrument) {
                 const angelRes = await angelOne.getFundamentalData('NSE', String(instrument.token));
                 if (angelRes?.status && angelRes.data?.PricePerformance?.['1Year']) {
@@ -224,13 +226,12 @@ export async function GET(request: Request) {
         const mcap      = searchParams.get('mcap') || 'all'; // all | large | mid | small
         const return1Y  = searchParams.get('return1Y') || 'all'; // all | positive | top10 | top30
 
-        const universe = await getNifty500();
+        // Static NIFTY 500 list — always available, never empty, no Angel One dependency.
+        const universe = getUniverseList();
 
-        // Load instrument master (cached in file + memory, 24h TTL)
-        const tokensMap = await angelOne.getInstrumentTokens();
-        if (!tokensMap || tokensMap.size === 0) {
-            return NextResponse.json({ error: 'Instrument list unavailable' }, { status: 503 });
-        }
+        // Instrument master is only needed for the (optional) Angel One live path.
+        // If it's unavailable we still price everything via Yahoo, so don't block.
+        const tokensMap = await angelOne.getInstrumentTokens().catch(() => null);
 
         // Depth-search: scan stocks starting at offset
         // Strategy: try Angel One batch first; fallback to Yahoo per-ticker if AO returns nothing.
@@ -250,42 +251,32 @@ export async function GET(request: Request) {
             for (const stock of chunk) {
                 const hit = await getPriceCached(stock.symbol);
                 if (hit) priceHits[stock.symbol] = hit;
-                // The universe (getNifty500) already carries live Angel One prices,
-                // which work even when the market is closed. Use them so the screener
-                // isn't empty on a cold cache outside market hours.
-                else if (stock.price > 0) {
-                    priceHits[stock.symbol] = {
-                        price: stock.price,
-                        change: stock.change,
-                        changeAmount: stock.changeAmount,
-                    };
-                }
                 else priceMisses.push(stock.symbol);
             }
 
-            // 2. Batch-fetch any still-missing prices from Angel One — only during market hours
-            if (priceMisses.length > 0 && isMarketOpen()) {
+            // 2. During market hours, try Angel One batch first for live prices
+            if (priceMisses.length > 0 && isMarketOpen() && tokensMap) {
                 const fresh = await fetchAngelOnePrices(priceMisses, tokensMap);
                 for (const [ticker, data] of Object.entries(fresh)) {
                     priceHits[ticker] = data;
                     await storePriceCache(ticker, data);
                 }
+            }
 
-                // 3. Yahoo fallback for anything Angel One missed
-                const angelMisses = priceMisses.filter(t => !priceHits[t]);
-                if (angelMisses.length > 0) {
-                    // Fetch in parallel but cap concurrency at 5 to avoid rate limiting
-                    const CONCURRENCY = 5;
-                    for (let i = 0; i < angelMisses.length; i += CONCURRENCY) {
-                        const batch = angelMisses.slice(i, i + CONCURRENCY);
-                        const results = await Promise.allSettled(
-                            batch.map(t => getYahooPriceFallback(t))
-                        );
-                        results.forEach((r, idx) => {
-                            if (r.status === 'fulfilled' && r.value) {
-                                priceHits[batch[idx]] = r.value;
-                            }
-                        });
+            // 3. Yahoo batch for anything still missing — reliable, works any time
+            //    (this is what keeps the screener populated when Angel One throttles)
+            const stillMissing = priceMisses.filter(t => !priceHits[t]);
+            if (stillMissing.length > 0) {
+                const yq = await yahoo.getBatchQuotes(stillMissing);
+                for (const [t, q] of Object.entries(yq)) {
+                    if (q.currentPrice > 0) {
+                        const data = {
+                            price: q.currentPrice,
+                            change: q.regularMarketChangePercent,
+                            changeAmount: q.regularMarketChange,
+                        };
+                        priceHits[t] = data;
+                        await storePriceCache(t, data);
                     }
                 }
             }
@@ -312,7 +303,7 @@ export async function GET(request: Request) {
                 const marketCap = fundamentals?.marketCap || 0;
                 const peRatio = fundamentals?.peRatio || 0;
                 const stockSector = stock.sector || fundamentals?.sector || 'Unknown';
-                const return1YVal = stock.return1Y || fundamentals?.return1Y || 0;
+                const return1YVal = fundamentals?.return1Y || 0;
 
                 // Apply filters
                 if (price < priceMin || price > priceMax) continue;

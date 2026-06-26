@@ -12,8 +12,13 @@ import nifty500List from '@/data/nifty500.json';
 const DATA_TTL = 300;  // keep data in cache 5 minutes
 const FRESH_TTL = 55;  // background refresh triggers after 55s
 
-interface Constituent { symbol: string; name: string; sector: string; }
+export interface Constituent { symbol: string; name: string; sector: string; }
 const UNIVERSE = nifty500List as Constituent[];
+
+/** The static NIFTY 500 constituent list (always available, no network). */
+export function getUniverseList(): Constituent[] {
+    return UNIVERSE;
+}
 
 export interface NseStock {
     symbol: string;
