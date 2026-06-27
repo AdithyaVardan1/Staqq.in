@@ -56,3 +56,7 @@ next-env.d.ts
 
 # screenshots in root
 Screenshot*
+
+# personal notes / secrets — never commit
+secs.rtf
+*.rtf

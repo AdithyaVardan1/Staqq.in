@@ -1,0 +1,19 @@
+[Unit]
+Description=Staqq price worker (Angel One -> Upstash snapshot)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=deploy
+# Adjust to wherever the repo is cloned on the VPS:
+WorkingDirectory=/home/deploy/staqq
+ExecStart=/usr/bin/node --env-file=worker/.env worker/price-worker.mjs
+Restart=always
+RestartSec=10
+# Don't let a crash loop hammer Angel One:
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target
