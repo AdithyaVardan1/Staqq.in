@@ -16,10 +16,10 @@ const MID_CAP   =  50_000_000_000; // ₹5,000–20,000 Cr
 // Small cap = below MID_CAP
 
 // ── Fundamentals cache (P/E, market cap, sector) ─────────────────────
-// These don't change real-time — cache 24 hours in Redis.
+// These don't change real-time   cache 24 hours in Redis.
 const FUNDAMENTALS_TTL = 86400; // 24h
 const PRICE_TTL = 300;          // 5 minutes for real-time prices
-const FETCH_LOCK_TTL = 15;      // seconds — lock held while fetching a batch
+const FETCH_LOCK_TTL = 15;      // seconds   lock held while fetching a batch
 
 const SECTOR_MAP: Record<string, string[]> = {
     'Software': ['technology', 'software', 'it', 'digital', 'data', 'services'],
@@ -148,7 +148,7 @@ async function fetchAngelOnePrices(
     const acquired = await acquireLock(lockKey);
 
     if (!acquired) {
-        // Another request is already fetching this batch — wait, then read from cache
+        // Another request is already fetching this batch   wait, then read from cache
         await waitForLock(lockKey);
         const fromCache: Record<string, { price: number; change: number; changeAmount: number }> = {};
         for (const ticker of tickers) {
@@ -227,7 +227,7 @@ export async function GET(request: Request) {
         const mcap      = searchParams.get('mcap') || 'all'; // all | large | mid | small
         const return1Y  = searchParams.get('return1Y') || 'all'; // all | positive | top10 | top30
 
-        // Static NIFTY 500 list — always available, never empty, no Angel One dependency.
+        // Static NIFTY 500 list   always available, never empty, no Angel One dependency.
         const universe = getUniverseList();
 
         // Live prices come from the background-refreshed snapshot (1 read for the
@@ -257,7 +257,7 @@ export async function GET(request: Request) {
             }
 
             // 2. Yahoo batch for anything the snapshot doesn't have yet (e.g. before
-            //    the first refresh has run) — keeps the screener populated regardless.
+            //    the first refresh has run)   keeps the screener populated regardless.
             if (priceMisses.length > 0) {
                 const yq = await yahoo.getBatchQuotes(priceMisses);
                 for (const [t, q] of Object.entries(yq)) {

@@ -25,7 +25,7 @@ export default function SignalsLayout({ children }: { children: React.ReactNode 
                                     <span className={styles.accent}>before the market does.</span>
                                 </h1>
                                 <p className={styles.subtitle}>
-                                    Real-time news, social buzz, FII/DII flows, and insider activity — all in one place.
+                                    Real-time news, social buzz, FII/DII flows, and insider activity   all in one place.
                                 </p>
                             </div>
 

@@ -58,7 +58,7 @@
     animation: glowBreathViolet 10s ease-in-out 1s infinite;
 }
 
-/* ── Container — matches global .container (1280px / 1rem) ── */
+/* ── Container   matches global .container (1280px / 1rem) ── */
 .container {
     max-width: 1280px;
     margin: 0 auto;
@@ -67,7 +67,7 @@
     z-index: 1;
 }
 
-/* ── Page Header — two-column feature layout ── */
+/* ── Page Header   two-column feature layout ── */
 .pageHeader {
     display: flex;
     align-items: flex-end;
@@ -179,7 +179,7 @@
     font-weight: 500;
 }
 
-/* ── Nav wrapper — left-aligned under header ── */
+/* ── Nav wrapper   left-aligned under header ── */
 .navWrapper {
     display: flex;
     justify-content: flex-start;

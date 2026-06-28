@@ -166,13 +166,13 @@
     margin-left: auto;
 }
 
-/* Hero card slot — full width */
+/* Hero card slot   full width */
 .heroSlot {
     height: 260px;
     margin-bottom: 14px;
 }
 
-/* News grid — 4 columns */
+/* News grid   4 columns */
 .newsGrid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

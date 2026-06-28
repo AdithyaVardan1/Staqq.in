@@ -6,9 +6,9 @@ import { Redis } from '@upstash/redis';
 // functions (TCP clients exhaust connection limits under load).
 //
 // Two layers:
-//   L1 — in-memory per warm instance (shields the REST layer from repeat reads
+//   L1   in-memory per warm instance (shields the REST layer from repeat reads
 //        and keeps us well under Upstash's free command budget)
-//   L2 — Upstash over REST, shared across all instances
+//   L2   Upstash over REST, shared across all instances
 //
 // Everything fails soft: if UPSTASH_REDIS_REST_URL/TOKEN aren't set (or a call
 // errors), reads fall back to the in-memory store and the app keeps working.

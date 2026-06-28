@@ -20,12 +20,12 @@ export async function generateMetadata(): Promise<Metadata> {
     const isBullish = data.totalNet >= 0;
     const direction = isBullish ? 'Net Buying' : 'Net Selling';
     const netDisplay = `${isBullish ? '+' : ''}₹${Math.abs(data.totalNet).toLocaleString('en-IN')} Cr`;
-    const title = `FII/DII Flows — ${direction} ${netDisplay}`;
-    const description = `FII Net: ₹${data.fii.net.toLocaleString('en-IN')} Cr | DII Net: ₹${data.dii.net.toLocaleString('en-IN')} Cr — ${data.date}`;
+    const title = `FII/DII Flows   ${direction} ${netDisplay}`;
+    const description = `FII Net: ₹${data.fii.net.toLocaleString('en-IN')} Cr | DII Net: ₹${data.dii.net.toLocaleString('en-IN')} Cr   ${data.date}`;
 
     const ogParams = new URLSearchParams({
         type: 'fii-dii',
-        title: `FII/DII Flows — ${direction}`,
+        title: `FII/DII Flows   ${direction}`,
         value: netDisplay,
         direction: isBullish ? 'bullish' : 'bearish',
         d1: `FII Net:₹${data.fii.net.toLocaleString('en-IN')} Cr`,

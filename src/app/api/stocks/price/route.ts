@@ -25,13 +25,13 @@ export async function GET(req: NextRequest) {
     if (cached) {
         try {
             const parsed = JSON.parse(cached);
-            // Market is closed — cached closing price is the right answer, no need to hit Angel One
+            // Market is closed   cached closing price is the right answer, no need to hit Angel One
             if (!marketOpen) return NextResponse.json({ ...parsed, marketClosed: true }, { headers: cdnCache(300) });
             return NextResponse.json(parsed, { headers: cdnCache(PRICE_CDN_TTL) });
         } catch { /* fall through */ }
     }
 
-    // The background refresh keeps a live snapshot of the whole universe — read
+    // The background refresh keeps a live snapshot of the whole universe   read
     // that before hitting any external API. This is the common, fast, reliable path.
     const snap = await getSnapshotPrice(ticker);
     if (snap) {
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
         );
     }
 
-    // Snapshot miss (e.g. not in the universe, or before the first refresh) —
+    // Snapshot miss (e.g. not in the universe, or before the first refresh)  
     // fetch from Angel One directly, then Yahoo.
     try {
         const instrument = await angelOne.findInstrument(ticker);
@@ -67,7 +67,7 @@ export async function GET(req: NextRequest) {
 
         // Angel One's single-quote endpoint often leaves a lone token "unfetched"
         // (esp. when the screener's batches eat its rate budget). Fall back to
-        // Yahoo — free, reliable, ~15-min delayed — so the page always has a price.
+        // Yahoo   free, reliable, ~15-min delayed   so the page always has a price.
         const fromYahoo = await priceFromYahoo(ticker);
         if (fromYahoo) {
             const ttl = isMarketOpen() ? PRICE_CACHE_TTL_LIVE : secondsUntilMarketOpen();

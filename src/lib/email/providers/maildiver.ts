@@ -4,7 +4,7 @@
  * Free tier: 5,000 emails/month, no daily limits.
  *
  * To switch to a different provider, create a new file in this directory
- * and update the EMAIL_PROVIDER env var — this file is the only thing that changes.
+ * and update the EMAIL_PROVIDER env var   this file is the only thing that changes.
  */
 
 import type { EmailProvider, SendEmailOptions, SendEmailResult } from '../types';
@@ -30,7 +30,7 @@ export class MailDiverProvider implements EmailProvider {
             html,
         };
 
-        // Attach files if present — MailDiver expects base64-encoded content
+        // Attach files if present   MailDiver expects base64-encoded content
         if (attachments && attachments.length > 0) {
             body.attachments = attachments.map((att) => ({
                 filename: att.filename,

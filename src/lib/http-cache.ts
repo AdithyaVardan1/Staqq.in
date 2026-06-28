@@ -4,7 +4,7 @@
  * Vercel's edge caches the response per-URL (including query string) for
  * `sMaxAge` seconds, then serves the stale copy for `swr` seconds while it
  * revalidates in the background. This keeps the common case off the serverless
- * function entirely — no invocation, no Supabase hit, no upstream API call —
+ * function entirely   no invocation, no Supabase hit, no upstream API call  
  * which is the single biggest lever on free tiers.
  *
  * Only use on responses that are identical for every user. Never on routes that

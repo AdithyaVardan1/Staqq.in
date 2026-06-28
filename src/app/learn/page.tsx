@@ -109,7 +109,7 @@ export default function LearnPage() {
             <span className={styles.accent}>Hub.</span>
           </h1>
           <p className={styles.subtitle}>
-            Built for Indian investors who want to actually understand markets — not just follow tips.
+            Built for Indian investors who want to actually understand markets   not just follow tips.
           </p>
         </div>
 
@@ -204,7 +204,7 @@ export default function LearnPage() {
         </motion.div>
       )}
 
-      {/* New user nudge — only on stocks tab */}
+      {/* New user nudge   only on stocks tab */}
       {isNewUser && activeTab === "stocks" && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -214,7 +214,7 @@ export default function LearnPage() {
           <Link href="/learn/beginner" className={styles.nudge}>
             <span className={styles.nudgeIcon}>👋</span>
             <span className={styles.nudgeText}>
-              New here? <strong>Absolute Beginner</strong> is the right place to start — 15 lessons, no prior knowledge needed.
+              New here? <strong>Absolute Beginner</strong> is the right place to start   15 lessons, no prior knowledge needed.
             </span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
@@ -232,7 +232,7 @@ export default function LearnPage() {
           <Link href="/learn/crypto-101" className={styles.nudge} style={{ "--nudge-accent": "#f7931a" } as React.CSSProperties}>
             <span className={styles.nudgeIcon}>₿</span>
             <span className={styles.nudgeText}>
-              New to crypto? <strong>Crypto 101</strong> starts from zero — no jargon, just the essentials.
+              New to crypto? <strong>Crypto 101</strong> starts from zero   no jargon, just the essentials.
             </span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />

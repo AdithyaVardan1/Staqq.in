@@ -235,11 +235,11 @@ export default function CryptoSignalsPage() {
                         <Lock size={18} className={styles.proBannerIcon} />
                         <div>
                             <strong>{lockedCount} signals are locked</strong>
-                            <span> — You're seeing signals from {DELAY_HOURS}+ hours ago. Pro users get them the moment they fire.</span>
+                            <span>   You're seeing signals from {DELAY_HOURS}+ hours ago. Pro users get them the moment they fire.</span>
                         </div>
                     </div>
                     <Link href="/pricing" className={styles.proBannerCta}>
-                        Go Pro — $19/mo
+                        Go Pro   $19/mo
                     </Link>
                 </div>
             )}

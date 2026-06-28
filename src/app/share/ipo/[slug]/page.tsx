@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     const sentiment = getGmpSentiment(ipo.gmpPercent);
     const gmpText = ipo.gmpPercent !== null ? `GMP ${ipo.gmpPercent >= 0 ? '+' : ''}${ipo.gmpPercent}%` : '';
-    const title = `${ipo.name} IPO ${gmpText} — ${sentiment.label}`;
-    const description = `${ipo.name} ${ipo.category} — ${gmpText}${ipo.subscription ? `, ${ipo.subscription} subscribed` : ''}${ipo.price ? `, ₹${ipo.price} issue price` : ''}. Real-time IPO intelligence on Staqq.`;
+    const title = `${ipo.name} IPO ${gmpText}   ${sentiment.label}`;
+    const description = `${ipo.name} ${ipo.category}   ${gmpText}${ipo.subscription ? `, ${ipo.subscription} subscribed` : ''}${ipo.price ? `, ₹${ipo.price} issue price` : ''}. Real-time IPO intelligence on Staqq.`;
 
     const ogParams = new URLSearchParams({
         name: ipo.name,

@@ -40,7 +40,7 @@ export default function IPOShareCard({ ipo }: IPOShareCardProps) {
             stats={stats.slice(0, 3)}
             glowColor={`${sentiment.color}30`}
             shareUrl={`/ipo/${ipo.slug}`}
-            shareText={`${ipo.name} IPO — GMP ${gmpDisplay} (${sentiment.label}) | Staqq`}
+            shareText={`${ipo.name} IPO   GMP ${gmpDisplay} (${sentiment.label}) | Staqq`}
         />
     );
 }

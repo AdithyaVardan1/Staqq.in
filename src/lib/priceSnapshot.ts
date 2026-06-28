@@ -3,13 +3,13 @@ import { redis } from './redis';
 // A single, continuously-refreshed snapshot of live prices for the whole NIFTY
 // 500 universe. A background job (/api/stocks/refresh, fired by QStash) writes
 // it every couple of minutes; the screener / price / trending routes only READ
-// it — so reads never depend on Angel One/Yahoo being up at request time.
+// it   so reads never depend on Angel One/Yahoo being up at request time.
 //
 // Stored as ONE Redis key (not per-ticker) so a refresh costs 1 write and a read
-// costs 1 command — keeping us well within Upstash's free budget.
+// costs 1 command   keeping us well within Upstash's free budget.
 
 const SNAPSHOT_KEY = 'stocks:snapshot';
-const SNAPSHOT_TTL = 6 * 60 * 60; // 6h — comfortably survives off-hours between refreshes
+const SNAPSHOT_TTL = 6 * 60 * 60; // 6h   comfortably survives off-hours between refreshes
 
 export interface PriceEntry {
     price: number;

@@ -38,7 +38,7 @@ export default function ShareableCard({
     const cardRef = useRef<HTMLDivElement>(null);
 
     const handleShare = useCallback(async () => {
-        const text = shareText || `${title}${bigValue ? ` — ${bigValue}` : ''} | Staqq`;
+        const text = shareText || `${title}${bigValue ? `   ${bigValue}` : ''} | Staqq`;
         const url = shareUrl || window.location.href;
 
         if (navigator.share) {

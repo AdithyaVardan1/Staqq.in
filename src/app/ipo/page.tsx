@@ -18,7 +18,7 @@ import styles from './page.module.css';
 export const revalidate = 300;
 
 export const metadata = {
-    title: 'IPO Hub | Staqq — Live GMP & IPO Intelligence',
+    title: 'IPO Hub | Staqq   Live GMP & IPO Intelligence',
     description: 'India\'s smartest IPO tracker. Live GMP, subscription data, performance analytics, and allotment probability for every IPO.',
     openGraph: {
         title: 'IPO Hub | Live GMP & Intelligence',
@@ -67,7 +67,7 @@ export default async function IPODashboard() {
                             </h1>
                             <p className={styles.subtitle}>
                                 Live GMP with sentiment scoring, subscription data, performance analytics,
-                                and allotment probability — updated every 5 minutes.
+                                and allotment probability   updated every 5 minutes.
                             </p>
                         </div>
 
@@ -117,13 +117,13 @@ export default async function IPODashboard() {
                     <div className={styles.explainStrip}>
                         <span className={styles.explainTitle}>New to IPOs?</span>
                         <div className={styles.explainItem}>
-                            <strong>GMP</strong> — the unofficial grey-market price, a rough hint of listing-day gains.
+                            <strong>GMP</strong>   the unofficial grey-market price, a rough hint of listing-day gains.
                         </div>
                         <div className={styles.explainItem}>
-                            <strong>Subscription</strong> — how many times the shares were applied for. Higher = more demand.
+                            <strong>Subscription</strong>   how many times the shares were applied for. Higher = more demand.
                         </div>
                         <div className={styles.explainItem}>
-                            <strong>Allotment odds</strong> — your rough chance of actually getting shares if you apply.
+                            <strong>Allotment odds</strong>   your rough chance of actually getting shares if you apply.
                         </div>
                     </div>
                 </IPOLinksAnimator>

@@ -197,11 +197,11 @@ async function loadTwitterPosts(): Promise<SocialPost[]> {
 }
 
 // ─── Market Pulse (AI summaries) ─────────────────────────────────────
-// summarize_reddit.py  — Reddit discussions → Groq → source='reddit'
-// summarize_news.py    — RSS articles → Groq      → source='news'
+// summarize_reddit.py    Reddit discussions → Groq → source='reddit'
+// summarize_news.py      RSS articles → Groq      → source='news'
 // Both write to `market_pulse`. Raw source content never hits the frontend.
 
-// Only the columns rowToPulse reads — the table also stores raw source content
+// Only the columns rowToPulse reads   the table also stores raw source content
 // (full Reddit threads / article text) that must never be shipped to the client.
 const PULSE_COLS = 'id, date, ticker, source, headline, summary, sentiment, sentiment_score, post_count, topics, created_at';
 

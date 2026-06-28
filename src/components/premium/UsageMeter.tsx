@@ -20,7 +20,7 @@ export const UsageMeter: React.FC<UsageMeterProps> = ({
     compact = false,
     className = '',
 }) => {
-    if (limit === -1) return null; // Unlimited — don't show meter
+    if (limit === -1) return null; // Unlimited   don't show meter
 
     const percentage = Math.min((current / limit) * 100, 100);
     const isNearLimit = percentage >= 80;

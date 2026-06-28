@@ -67,7 +67,7 @@ export default async function FiiDiiPage() {
                 'name': 'What is the difference between FII and DII in the stock market?',
                 'acceptedAnswer': {
                     '@type': 'Answer',
-                    'text': 'FII (Foreign Institutional Investors) are overseas entities like hedge funds and sovereign wealth funds investing in Indian markets. DII (Domestic Institutional Investors) include Indian mutual funds, insurance companies, and banks. They often act as counterweights — when FIIs sell, DIIs tend to buy, providing market stability.',
+                    'text': 'FII (Foreign Institutional Investors) are overseas entities like hedge funds and sovereign wealth funds investing in Indian markets. DII (Domestic Institutional Investors) include Indian mutual funds, insurance companies, and banks. They often act as counterweights   when FIIs sell, DIIs tend to buy, providing market stability.',
                 }
             },
             {
@@ -84,7 +84,7 @@ export default async function FiiDiiPage() {
     return (
         <main className={styles.main}>
             <DatasetStructuredData
-                name="FII DII Daily Institutional Flows — India"
+                name="FII DII Daily Institutional Flows   India"
                 description="Daily net buy/sell values of Foreign Institutional Investors (FII/FPI) and Domestic Institutional Investors (DII) in the Indian cash equity market. Sourced from NSE India."
                 url={`${BASE_URL}/signals/fii-dii`}
                 dateModified={new Date().toISOString()}
@@ -228,7 +228,7 @@ export default async function FiiDiiPage() {
                         <div style={{ animation: 'heroFadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both', animationDelay: '0.5s', marginTop: 24, padding: '16px 20px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12 }}>
                             <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: 8 }}>How to read this</div>
                             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>
-                                FII/FPI are global funds (BlackRock, Vanguard, sovereign funds). Their moves signal global risk appetite for India. DII includes mutual funds and insurance companies (LIC, SBI MF) — they typically buy when FII sells. When both are net buyers, it is broadly bullish. When FII sells and DII absorbs, the market holds steady. When both sell together, watch for corrections.
+                                FII/FPI are global funds (BlackRock, Vanguard, sovereign funds). Their moves signal global risk appetite for India. DII includes mutual funds and insurance companies (LIC, SBI MF)   they typically buy when FII sells. When both are net buyers, it is broadly bullish. When FII sells and DII absorbs, the market holds steady. When both sell together, watch for corrections.
                             </p>
                         </div>
 

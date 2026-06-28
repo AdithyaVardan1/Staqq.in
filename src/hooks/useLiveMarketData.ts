@@ -20,7 +20,7 @@ export function useLiveMarketData(
     useEffect(() => {
         if (!ticker) return;
 
-        // NSE is closed — no need to poll, just show the last known price
+        // NSE is closed   no need to poll, just show the last known price
         if (!isMarketOpen()) {
             setStatus('closed');
             return;

@@ -1,8 +1,8 @@
-# Staqq — Design System
+# Staqq   Design System
 
 ## Brand Identity
 
-**Product:** Staqq — a free investing education and exploration platform for young people worldwide, covering stocks, IPOs, and crypto. The Indian market (IPO GMP, NSE signals) is the starting depth, but the design and copy speak to any young investor globally. Clean, confident, modern. Feels like a terminal but approachable enough for a first-time investor anywhere in the world.
+**Product:** Staqq   a free investing education and exploration platform for young people worldwide, covering stocks, IPOs, and crypto. The Indian market (IPO GMP, NSE signals) is the starting depth, but the design and copy speak to any young investor globally. Clean, confident, modern. Feels like a terminal but approachable enough for a first-time investor anywhere in the world.
 
 **Tone:** Smart but not intimidating. Data-forward. Dark and premium without being cold. Think Bloomberg Terminal meets a consumer app made for Gen Z. No region-specific jargon in hero sections or global-facing pages. Data pages (IPO, FII/DII) can use Indian market context naturally.
 
@@ -55,8 +55,8 @@
 ## Typography
 
 ### Font Stack
-- **Display / Headings:** Outfit (Google Fonts) — weights 700, 800
-- **Body / UI:** Inter (Google Fonts) — weights 400, 500, 600
+- **Display / Headings:** Outfit (Google Fonts)   weights 700, 800
+- **Body / UI:** Inter (Google Fonts)   weights 400, 500, 600
 
 ### Scale
 | Role | Size | Weight | Font | Letter Spacing |
@@ -227,7 +227,7 @@ Style: outline (not filled)
 ### Data Tables / Grids
 - Row hover: `rgba(255,255,255,0.025)` background
 - Header: `#52525B` uppercase 0.65rem
-- Alternating subtle: avoid — use hover only
+- Alternating subtle: avoid   use hover only
 - Sticky header on scroll for long tables
 
 ### Score / Rating Display
@@ -246,7 +246,7 @@ Style: outline (not filled)
 
 - Short, direct sentences. No fluff.
 - Numbers and data points over adjectives ("127K liquidity" not "substantial liquidity")
-- No em dashes (—). Use periods or commas instead.
+- No em dashes ( ). Use periods or commas instead.
 - Avoid sounding corporate. Talk like a smart friend who knows markets.
 - CTAs: action-first ("Start Free", "View Signals", "Scan Token") not benefit-last ("Click here to get started")
 

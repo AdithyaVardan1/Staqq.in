@@ -11,7 +11,7 @@ const TOTP_SECRET = process.env.ANGEL_ONE_TOTP_SECRET!;
 const SESSION_KEY = 'angelone:session';
 const SESSION_TTL = 82800; // 23 hours (Angel One JWTs last ~24h)
 
-// Instrument master list cache — use /tmp so it survives across warm invocations
+// Instrument master list cache   use /tmp so it survives across warm invocations
 const CACHE_FILE = `${process.env.VERCEL ? '/tmp' : process.cwd()}/angelone_tokens.json`;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
@@ -54,7 +54,7 @@ export class AngelOneService {
     /**
      * Ensures a valid session exists. Checks Redis first to share across all
      * serverless instances, then re-authenticates only if needed.
-     * Protected against concurrent calls — only one auth happens at a time.
+     * Protected against concurrent calls   only one auth happens at a time.
      */
     public async ensureSession(): Promise<boolean> {
         // In-memory session still valid (warm invocation)
@@ -204,7 +204,7 @@ export class AngelOneService {
 
     /**
      * Batch fetch real-time quotes for up to 50 NSE tokens per call.
-     * Uses Angel One marketData FULL mode — returns ltp, netChange, percentChange, volume.
+     * Uses Angel One marketData FULL mode   returns ltp, netChange, percentChange, volume.
      * tokenToTicker: Map from symbolToken -> ticker symbol for result mapping.
      */
     public async batchMarketData(

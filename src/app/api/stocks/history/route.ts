@@ -7,7 +7,7 @@ import { yahoo } from '@/lib/yahoo';
 // One, whose getCandleData is rate-limited and flaky. Results are cached per
 // ticker+range; cold fetches are deduped so concurrent requests share one call.
 const CACHE_TTL: Record<string, number> = {
-    '1D':  5 * 60,          // 5 min  — intraday refreshes matter
+    '1D':  5 * 60,          // 5 min    intraday refreshes matter
     '1W':  15 * 60,         // 15 min
     '1M':  60 * 60,         // 1 hour
     '3M':  60 * 60,
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     const cacheKey = `history:${ticker}:${range}`;
     const cdnTtl = CACHE_TTL[range] ?? 3600;
 
-    // L1/L2 cache check — most requests end here
+    // L1/L2 cache check   most requests end here
     const cached = await redis.get(cacheKey);
     if (cached) {
         try { return NextResponse.json(JSON.parse(cached), { headers: cdnCache(cdnTtl) }); } catch { /* fall through */ }

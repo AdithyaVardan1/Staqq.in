@@ -119,7 +119,7 @@ export default function PricingPage() {
                     backdrop_color: '#0A0A0A',
                 },
                 handler: () => {
-                    // Payment successful — webhook will update DB
+                    // Payment successful   webhook will update DB
                     router.push('/profile?upgraded=true');
                 },
                 modal: {
@@ -152,7 +152,7 @@ export default function PricingPage() {
                 <section className={styles.hero}>
                     {BETA_UNLOCK_ALL && (
                         <div className={styles.betaBanner}>
-                            🎉 Everything&apos;s free during our beta — every Pro feature is unlocked, no payment needed.
+                            🎉 Everything&apos;s free during our beta   every Pro feature is unlocked, no payment needed.
                         </div>
                     )}
                     <h1 className={styles.heroTitle}>
@@ -238,7 +238,7 @@ export default function PricingPage() {
                         </ul>
                         {BETA_UNLOCK_ALL ? (
                             <Link href="/ipo" className={`${styles.planCta} ${styles.ctaFree}`}>
-                                Free during beta — explore now
+                                Free during beta   explore now
                             </Link>
                         ) : isPro ? (
                             <div className={`${styles.planCta} ${styles.ctaFree}`}>

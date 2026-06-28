@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const displayTicker = ticker.toUpperCase();
 
     const title = `${displayTicker} Stock Price & Analysis | Staqq`;
-    const description = `${displayTicker} — live stock price, fundamentals, shareholding pattern, and market analysis on Staqq. Track ${displayTicker} with institutional flow data and social sentiment.`;
+    const description = `${displayTicker}   live stock price, fundamentals, shareholding pattern, and market analysis on Staqq. Track ${displayTicker} with institutional flow data and social sentiment.`;
 
     const ogParams = new URLSearchParams({ ticker: displayTicker });
 

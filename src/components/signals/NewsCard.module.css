@@ -22,7 +22,7 @@
                 0 0 30px color-mix(in srgb, var(--accent, #caff00) 15%, transparent);
 }
 
-/* Dark background layer — sits behind inner content */
+/* Dark background layer   sits behind inner content */
 .bg {
     position: absolute;
     inset: 0;

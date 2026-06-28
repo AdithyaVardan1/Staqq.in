@@ -3,7 +3,7 @@ import { angelOne } from './angelone';
 import nifty500List from '@/data/nifty500.json';
 
 // The stock universe (which 500 names + their sectors) is static reference data
-// bundled in the repo — NSE's live index API blocks cloud IPs, so we no longer
+// bundled in the repo   NSE's live index API blocks cloud IPs, so we no longer
 // depend on it. Every live number (price, change, volume, 52-week range) comes
 // from Angel One, which is reliable from the server.
 //
@@ -94,13 +94,13 @@ export async function getNifty500(): Promise<NseStock[]> {
 
     if (cached) {
         if (!isFresh && !refreshPromise) {
-            // Stale — kick off background refresh, serve current data now
+            // Stale   kick off background refresh, serve current data now
             refreshPromise = fetchFromAngel().finally(() => { refreshPromise = null; });
         }
         try { return JSON.parse(cached); } catch { /* fall through to live fetch */ }
     }
 
-    // Cold start — wait for live data (only happens once per 5 minutes max)
+    // Cold start   wait for live data (only happens once per 5 minutes max)
     if (refreshPromise) return refreshPromise;
     refreshPromise = fetchFromAngel().finally(() => { refreshPromise = null; });
     return refreshPromise;

@@ -5,7 +5,7 @@ A single long-lived Node process that keeps the live price snapshot fresh.
 - Logs into Angel One **once**, holds the session.
 - Every 30s (market hours) / 10min (closed) fetches all 500 NIFTY prices
   (50/call, spaced to Angel One's 1 req/sec limit) and writes **one** snapshot
-  to Upstash Redis — the same `stocks:snapshot` key the Vercel app reads.
+  to Upstash Redis   the same `stocks:snapshot` key the Vercel app reads.
 
 The Vercel app is unchanged; it just reads the snapshot. This recreates the
 "one persistent session + warm cache" setup that worked on a laptop, on a server.
@@ -25,7 +25,7 @@ cp worker/.env.example worker/.env
 nano worker/.env            # fill in Angel One + Upstash values
 chmod 600 worker/.env
 
-# 4. Smoke test — should print "500/500 priced" and write the snapshot
+# 4. Smoke test   should print "500/500 priced" and write the snapshot
 RUN_ONCE=1 node --env-file=worker/.env worker/price-worker.mjs
 
 # 5. Install the systemd service
@@ -41,7 +41,7 @@ journalctl -u staqq-price-worker -f
 
 ## Verify it's working
 - `journalctl -u staqq-price-worker -f` should log `wrote snapshot: 500/500 priced` every ~30s during market hours.
-- Hit the app: `curl https://www.staqq.in/api/stocks/price?ticker=HDFCBANK` — fresh price, served from the snapshot.
+- Hit the app: `curl https://www.staqq.in/api/stocks/price?ticker=HDFCBANK`   fresh price, served from the snapshot.
 
 ## Update / restart
 ```bash
@@ -51,7 +51,7 @@ sudo systemctl restart staqq-price-worker
 
 ## Notes
 - Once this worker is live, the QStash `/api/stocks/refresh` schedule is
-  redundant — you can delete that one schedule (keep the others). The Vercel
+  redundant   you can delete that one schedule (keep the others). The Vercel
   `/api/stocks/refresh` endpoint can stay as a manual/backup trigger.
 - The worker only makes **outbound** connections, so no inbound firewall ports
   are needed.

@@ -46,7 +46,7 @@ export class UniOneProvider implements EmailProvider {
             for (const att of attachments) {
                 const base64 = att.content.toString('base64');
                 if (att.contentId) {
-                    // Inline CID attachment — referenced in HTML as <img src="cid:...">
+                    // Inline CID attachment   referenced in HTML as <img src="cid:...">
                     inlineAttachments.push({
                         type: att.contentType ?? 'application/octet-stream',
                         name: att.contentId, // must match the cid: reference in HTML

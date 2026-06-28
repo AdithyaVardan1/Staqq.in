@@ -69,7 +69,7 @@ export async function fetchInsiderTrades(days = 7): Promise<InsiderTrade[]> {
             }))
             .filter(t => t.symbol && t.personName)
             .sort((a, b) => {
-                // Dates come as DD-MM-YYYY from NSE — convert for comparison
+                // Dates come as DD-MM-YYYY from NSE   convert for comparison
                 const toDate = (str: string) => {
                     const parts = str.split('-');
                     if (parts.length === 3) return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`).getTime();

@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
         // 1. Generate the morning brief
         const brief = await generateMorningBrief();
         const html = buildMorningBriefEmail(brief);
-        const subject = `Staqq Morning Brief — ${brief.date}`;
+        const subject = `Staqq Morning Brief   ${brief.date}`;
 
         // 2. Fetch all Pro subscribers with their email from profiles
         const supabase = createAdminClient();

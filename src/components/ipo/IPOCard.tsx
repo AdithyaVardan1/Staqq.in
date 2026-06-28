@@ -31,12 +31,12 @@ export const IPOCard: React.FC<IPOCardProps> = ({ ipo, showScore = false }) => {
     const statusVariant = isLive ? 'brand' : isUpcoming ? 'neutral' : 'outline';
 
     // Format price
-    const priceDisplay = (ipo.price !== null && !isNaN(ipo.price)) ? `₹${ipo.price}` : '—';
+    const priceDisplay = (ipo.price !== null && !isNaN(ipo.price)) ? `₹${ipo.price}` : ' ';
 
     // Format GMP
     const gmpDisplay = (ipo.gmp !== null && !isNaN(ipo.gmp))
         ? `${ipo.gmp >= 0 ? '+' : ''}₹${ipo.gmp}`
-        : '—';
+        : ' ';
     const gmpPctDisplay = (ipo.gmpPercent !== null && !isNaN(ipo.gmpPercent))
         ? `(${ipo.gmpPercent >= 0 ? '+' : ''}${ipo.gmpPercent}%)`
         : '';

@@ -113,8 +113,8 @@ interface RedditPost {
 }
 
 interface FetchedPosts {
-    recent: RedditPost[];  // from /new — actual fresh posts
-    baseline: RedditPost[]; // from /hot — popularity baseline
+    recent: RedditPost[];  // from /new   actual fresh posts
+    baseline: RedditPost[]; // from /hot   popularity baseline
 }
 
 async function fetchCryptoRedditPosts(): Promise<FetchedPosts> {
@@ -144,7 +144,7 @@ async function fetchCryptoRedditPosts(): Promise<FetchedPosts> {
     );
 
 
-    // Need to await properly — parse synchronously
+    // Need to await properly   parse synchronously
     const parseSync = async (results: PromiseSettledResult<Response>[], arr: RedditPost[], seen: Set<string>) => {
         for (const result of results) {
             if (result.status !== 'fulfilled') continue;
@@ -428,7 +428,7 @@ async function storeSignals(signals: Omit<CryptoSignal, 'id' | 'isLocked'>[]): P
 
     for (const signal of signals) {
         const detectedAt = new Date(signal.firstDetectedAt);
-        // signal_hour as "YYYY-MM-DD HH" — immutable string, safe for unique index
+        // signal_hour as "YYYY-MM-DD HH"   immutable string, safe for unique index
         const signalHour = `${detectedAt.getUTCFullYear()}-${String(detectedAt.getUTCMonth() + 1).padStart(2, '0')}-${String(detectedAt.getUTCDate()).padStart(2, '0')} ${String(detectedAt.getUTCHours()).padStart(2, '0')}`;
 
         await supabase.from('crypto_signals').upsert({
@@ -466,7 +466,7 @@ async function storeSignals(signals: Omit<CryptoSignal, 'id' | 'isLocked'>[]): P
  * isPro: if false, signals < 6h old are locked (delay wall).
  */
 export async function getCryptoSignals(isPro: boolean = false): Promise<CryptoSignal[]> {
-    // Always detect fresh signals — this is the primary source
+    // Always detect fresh signals   this is the primary source
     const freshSignals = await detectSignals();
 
     // Store to Supabase in background (for history/delay wall enforcement)

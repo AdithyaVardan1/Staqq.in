@@ -45,7 +45,7 @@ export const getMockFundamentals = (ticker: string) => {
             ticker: 'HDFCBANK.NS',
             description: 'HDFC Bank Limited is an Indian banking and financial services company headquartered in Mumbai.',
             sector: 'Financial Services',
-            industry: 'Banks—Diversified',
+            industry: 'Banks Diversified',
             marketCap: 9200000000000, // 9.2T
             peRatio: 18.4,
             pegRatio: 1.0,

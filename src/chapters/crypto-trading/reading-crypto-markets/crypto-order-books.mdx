@@ -10,13 +10,13 @@ On centralised exchanges, an order book records every buy and sell order waiting
 
 The order book has two sides:
 
-**Bids (buy orders)** — buyers waiting to purchase at or below a certain price
-**Asks (sell orders)** — sellers waiting to sell at or above a certain price
+**Bids (buy orders)**   buyers waiting to purchase at or below a certain price
+**Asks (sell orders)**   sellers waiting to sell at or above a certain price
 
-**Best bid** — highest price a buyer will pay right now
-**Best ask** — lowest price a seller will accept right now
+**Best bid**   highest price a buyer will pay right now
+**Best ask**   lowest price a seller will accept right now
 
-**Spread** — the gap between best bid and best ask
+**Spread**   the gap between best bid and best ask
 
 ## Example Order Book
 
@@ -55,21 +55,21 @@ If you place a **market buy order** for 1.8 BTC, you'll get filled at ₹51,200 
 
 Market depth (or "depth of market") shows cumulative bid and ask volume at each price level. A depth chart visualises this.
 
-**Deep market:** Large volume on both sides — hard to move price with one trade
-**Shallow market:** Thin volume — a large order can spike price significantly
+**Deep market:** Large volume on both sides   hard to move price with one trade
+**Shallow market:** Thin volume   a large order can spike price significantly
 
 For Indian traders: BTC and ETH pairs on CoinDCX/WazirX have reasonable depth. Smaller altcoins have very thin books.
 
 ## Reading the Order Book for Signals
 
-**Large buy wall (bid wall):** A cluster of buy orders at a particular price — can act as support. May also be spoofed.
+**Large buy wall (bid wall):** A cluster of buy orders at a particular price   can act as support. May also be spoofed.
 
-**Large sell wall (ask wall):** A cluster of sell orders — acts as resistance. Also can be spoofed.
+**Large sell wall (ask wall):** A cluster of sell orders   acts as resistance. Also can be spoofed.
 
-**Spoofing:** Placing a large order with no intention of filling it to influence price — then cancelling before execution. This is illegal in traditional markets but difficult to enforce in crypto.
+**Spoofing:** Placing a large order with no intention of filling it to influence price   then cancelling before execution. This is illegal in traditional markets but difficult to enforce in crypto.
 
 <InfoBox type="warning">
-  Order book analysis has significant limitations in crypto. Large orders are frequently spoofed (placed and cancelled to manipulate perception). On-chain markets (DEXes) don't have traditional order books — AMM pools serve a similar function but work very differently.
+  Order book analysis has significant limitations in crypto. Large orders are frequently spoofed (placed and cancelled to manipulate perception). On-chain markets (DEXes) don't have traditional order books   AMM pools serve a similar function but work very differently.
 </InfoBox>
 
 ## Slippage
@@ -101,5 +101,5 @@ Calculate expected slippage using the order book depth before placing large orde
   - Spread = best ask - best bid; tighter spread = more liquid market
   - Market depth shows available liquidity at each price level
   - Large bid/ask walls can indicate support/resistance but may be spoofed
-  - Large orders cause slippage — check depth before placing significant trades
+  - Large orders cause slippage   check depth before placing significant trades
 </InfoBox>

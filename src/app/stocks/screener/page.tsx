@@ -207,7 +207,7 @@ export default function StockScreener() {
 
     return (
         <main className={styles.main}>
-            {/* Animated background glows — same as landing page */}
+            {/* Animated background glows   same as landing page */}
             <div className={styles.heroGlow} />
             <div className={styles.heroGlowViolet} />
 

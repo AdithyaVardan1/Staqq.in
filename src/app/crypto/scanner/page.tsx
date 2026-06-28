@@ -314,7 +314,7 @@ function RugpullChecker() {
                 </section>
             )}
 
-            {/* How it works — shown before first result */}
+            {/* How it works   shown before first result */}
             {!result && !loading && (
                 <section className={styles.howItWorks}>
                     <h2 className={styles.howTitle}>What we check</h2>

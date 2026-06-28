@@ -63,7 +63,7 @@ export const useNotificationsStore = create<NotificationsState>((set, get) => ({
                 lastFetched: now,
             });
         } catch {
-            // Network error — keep existing state
+            // Network error   keep existing state
         } finally {
             set({ loading: false });
         }

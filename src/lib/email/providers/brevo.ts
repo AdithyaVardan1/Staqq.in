@@ -9,7 +9,7 @@
  * NOTE: Brevo's API does not support CID inline attachments.
  * The newsletter template handles this by embedding the header image as a base64 data URI
  * (via the optional `headerImageBase64` param in buildRobustNewsletter) and using the
- * public URL for the logo — so this adapter sends no attachments at all.
+ * public URL for the logo   so this adapter sends no attachments at all.
  */
 
 import type { EmailProvider, SendEmailOptions, SendEmailResult } from '../types';
@@ -37,7 +37,7 @@ export class BrevoProvider implements EmailProvider {
         const sender = parseFrom(from);
         const toList = (Array.isArray(to) ? to : [to]).map((email) => ({ email }));
 
-        // Build regular (non-inline) attachments only — Brevo doesn't support CID inline.
+        // Build regular (non-inline) attachments only   Brevo doesn't support CID inline.
         // The template already embeds the header as a data URI, so CID attachments are skipped.
         const regularAttachments = (attachments ?? [])
             .filter((att) => !att.contentId)

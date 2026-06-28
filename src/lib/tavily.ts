@@ -46,7 +46,7 @@ function cleanContent(content: string, title: string): string {
     if (sentences && sentences.length > 0) {
         summary = sentences.slice(0, 2).join(' ').trim();
     } else {
-        // No clear sentence found — just use the cleaned text
+        // No clear sentence found   just use the cleaned text
         summary = cleaned;
     }
 
@@ -91,7 +91,7 @@ function isRelevantNews(title: string): boolean {
     return true;
 }
 
-// Summarizer removed during cleanup — use raw content for now
+// Summarizer removed during cleanup   use raw content for now
 const summarizeArticle = async (_title: string, content: string) => content;
 
 async function searchNews(query: string, maxResults = 5): Promise<TavilySearchResult> {
@@ -114,7 +114,7 @@ async function searchNews(query: string, maxResults = 5): Promise<TavilySearchRe
             })
             .slice(0, maxResults);
 
-        // Summarize each article via Groq (fast, 14,400 RPD — no delays needed)
+        // Summarize each article via Groq (fast, 14,400 RPD   no delays needed)
         const articles: NewsArticle[] = [];
         for (const r of filtered) {
             const title = r.title || '';

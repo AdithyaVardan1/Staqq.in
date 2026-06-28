@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 
 export const runtime = 'edge';
 
-// Daily market summary OG card — designed for social media posting
+// Daily market summary OG card   designed for social media posting
 // Call with data params or let the frontend compose the URL
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);

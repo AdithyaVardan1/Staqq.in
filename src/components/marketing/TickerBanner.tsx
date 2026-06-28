@@ -74,7 +74,7 @@ const row2 = buildRow2();
 export function TickerBanner() {
     return (
         <div className={styles.banner} aria-hidden="true">
-            {/* Row 1 — NSE stocks, scroll left */}
+            {/* Row 1   NSE stocks, scroll left */}
             <div className={styles.row}>
                 <div className={styles.track}>
                     {[...NSE_TICKERS, ...NSE_TICKERS].map((item, i) => (
@@ -89,7 +89,7 @@ export function TickerBanner() {
                 </div>
             </div>
 
-            {/* Row 2 — Crypto + feature badges, scroll right */}
+            {/* Row 2   Crypto + feature badges, scroll right */}
             <div className={`${styles.row} ${styles.rowReverse}`}>
                 <div className={`${styles.track} ${styles.trackReverse}`}>
                     {[...row2, ...row2].map((item, i) => {

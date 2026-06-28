@@ -23,6 +23,7 @@ import {
     Trash2,
     Tag,
     ExternalLink,
+    Info,
 } from 'lucide-react';
 import Link from 'next/link';
 import clsx from 'clsx';
@@ -35,6 +36,24 @@ import { TickerBanner } from '@/components/marketing/TickerBanner';
 import styles from './page.module.css';
 
 import { useLiveMarketData } from '@/hooks/useLiveMarketData';
+
+const tooltipDefinitions: Record<string, string> = {
+    'Market Cap': "Total market value of a company's outstanding shares of stock.",
+    'P/E Ratio': "Price-to-Earnings ratio. Measures the company's current share price relative to its per-share earnings.",
+    'P/B Ratio': "Price-to-Book ratio. Compares a company's market value to its book value.",
+    'Div Yield': "A ratio showing how much a company pays out in dividends each year relative to its stock price.",
+    'ROE': "Return on Equity. A measure of financial performance calculated by dividing net income by shareholders' equity.",
+    'ROCE': "Return on Capital Employed. A financial ratio that can be used in assessing a company's profitability and capital efficiency.",
+    'Debt to Equity': "A measure of the degree to which a company is financing its operations through debt versus wholly-owned funds.",
+    'EPS': "Earnings Per Share. The portion of a company's profit allocated to each outstanding share of common stock.",
+    'RSI (14)': "Relative Strength Index. A momentum oscillator that measures the speed and change of price movements.",
+    'MACD': "Moving Average Convergence Divergence. A trend-following momentum indicator.",
+    '20 DMA': "20-Day Moving Average. The average price over the last 20 days, often used to gauge short-term trend.",
+    '50 DMA': "50-Day Moving Average. The average price over the last 50 days, used to gauge intermediate trend.",
+    '200 DMA': "200-Day Moving Average. A widely used indicator for long-term trend direction.",
+    'Bollinger Bands': "A set of trendlines plotted two standard deviations away from a simple moving average, indicating volatility.",
+    'Volume Trend': "Analyzes trading volume to confirm price trends or warn of potential reversals."
+};
 
 export default function StockDetailContent({ params }: { params: Promise<{ ticker: string }> }) {
     const resolvedParams = use(params);
@@ -281,7 +300,7 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
     const stats = getRealStats();
     const companyInfo = getCompanyInfo();
 
-    // Yahoo Finance returns raw rupee values — convert to Crores for display
+    // Yahoo Finance returns raw rupee values   convert to Crores for display
     const toCr = (v: number) => Math.round((v || 0) / 1e7);
 
     const fmtCrLabel = (v: number) => {
@@ -334,7 +353,7 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
 
     return (
         <main className={styles.main}>
-            {/* Animated background glows — same as landing page */}
+            {/* Animated background glows   same as landing page */}
             <div className={styles.heroGlow} />
             <div className={styles.heroGlowViolet} />
 
@@ -418,7 +437,7 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                         </div>
                         <div className={styles.priceRow}>
                             <div className={styles.price}>
-                                {displayPrice ? `₹${displayPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}` : '₹ —'}
+                                {displayPrice ? `₹${displayPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}` : '₹  '}
                             </div>
                             {displayPrice ? (
                                 <div className={styles.change} style={{ color: isPositive ? 'var(--status-success)' : 'var(--status-danger)' }}>
@@ -491,7 +510,17 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                                 <div className={styles.statsGrid}>
                                     {stats.map((stat: any) => (
                                         <Card key={stat.label} variant="glass" className={styles.statCard}>
-                                            <div className={styles.statLabel}>{stat.label}</div>
+                                            <div className={styles.statLabel}>
+                                                <div className={styles.tooltipContainer}>
+                                                    {stat.label}
+                                                    {tooltipDefinitions[stat.label] && (
+                                                        <>
+                                                            <Info size={12} />
+                                                            <span className={styles.tooltipText}>{tooltipDefinitions[stat.label]}</span>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </div>
                                             <div className={styles.statVal}>{stat.value}</div>
                                         </Card>
                                     ))}
@@ -606,7 +635,17 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                                 {(data.technicals || []).map((tech: any) => (
                                     <Card key={tech.name} className={styles.techCard}>
                                         <div className={styles.techHeader}>
-                                            <span className={styles.techName}>{tech.name}</span>
+                                            <span className={styles.techName}>
+                                                <div className={styles.tooltipContainer}>
+                                                    {tech.name}
+                                                    {tooltipDefinitions[tech.name] && (
+                                                        <>
+                                                            <Info size={12} />
+                                                            <span className={styles.tooltipText}>{tooltipDefinitions[tech.name]}</span>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </span>
                                             <Badge variant={tech.status.toLowerCase() as any}>{tech.value}</Badge>
                                         </div>
                                         <p className={styles.techDesc}>{tech.interpretation}</p>
@@ -637,6 +676,68 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                                         {companyInfo.website.replace(/^https?:\/\//, '')}
                                     </a>
                                 )}
+                            </div>
+                        </Card>
+
+                        {/* Performance Summary */}
+                        <Card className={styles.sidebarSection}>
+                            <h3 className={styles.sidebarHeading}>Performance Summary</h3>
+                            <div className={styles.aboutText} style={{ marginBottom: 12 }}>
+                                {(() => {
+                                    if (chartData.length >= 2) {
+                                        const latest = chartData[chartData.length - 1];
+                                        const previous = chartData[chartData.length - 2];
+                                        const revGrowth = previous.revenue ? ((latest.revenue - previous.revenue) / previous.revenue * 100).toFixed(1) : 0;
+                                        const profGrowth = previous.profit ? ((latest.profit - previous.profit) / previous.profit * 100).toFixed(1) : 0;
+                                        const isCooking = Number(revGrowth) > 0 && Number(profGrowth) > 0;
+                                        const isCooked = Number(revGrowth) < 0 && Number(profGrowth) < 0;
+                                        const trajectory = isCooking ? 'a strong growth trajectory 📈' : (isCooked ? 'a challenging environment 📉' : 'a mixed performance 🤔');
+                                        return (
+                                            <>
+                                                <strong>📊 Financial Overview:</strong> In the latest quarter ({latest.period}), {companyInfo.name} reported <strong>{fmtCrLabel(latest.revenue)}</strong> in revenue, marking a {Math.abs(Number(revGrowth))}% {Number(revGrowth) >= 0 ? 'increase' : 'decrease'}. 
+                                                <br/><br/>
+                                                Looking at profitability, the company achieved <strong>{fmtCrLabel(latest.profit)}</strong> in net profit, reflecting a {Math.abs(Number(profGrowth))}% {Number(profGrowth) >= 0 ? 'gain' : 'decline'}. 
+                                                <br/><br/>
+                                                <strong>Summary:</strong> The current financial results indicate {trajectory}, providing insight into how the business is navigating current market conditions.
+                                            </>
+                                        );
+                                    }
+                                    return `The financial performance section gives you a bird's eye view of the historical revenue and profit metrics for ${companyInfo.name}. By reviewing these key trends over time, investors can gain a deeper understanding of the company's growth trajectory and underlying business strength.`;
+                                })()}
+                            </div>
+                        </Card>
+
+                        {/* Technical Assessment */}
+                        <Card className={styles.sidebarSection}>
+                            <h3 className={styles.sidebarHeading}>Technical Assessment</h3>
+                            <div className={styles.aboutText} style={{ marginBottom: 12 }}>
+                                {(() => {
+                                    if (!data.technicals || data.technicals.length === 0) return 'No technical indicators available for analysis at this time.';
+                                    const bullishCount = data.technicals.filter((t: any) => t.status.toLowerCase() === 'bullish').length;
+                                    const bearishCount = data.technicals.filter((t: any) => t.status.toLowerCase() === 'bearish').length;
+                                    const neutralCount = data.technicals.filter((t: any) => t.status.toLowerCase() === 'neutral').length;
+                                    const total = data.technicals.length;
+                                    
+                                    let sentiment = '';
+                                    if (bullishCount > bearishCount * 2) sentiment = 'Strongly Bullish 🐂';
+                                    else if (bearishCount > bullishCount * 2) sentiment = 'Strongly Bearish 🐻';
+                                    else if (bullishCount > bearishCount) sentiment = 'Slightly Bullish ↗️';
+                                    else if (bearishCount > bullishCount) sentiment = 'Slightly Bearish ↘️';
+                                    else sentiment = 'Neutral / Range-bound ↔️';
+
+                                    return (
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                            <p style={{ margin: 0 }}><strong>📉 RSI (Relative Strength):</strong> Measures momentum on a 0-100 scale. High values suggest a stock is overbought, while low values suggest it may be oversold.</p>
+                                            <p style={{ margin: 0 }}><strong>📊 MACD (Convergence):</strong> Tracks the relationship between moving averages. Crosses above the signal line generally indicate upward momentum.</p>
+                                            <p style={{ margin: 0 }}><strong>📈 Moving Averages (DMA):</strong> Smooths out price data to identify the core trend. A price above the 50-Day Moving Average typically signals an uptrend.</p>
+                                            
+                                            <div style={{ marginTop: '4px', padding: '14px', background: 'rgba(202, 255, 0, 0.08)', borderRadius: '12px', borderLeft: '4px solid #caff00' }}>
+                                                <strong>🤖 Algorithmic Conclusion:</strong><br/>
+                                                Out of {total} core indicators, {bullishCount} are Bullish, {bearishCount} are Bearish, and {neutralCount} are Neutral. This scores the stock's current momentum as <strong>{sentiment}</strong>.
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                             </div>
                         </Card>
 

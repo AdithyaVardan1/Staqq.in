@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
 
         // Social share text
         const shareLines: string[] = [
-            `📊 Staqq Daily Brief — ${today}`,
+            `📊 Staqq Daily Brief   ${today}`,
             '',
         ];
 

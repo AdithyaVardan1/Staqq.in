@@ -91,7 +91,7 @@ export async function getSubscription(userId: string): Promise<SubscriptionInfo>
     }
 
     if (error || !data) {
-        // No subscription found — return free tier
+        // No subscription found   return free tier
         const freeInfo: SubscriptionInfo = {
             tier: 'free',
             planId: 'free',
@@ -122,7 +122,7 @@ export async function getSubscription(userId: string): Promise<SubscriptionInfo>
     return info;
 }
 
-/** Lightweight tier check — returns just 'free' or 'pro' */
+/** Lightweight tier check   returns just 'free' or 'pro' */
 export async function getSubscriptionTier(userId: string): Promise<SubscriptionTier> {
     const sub = await getSubscription(userId);
     return sub.tier;

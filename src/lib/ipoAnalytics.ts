@@ -258,10 +258,10 @@ export function getExpectedListingText(price: number | null, gmpPercent: number 
     }
     const listingText = estListing ? ` around ₹${estListing}` : '';
     if (gmpPercent > 0) {
-        return `The grey market is paying a premium, suggesting it could list${listingText} — roughly +${gmpPercent}% above the ₹${price} issue price. This is unofficial and can change daily.`;
+        return `The grey market is paying a premium, suggesting it could list${listingText}   roughly +${gmpPercent}% above the ₹${price} issue price. This is unofficial and can change daily.`;
     }
     if (gmpPercent < 0) {
-        return `The grey market is trading at a discount, suggesting it could list${listingText} — about ${gmpPercent}% below the ₹${price} issue price. Demand looks weak.`;
+        return `The grey market is trading at a discount, suggesting it could list${listingText}   about ${gmpPercent}% below the ₹${price} issue price. Demand looks weak.`;
     }
     return `The grey market signal is flat, suggesting it may list near its ₹${price} issue price.`;
 }
@@ -289,7 +289,7 @@ export function getIPOPlainVerdict(ipo: IPOData): { headline: string; body: stri
     } else if ((ipo.gmpPercent ?? 0) >= 10 && (ipo.subscriptionNum ?? 0) >= 3) {
         headline = 'Strong listing-gain signals';
     } else if ((ipo.gmpPercent ?? 0) <= -5 || (ipo.subscriptionNum !== null && ipo.subscriptionNum < 1)) {
-        headline = 'Weak signals — be cautious';
+        headline = 'Weak signals   be cautious';
     } else {
         headline = 'Mixed signals';
     }

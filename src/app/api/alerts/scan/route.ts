@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
                 continue;
             }
 
-            const message = `${spike.ticker} mentioned ${spike.mentionCount}x in 15 min — ${spike.spikeMult}x above baseline`;
+            const message = `${spike.ticker} mentioned ${spike.mentionCount}x in 15 min   ${spike.spikeMult}x above baseline`;
 
             // Insert alert record
             const { data: alertRow, error: alertErr } = await supabase

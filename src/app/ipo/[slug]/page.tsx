@@ -201,7 +201,7 @@ export default async function IPODetail({ params }: { params: Promise<{ slug: st
                 <div className={styles.grid}>
                     {/* Left Column */}
                     <div className={styles.colMain}>
-                        {/* What this means — plain-language verdict */}
+                        {/* What this means   plain-language verdict */}
                         <Card
                             className={styles.verdictCard}
                             style={{ '--verdict-color': verdict.color } as React.CSSProperties}
@@ -222,7 +222,7 @@ export default async function IPODetail({ params }: { params: Promise<{ slug: st
                                     {gmpPositive ? <TrendingUp size={28} className={styles.gmpIconGreen} /> :
                                         gmpNegative ? <TrendingDown size={28} className={styles.gmpIconRed} /> : null}
                                     <span className={gmpPositive ? styles.gmpValueGreen : gmpNegative ? styles.gmpValueRed : styles.gmpValueNeutral}>
-                                        {ipo.gmp !== null ? `${ipo.gmp >= 0 ? '+' : ''}₹${ipo.gmp}` : '—'}
+                                        {ipo.gmp !== null ? `${ipo.gmp >= 0 ? '+' : ''}₹${ipo.gmp}` : ' '}
                                     </span>
                                     {ipo.gmpPercent !== null && (
                                         <span className={styles.gmpPct}>

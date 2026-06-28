@@ -11,7 +11,7 @@ export const revalidate = 300;
 
 export const metadata = {
     title: 'IPO Analytics | Staqq',
-    description: 'Comprehensive IPO performance analytics — GMP accuracy, subscription trends, and market intelligence for Indian IPOs.',
+    description: 'Comprehensive IPO performance analytics   GMP accuracy, subscription trends, and market intelligence for Indian IPOs.',
 };
 
 export default async function IPOAnalyticsPage() {
@@ -117,7 +117,7 @@ export default async function IPOAnalyticsPage() {
                                     <span className={styles.rankName}>{ipo.name}</span>
                                     <GmpSentimentBadge gmpPercent={ipo.gmpPercent} />
                                     <span className={styles.rankGmp} style={{ color: '#22c55e' }}>
-                                        {ipo.gmpPercent !== null ? `+${ipo.gmpPercent}%` : '—'}
+                                        {ipo.gmpPercent !== null ? `+${ipo.gmpPercent}%` : ' '}
                                     </span>
                                 </Link>
                             ))}
@@ -138,7 +138,7 @@ export default async function IPOAnalyticsPage() {
                                         <span className={styles.rankName}>{ipo.name}</span>
                                         <GmpSentimentBadge gmpPercent={ipo.gmpPercent} />
                                         <span className={styles.rankGmp} style={{ color: '#ef4444' }}>
-                                            {ipo.gmpPercent !== null ? `${ipo.gmpPercent}%` : '—'}
+                                            {ipo.gmpPercent !== null ? `${ipo.gmpPercent}%` : ' '}
                                         </span>
                                     </Link>
                                 ))}

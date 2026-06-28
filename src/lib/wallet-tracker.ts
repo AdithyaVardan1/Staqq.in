@@ -23,7 +23,7 @@ export interface WalletBuy {
 
 /**
  * Detect chain from address format.
- * 0x... = EVM (eth or bsc — we try eth first)
+ * 0x... = EVM (eth or bsc   we try eth first)
  * Base58, 32-44 chars, no 0x = Solana
  */
 export function detectChain(address: string): 'eth' | 'solana' | null {

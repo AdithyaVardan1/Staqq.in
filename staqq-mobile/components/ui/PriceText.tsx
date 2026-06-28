@@ -15,7 +15,7 @@ const sizeClasses = {
 export default function PriceText({ amount, size = 'md', className = '' }: Props) {
     const formatted = amount != null
         ? `₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-        : '₹ —';
+        : '₹  ';
 
     return (
         <Text className={`text-white font-semibold ${sizeClasses[size]} ${className}`}>

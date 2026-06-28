@@ -41,7 +41,7 @@ export function FiiDiiShareCard({ data }: FiiDiiShareCardProps) {
             ]}
             glowColor={`${color}25`}
             shareUrl="/signals/fii-dii"
-            shareText={`FII/DII Flows (${data.date}) — ${direction} ${netDisplay} | Staqq`}
+            shareText={`FII/DII Flows (${data.date})   ${direction} ${netDisplay} | Staqq`}
         />
     );
 }

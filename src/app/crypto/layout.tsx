@@ -25,7 +25,7 @@ export default function CryptoLayout({ children }: { children: React.ReactNode }
                                     <span className={styles.accent}>Copy smart money.</span>
                                 </h1>
                                 <p className={styles.subtitle}>
-                                    Social signals, wallet intelligence, safety scanning, and new launch discovery — all in one place.
+                                    Social signals, wallet intelligence, safety scanning, and new launch discovery   all in one place.
                                 </p>
                             </div>
 

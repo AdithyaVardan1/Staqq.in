@@ -8,7 +8,7 @@ Impermanent loss (IL) is the most misunderstood concept in DeFi. It's the reason
 
 ## What is Impermanent Loss?
 
-When you provide liquidity to an AMM pool, the ratio of tokens in the pool shifts as trading happens. When you withdraw, you receive a different mix than you deposited — and this mix is often worth less than if you'd just held the original tokens.
+When you provide liquidity to an AMM pool, the ratio of tokens in the pool shifts as trading happens. When you withdraw, you receive a different mix than you deposited   and this mix is often worth less than if you'd just held the original tokens.
 
 It's called "impermanent" because if prices return to their original levels, the loss disappears. If you withdraw while prices are different, it becomes a **permanent** loss.
 
@@ -51,24 +51,24 @@ The higher the price divergence, the greater the impermanent loss.
 
 ## When Does IL Become Permanent?
 
-IL is "impermanent" only as long as you keep your LP tokens. The moment you **withdraw your liquidity**, the loss is realised permanently — regardless of the word "impermanent."
+IL is "impermanent" only as long as you keep your LP tokens. The moment you **withdraw your liquidity**, the loss is realised permanently   regardless of the word "impermanent."
 
 ## How to Mitigate IL
 
 **1. Use stable pairs**
-USDC/USDT or other pegged assets move together — minimal IL because prices stay near 1:1.
+USDC/USDT or other pegged assets move together   minimal IL because prices stay near 1:1.
 
 **2. Use concentrated liquidity wisely**
 Uniswap V3 lets you set price ranges. Narrower range = more fees earned, but you exit the range (and stop earning) if price moves far.
 
 **3. One-sided liquidity**
-Some protocols (Bancor V3 historically, certain newer protocols) offer single-sided staking that hedges IL — but with caveats.
+Some protocols (Bancor V3 historically, certain newer protocols) offer single-sided staking that hedges IL   but with caveats.
 
 **4. Earn enough fees to offset IL**
 High-volume pairs can generate enough trading fees to more than compensate for IL. BTC/ETH and ETH/USDC on Uniswap V3 with tight ranges often achieves this.
 
 <InfoBox type="note">
-  IL is not a bug — it's a feature of how AMMs work. It's the cost of providing liquidity. The question is whether fees (and any token rewards) are sufficient to compensate.
+  IL is not a bug   it's a feature of how AMMs work. It's the cost of providing liquidity. The question is whether fees (and any token rewards) are sufficient to compensate.
 </InfoBox>
 
 ## Quick Check
@@ -76,10 +76,10 @@ High-volume pairs can generate enough trading fees to more than compensate for I
 <Quiz
   question="You provide ETH/USDC liquidity to Uniswap. ETH price doubles. Compared to just holding ETH and USDC, your LP position is:"
   options={[
-    "Worth the same — the fees exactly compensate",
-    "Worth more — because you earned trading fees",
-    "Worth less — you've experienced impermanent loss of about 5.7%",
-    "Worth nothing — IL always results in total loss"
+    "Worth the same   the fees exactly compensate",
+    "Worth more   because you earned trading fees",
+    "Worth less   you've experienced impermanent loss of about 5.7%",
+    "Worth nothing   IL always results in total loss"
   ]}
   correctIndex={2}
   explanation="When ETH doubles, the constant product formula means your pool share rebalances toward less ETH and more USDC. This leaves your position worth about 5.7% less than just holding both tokens. Trading fees may offset this, but IL is real."
@@ -91,6 +91,6 @@ High-volume pairs can generate enough trading fees to more than compensate for I
   - Impermanent loss occurs when pooled token prices diverge after you deposit
   - The greater the price divergence, the larger the IL (up to 42.5% at 10x)
   - IL becomes permanent when you withdraw your liquidity
-  - Stablecoin pairs have minimal IL — ideal for conservative yield
+  - Stablecoin pairs have minimal IL   ideal for conservative yield
   - IL is offset by trading fees + token rewards; profitability depends on volume vs divergence
 </InfoBox>

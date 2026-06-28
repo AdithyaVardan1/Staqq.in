@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const universe = getUniverseList();
     const data: Record<string, PriceEntry> = {};
 
-    // 1. Angel One — real-time, 50 tokens/call, one call per second
+    // 1. Angel One   real-time, 50 tokens/call, one call per second
     try {
         const tokensMap = await angelOne.getInstrumentTokens();
         if (tokensMap?.size) {

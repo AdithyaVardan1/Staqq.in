@@ -47,7 +47,7 @@ async function recordMentions(tickerCounts: Record<string, number>): Promise<boo
 
     const ok = await redis.recordCounts(entries, BUCKET_TTL);
     if (!ok) {
-        console.error('[SpikeDetector] Redis unavailable — cannot record mentions');
+        console.error('[SpikeDetector] Redis unavailable   cannot record mentions');
     }
     return ok;
 }
@@ -103,7 +103,7 @@ export async function scanForSpikes(): Promise<SpikeResult[]> {
     const posts = await getAllPosts();
 
     if (posts.length === 0) {
-        console.warn('[SpikeDetector] No posts fetched — Reddit may be down or rate-limiting');
+        console.warn('[SpikeDetector] No posts fetched   Reddit may be down or rate-limiting');
         return [];
     }
 
@@ -123,7 +123,7 @@ export async function scanForSpikes(): Promise<SpikeResult[]> {
     // Record all mentions into current Redis bucket
     const recorded = await recordMentions(tickerCounts);
     if (!recorded) {
-        console.error('[SpikeDetector] Failed to record mentions — aborting spike check');
+        console.error('[SpikeDetector] Failed to record mentions   aborting spike check');
         return [];
     }
 

@@ -166,7 +166,7 @@ export default async function HomePage() {
                             <span className={styles.heroTitleLine2}>Every Big Move.</span>
                         </h1>
                         <p className={styles.heroSubtitle}>
-                            IPO GMP, FII/DII flows, insider trades, bulk deals, and on-chain crypto intelligence — all in one place, built for investors who want an edge.
+                            IPO GMP, FII/DII flows, insider trades, bulk deals, and on-chain crypto intelligence   all in one place, built for investors who want an edge.
                         </p>
                         <div className={styles.heroActions}>
                             <Link href="/ipo" className={styles.primaryBtn}>
@@ -239,7 +239,7 @@ export default async function HomePage() {
                             <div className={styles.productTag}>Indian Equity</div>
                             <h3 className={styles.productTitle}>Every signal that moves Indian markets.</h3>
                             <p className={styles.productDesc}>
-                                From IPO GMP to institutional flows and insider disclosures — all the data serious investors track, in one place.
+                                From IPO GMP to institutional flows and insider disclosures   all the data serious investors track, in one place.
                             </p>
                             <ul className={styles.productFeatures}>
                                 {[
@@ -266,7 +266,7 @@ export default async function HomePage() {
                             <div className={`${styles.productTag} ${styles.productTagViolet}`}>Crypto Suite</div>
                             <h3 className={styles.productTitle}>On-chain intelligence, built for early movers.</h3>
                             <p className={styles.productDesc}>
-                                Scan tokens for rug risk, track smart wallets, and catch new launches before the crowd — across 6 chains.
+                                Scan tokens for rug risk, track smart wallets, and catch new launches before the crowd   across 6 chains.
                             </p>
                             <ul className={styles.productFeatures}>
                                 {[
@@ -275,7 +275,7 @@ export default async function HomePage() {
                                     'Smart wallet tracker (ETH + Solana)',
                                     'New token launches, pre-filtered for safety',
                                     'Social signal feed for trending tokens',
-                                    'Solana Telegram alerts — coming soon',
+                                    'Solana Telegram alerts   coming soon',
                                 ].map(f => (
                                     <li key={f}>
                                         <CheckCircle2 size={15} className={styles.checkViolet} />
@@ -343,11 +343,11 @@ export default async function HomePage() {
                 <div className="container">
                     <div className={styles.solanaInner}>
                         <div className={styles.solanaContent}>
-                            <div className={`${styles.sectionEyebrow} ${styles.sectionEyebrowViolet}`}>Coming Soon — Solana Alerts</div>
+                            <div className={`${styles.sectionEyebrow} ${styles.sectionEyebrowViolet}`}>Coming Soon   Solana Alerts</div>
                             <h2 className={styles.sectionTitle}>The bot that never sleeps.</h2>
                             <p className={styles.sectionSubtitle}>
                                 Hundreds of new Solana tokens launch every hour. Most are traps.
-                                We&apos;re building @StaqqBot to scan every new pair, score it for safety, and send you only the ones worth a second look — straight to Telegram.
+                                We&apos;re building @StaqqBot to scan every new pair, score it for safety, and send you only the ones worth a second look   straight to Telegram.
                             </p>
                             <div className={styles.solanaSteps}>
                                 <div className={styles.solanaStep}>
@@ -361,7 +361,7 @@ export default async function HomePage() {
                                     <span className={styles.solanaStepNum}>02</span>
                                     <div>
                                         <strong>Score</strong>
-                                        <p>Liquidity depth, holder distribution, contract flags, and social presence — all checked before an alert fires</p>
+                                        <p>Liquidity depth, holder distribution, contract flags, and social presence   all checked before an alert fires</p>
                                     </div>
                                 </div>
                                 <div className={styles.solanaStep}>
@@ -599,7 +599,7 @@ export default async function HomePage() {
                             <span className={styles.ctaTitleAccent}>10 different tabs.</span>
                         </h2>
                         <p className={styles.ctaSubtitle}>
-                            GMP, FII flows, insider trades, bulk deals, crypto scanner — it&apos;s all here. Free to start.
+                            GMP, FII flows, insider trades, bulk deals, crypto scanner   it&apos;s all here. Free to start.
                         </p>
                         <div className={styles.ctaActions}>
                             <Link href="/signup" className={styles.primaryBtn}>Create Free Account</Link>
@@ -642,7 +642,7 @@ export default async function HomePage() {
                             <h3>Built for Indian Markets</h3>
                             <p>
                                 Every feature is built specifically for NSE and BSE. From IPO subscription data to
-                                SEBI insider disclosures, from bulk deal tracking to SME IPO analysis — the intelligence
+                                SEBI insider disclosures, from bulk deal tracking to SME IPO analysis   the intelligence
                                 platform Indian investors have been waiting for.
                             </p>
                         </div>

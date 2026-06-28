@@ -1,4 +1,4 @@
-// GoPlus Security API — token security analysis
+// GoPlus Security API   token security analysis
 // Docs: https://docs.gopluslabs.io/
 
 export type SupportedChain = 'eth' | 'bsc' | 'base' | 'solana' | 'polygon' | 'arbitrum' | 'avax';

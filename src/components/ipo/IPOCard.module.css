@@ -12,7 +12,7 @@
     position: relative;
 }
 
-/* Glowing sweep top edge — lime on hover */
+/* Glowing sweep top edge   lime on hover */
 .container::before {
     content: '';
     position: absolute;
@@ -25,7 +25,7 @@
     z-index: 2;
 }
 
-/* Inner radial bloom — appears from top-left corner */
+/* Inner radial bloom   appears from top-left corner */
 .container::after {
     content: '';
     position: absolute;

@@ -54,7 +54,7 @@ function isPositiveTransaction(mode: string): boolean {
     if (m.includes('gift'))        return false;  // Giving away shares
     if (m.includes('transfer'))    return false;  // Inter-se Transfer
 
-    return false; // Unknown — treat as neutral/negative
+    return false; // Unknown   treat as neutral/negative
 }
 
 /** Human-readable label for NSE transaction modes */

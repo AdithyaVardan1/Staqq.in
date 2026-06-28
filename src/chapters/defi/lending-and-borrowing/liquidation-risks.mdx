@@ -1,6 +1,6 @@
 # Liquidation Risks
 
-Liquidation is DeFi's equivalent of a margin call — when your collateral value falls below a threshold, the protocol automatically seizes and sells it to repay your debt.
+Liquidation is DeFi's equivalent of a margin call   when your collateral value falls below a threshold, the protocol automatically seizes and sells it to repay your debt.
 
 <InfoBox type="important">
   Educational content only. Liquidation risk can result in permanent loss of your collateral. Not financial advice.
@@ -45,21 +45,21 @@ Liquidation occurs when: ₹2,40,000 / collateral value = 82.5%
 
 ## How to Avoid Liquidation
 
-1. **Borrow conservatively** — keep LTV well below the maximum (50% or less)
+1. **Borrow conservatively**   keep LTV well below the maximum (50% or less)
 2. **Monitor your health factor** actively, especially in volatile markets
-3. **Add collateral** when your position weakens — reduces LTV
+3. **Add collateral** when your position weakens   reduces LTV
 4. **Repay debt** partially to improve health factor
-5. **Use alerts** — Aave and third-party tools (DeBankAlert, Instadapp) can send notifications
+5. **Use alerts**   Aave and third-party tools (DeBankAlert, Instadapp) can send notifications
 
 <InfoBox type="warning">
   Crypto markets can move 20–30% in a single hour during extreme events. Positions that seem "safe" at 60% LTV can be liquidated within minutes if a major crash occurs (like the May 2021 or November 2022 crashes). Don't set and forget DeFi positions.
 </InfoBox>
 
-## Flash Loans — A Different Kind of Risk/Tool
+## Flash Loans   A Different Kind of Risk/Tool
 
 Flash loans are a unique DeFi primitive: **borrow any amount of any asset with zero collateral, as long as you repay within the same transaction**.
 
-If the repayment fails, the entire transaction reverts — the protocol never loses money.
+If the repayment fails, the entire transaction reverts   the protocol never loses money.
 
 **Legitimate uses:**
 - Arbitrage between DEXes
@@ -77,7 +77,7 @@ Flash loans themselves aren't dangerous to users directly, but they are frequent
   question="If your collateral value drops and your health factor on Aave falls below 1, what happens?"
   options={[
     "Aave sends you an email warning to add collateral",
-    "Your position is automatically liquidated — bots repay your debt and take your collateral at a discount",
+    "Your position is automatically liquidated   bots repay your debt and take your collateral at a discount",
     "The protocol pauses your loan and gives you 30 days to repay",
     "Nothing happens until you manually close the position"
   ]}
@@ -91,6 +91,6 @@ Flash loans themselves aren't dangerous to users directly, but they are frequent
   - Liquidation is triggered automatically when health factor falls below 1
   - Liquidators receive your collateral at a 5–15%+ discount as a reward
   - Always borrow well below the maximum LTV to maintain a safety buffer
-  - Monitor positions actively — crypto can move violently in minutes
+  - Monitor positions actively   crypto can move violently in minutes
   - Flash loans are zero-collateral loans that must be repaid within one transaction; often used in exploits
 </InfoBox>
