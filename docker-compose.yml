@@ -1,0 +1,62 @@
+# ─── Staqq monolith stack ────────────────────────────────────────────
+# web      — Next.js server (SSR + ISR + API), the only thing exposed
+# redis    — hot/live store, internal-only (never exposed to the internet)
+# srh      — serverless-redis-http: Upstash REST API over local Redis, so the
+#            app/worker keep their @upstash/redis client unchanged
+# worker   — Angel One -> Redis snapshot (+ scrapers later), internal
+#
+# Secrets come from .env.docker (see .env.docker.example). Redis is reachable
+# only inside this compose network; nothing but `web` binds a host port.
+
+services:
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "60", "1", "--maxmemory", "1gb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  srh:
+    image: hiett/serverless-redis-http:latest
+    environment:
+      SRH_MODE: env
+      SRH_TOKEN: ${SRH_TOKEN}
+      SRH_CONNECTION_STRING: redis://redis:6379
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      target: runner
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+    env_file: .env.docker
+    environment:
+      # Point the app's @upstash client at the local REST proxy over local Redis
+      UPSTASH_REDIS_REST_URL: http://srh:80
+      UPSTASH_REDIS_REST_TOKEN: ${SRH_TOKEN}
+    ports:
+      # bind to localhost only — Cloudflare Tunnel / a reverse proxy fronts it
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - srh
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: .
+      target: worker
+    env_file: .env.docker
+    environment:
+      UPSTASH_REDIS_REST_URL: http://srh:80
+      UPSTASH_REDIS_REST_TOKEN: ${SRH_TOKEN}
+    depends_on:
+      - srh
+    restart: unless-stopped
+
+volumes:
+  redis-data:

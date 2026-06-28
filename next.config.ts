@@ -13,6 +13,8 @@ const withMDX = createMDX({
 });
 
 const nextConfig: NextConfig = {
+  // Lean, self-contained server build for Docker (node server.js)
+  output: "standalone",
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   images: {
     formats: ['image/avif', 'image/webp'],

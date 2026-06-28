@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.github
+*.log
+.env
+.env.local
+worker/.env
+secs.rtf
+*.rtf
+Screenshot*
+data/stock_cache.json
+README.md
+.claude
+staqq-mobile
+py-yfinance
+scratch

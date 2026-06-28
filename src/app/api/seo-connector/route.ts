@@ -3,13 +3,18 @@ import { createClient } from '@supabase/supabase-js'
 
 export const runtime = 'nodejs'
 
-const SECRET = process.env.SEO_CONNECTOR_SECRET!
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-)
+// Lazy: created on first request, never at module load — so `next build`'s
+// page-data collection doesn't execute createClient() with missing env.
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  )
+}
 
 export async function POST(req: Request) {
+  const SECRET = process.env.SEO_CONNECTOR_SECRET!
+  const supabase = getSupabase()
   const ts = req.headers.get('x-compass-timestamp') ?? ''
   const sig = req.headers.get('x-compass-signature') ?? ''
   const raw = await req.text()
