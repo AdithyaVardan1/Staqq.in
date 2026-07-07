@@ -40,10 +40,7 @@ export function MarkCompleteButton({
                     <span>Completed</span>
                 </>
             ) : (
-                <>
-                    <span className={styles.icon}>📖</span>
-                    <span>Mark as Complete</span>
-                </>
+                <span>Mark as Complete</span>
             )}
         </button>
     );

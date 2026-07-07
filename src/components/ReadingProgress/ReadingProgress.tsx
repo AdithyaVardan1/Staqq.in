@@ -20,7 +20,17 @@ export function ReadingProgress() {
 
   return (
     <div className={styles.track} aria-hidden>
-      <div className={styles.fill} style={{ width: `${progress}%` }} />
+      <svg className={styles.svg}>
+        <rect
+          x="1" y="1"
+          width="calc(100% - 2px)"
+          height="calc(100% - 2px)"
+          rx="28"
+          pathLength="100"
+          className={styles.rect}
+          style={{ strokeDashoffset: 100 - progress }}
+        />
+      </svg>
     </div>
   );
 }

@@ -3,30 +3,33 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { TrendingUp, Trash2 } from 'lucide-react';
+import { TrendingUp, Trash2, BookOpen, Eye } from 'lucide-react';
 import { StockCard } from '@/components/stocks/StockCard';
 import { StockCardSkeleton } from '@/components/stocks/StockCardSkeleton';
 import styles from './page.module.css';
-
 import { useWatchlist } from '@/hooks/useWatchlist';
 
-const WatchlistItem = ({ symbol, onRemove }: { symbol: string; onRemove: (s: string) => void }) => {
+interface WatchlistItemProps {
+    symbol: string;
+    onRemove: (s: string) => void;
+}
+
+const WatchlistItem: React.FC<WatchlistItemProps> = ({ symbol, onRemove }) => {
     const [data, setData] = React.useState<any>(null);
     const [isLoading, setIsLoading] = React.useState(true);
+    const [confirmDelete, setConfirmDelete] = React.useState(false);
 
     React.useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch full fundamentals including sparkline and hologram data
                 const res = await fetch(`/api/stocks/fundamentals?ticker=${symbol.split('.')[0]}`);
                 const result = await res.json();
                 if (result.fundamentals) {
                     setData(result.fundamentals);
                 }
             } catch (error) {
-                console.error('Failed to fetch item data', error);
+                console.error('Failed to fetch watchlist item data', error);
             } finally {
                 setIsLoading(false);
             }
@@ -34,11 +37,17 @@ const WatchlistItem = ({ symbol, onRemove }: { symbol: string; onRemove: (s: str
         fetchData();
     }, [symbol]);
 
-    if (isLoading) return <div className="mt-2"><StockCardSkeleton /></div>;
-    if (!data) return null;
+    if (isLoading) return <StockCardSkeleton />;
+    if (!data || !data.ticker) return (
+        <div className={styles.itemWrapper} style={{ opacity: 0.5 }}>
+            <div style={{ padding: '20px', textAlign: 'center', fontSize: '0.8rem', color: '#52525b' }}>
+                Could not load data for {symbol}
+            </div>
+        </div>
+    );
 
     return (
-        <div className="relative">
+        <div className={styles.itemWrapper}>
             <StockCard
                 ticker={data.ticker}
                 name={data.name}
@@ -47,32 +56,32 @@ const WatchlistItem = ({ symbol, onRemove }: { symbol: string; onRemove: (s: str
                 changeAmount={data.netChange}
                 marketCap={formatMarketCap(data.marketCap)}
                 peRatio={data.peRatio}
-                return1Y={data.roiYear || 0} // Assuming API returns roiYear or similar? API returns 'return1Y' if present?
-                // yinfo.py doesn't return 'return1Y' explicitly? 
-                // Let's check API response again. If strictly not there, default to 0. 
-                // Actually yinfo.py has 'high52', 'low52' etc. 
-                // I might need to calculate return1Y or use changePercent as proxy if 1Y not available.
-                // Or maybe yfinance '52WeekChange' exists. yinfo.py didn't seem to include it.
-                // I'll default to 0 for now to avoid break.
+                return1Y={data.roiYear || 0}
                 sparklineData={data.sparkline || []}
             />
-
-            {/* Remove Button (Floating absolute to not mess with card layout) */}
+            {/* Remove button always visible at top-right */}
             <button
-                className={styles.floatingDeleteBtn}
+                className={`${styles.removeBtn} ${confirmDelete ? styles.removeBtnConfirm : ''}`}
                 aria-label="Remove from Watchlist"
+                title={confirmDelete ? 'Click again to confirm remove' : 'Remove from watchlist'}
                 onClick={(e) => {
                     e.preventDefault();
-                    onRemove(symbol);
+                    e.stopPropagation();
+                    if (confirmDelete) {
+                        onRemove(symbol);
+                    } else {
+                        setConfirmDelete(true);
+                        setTimeout(() => setConfirmDelete(false), 2500);
+                    }
                 }}
             >
-                <Trash2 size={16} />
+                <Trash2 size={13} />
+                {confirmDelete ? 'Remove?' : ''}
             </button>
         </div>
     );
 };
 
-// Helper
 function formatMarketCap(value: number) {
     if (!value) return 'N/A';
     if (value >= 1e12) return `${(value / 1e12).toFixed(1)}T`;
@@ -86,37 +95,61 @@ export default function WatchlistPage() {
     return (
         <main className={styles.main}>
             <div className="container">
+
+                {/* Header */}
                 <div className={styles.header}>
-                    <h1 className={styles.title}>Your <span className="text-brand">Watchlist</span></h1>
-                    <p className={styles.subtitle}>Track your favorite stocks with real-time holographic insights.</p>
+                    <div className={styles.headerBadge}>
+                        <Eye size={12} />
+                        Your Watchlist
+                    </div>
+                    <h1 className={styles.title}>
+                        Stocks you&apos;re <span className={styles.accent}>tracking</span>
+                    </h1>
+                    <p className={styles.subtitle}>
+                        {watchlist.length > 0
+                            ? `Monitoring ${watchlist.length} stock${watchlist.length > 1 ? 's' : ''} with live data`
+                            : 'Add stocks from their detail pages to start tracking them here'
+                        }
+                    </p>
                 </div>
 
-                <div className={styles.grid}>
-                    {isLoading ? (
-                        <div className="col-span-full flex justify-center py-20">
-                            <div className="animate-pulse text-xl text-neutral-400">Loading your vault...</div>
+                {/* Content */}
+                {isLoading ? (
+                    <div className={styles.grid}>
+                        {[1, 2, 3].map(i => <StockCardSkeleton key={i} />)}
+                    </div>
+                ) : watchlist.length > 0 ? (
+                    <div className={styles.grid}>
+                        {watchlist.map((symbol) => (
+                            <WatchlistItem
+                                key={symbol}
+                                symbol={symbol}
+                                onRemove={removeFromWatchlist}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <div className={styles.emptyState}>
+                        <div className={styles.emptyIcon}>
+                            <TrendingUp size={32} />
                         </div>
-                    ) : watchlist.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {watchlist.map((symbol) => (
-                                <WatchlistItem
-                                    key={symbol}
-                                    symbol={symbol}
-                                    onRemove={removeFromWatchlist}
-                                />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className={styles.emptyState}>
-                            <TrendingUp size={48} className="text-brand mb-4" />
-                            <h3>Your watchlist is empty</h3>
-                            <p>Start exploring the market to build your portfolio.</p>
+                        <h3 className={styles.emptyTitle}>Your watchlist is empty</h3>
+                        <p className={styles.emptyText}>
+                            Browse stocks and click <strong>Watchlist</strong> on any stock page to track it here.
+                        </p>
+                        <div className={styles.emptyActions}>
                             <Link href="/stocks/screener">
-                                <Button variant="primary" className="mt-4">Explore Stocks</Button>
+                                <Button variant="primary">Explore Stocks</Button>
+                            </Link>
+                            <Link href="/learn">
+                                <Button variant="outline">
+                                    <BookOpen size={14} />
+                                    Learn the Basics
+                                </Button>
                             </Link>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </main>
     );

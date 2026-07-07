@@ -331,6 +331,8 @@ export default function StockScreener() {
                                             {sortBy === 'breakdowns_52w'  && '52W Lows'}
                                             {sortBy === 'outperformers'   && 'Outperformers'}
                                             {sortBy === 'returns'         && '1Y Returns'}
+                                            {sortBy === 'price-high'      && 'Price ↓ High'}
+                                            {sortBy === 'price-low'       && 'Price ↑ Low'}
                                         </span>
                                     </div>
                                     {isSortOpen && (
@@ -340,6 +342,8 @@ export default function StockScreener() {
                                                 {[
                                                     { id: 'marketCap',       label: '💎 Market Cap' },
                                                     { id: 'returns',         label: '📊 1Y Returns' },
+                                                    { id: 'price-high',      label: '💰 Price: High → Low' },
+                                                    { id: 'price-low',       label: '💰 Price: Low → High' },
                                                     { id: 'top_gainers',     label: '🚀 Top Gainers' },
                                                     { id: 'top_losers',      label: '📉 Top Losers' },
                                                     { id: 'volume_shockers', label: '⚡ Volume' },

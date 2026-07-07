@@ -1,0 +1,490 @@
+/* ══════════════════════════════
+   Feedback Widget — Premium pill trigger + glassmorphic card
+══════════════════════════════ */
+
+@keyframes pulseRing {
+    0%   { transform: scale(1);   opacity: 0.8; }
+    100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes shimmerLabel {
+    0%, 100% { background-position: 0% center; }
+    50%       { background-position: 100% center; }
+}
+
+@keyframes blink {
+    0%, 80%, 100% { opacity: 1; }
+    40%            { opacity: 0; }
+}
+
+@keyframes successBounce {
+    0%   { transform: scale(0.8) translateY(10px); opacity: 0; }
+    60%  { transform: scale(1.15) translateY(-4px); }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* ── Container ── */
+.widgetContainer {
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.feedbackCard,
+.triggerButton {
+    pointer-events: auto;
+}
+
+/* ── Trigger pill ── */
+.triggerButton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 16px 10px 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #caff00 0%, #a3e635 100%);
+    color: #000;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow:
+        0 4px 20px rgba(202, 255, 0, 0.35),
+        0 1px 4px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.3);
+    transition: padding 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.triggerButton:hover {
+    box-shadow:
+        0 6px 28px rgba(202, 255, 0, 0.55),
+        0 1px 4px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* Collapsed (icon only) state on scroll */
+.triggerCollapsed {
+    padding: 10px 12px;
+}
+
+/* Trigger when card is open — subtle inverted look */
+.triggerOpen {
+    background: rgba(20, 20, 20, 0.95);
+    color: #fff;
+    box-shadow:
+        0 4px 16px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.triggerIcon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.triggerLabel {
+    display: inline-block;
+    overflow: hidden;
+}
+
+/* Pulse indicator dot */
+.pulseDot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1.5px solid rgba(0,0,0,0.2);
+}
+
+.pulseDot::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid rgba(202, 255, 0, 0.6);
+    animation: pulseRing 2s ease-out infinite;
+}
+
+/* ── Feedback card ── */
+.feedbackCard {
+    width: 340px;
+    max-width: calc(100vw - 32px);
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(202, 255, 0, 0.05),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+    color: #fff;
+    position: relative;
+}
+
+/* Top lime glow strip */
+.cardGlow {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #caff00, transparent);
+    opacity: 0.6;
+}
+
+/* ── Header ── */
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.headerLeft {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.headerIcon {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: rgba(202, 255, 0, 0.1);
+    border: 1px solid rgba(202, 255, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #caff00;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.title {
+    font-family: var(--font-outfit), sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 2px 0 0;
+}
+
+.closeBtn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.closeBtn:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+/* ── Form ── */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 16px 16px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.label {
+    font-size: 0.73rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+/* Category chips */
+.categoryGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+}
+
+.catChip {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 7px 10px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.catChip:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.14);
+}
+
+.catChipActive {
+    background: rgba(202, 255, 0, 0.08) !important;
+    border-color: rgba(202, 255, 0, 0.4) !important;
+}
+
+.catLabel {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.catChipActive .catLabel {
+    color: #caff00;
+}
+
+.catDesc {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.2;
+}
+
+/* Star rating */
+.starRow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.starBtn {
+    background: transparent;
+    border: none;
+    padding: 2px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.2);
+    transition: color 0.15s, transform 0.15s;
+    display: flex;
+    align-items: center;
+}
+
+.starBtn:hover {
+    transform: scale(1.2);
+}
+
+.starActive {
+    color: #f59e0b;
+}
+
+.starLabel {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.4);
+    margin-left: 6px;
+    min-width: 90px;
+    transition: color 0.2s;
+}
+
+/* Textarea */
+.textarea {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    color: #fff;
+    padding: 10px;
+    font-size: 0.82rem;
+    resize: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    line-height: 1.5;
+}
+
+.textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+.textarea:focus {
+    outline: none;
+    border-color: rgba(202, 255, 0, 0.35);
+}
+
+.charCount {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.25);
+    text-align: right;
+    margin-top: -4px;
+}
+
+/* Page context indicator */
+.pageContext {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 6px;
+    padding: 5px 8px;
+    overflow: hidden;
+}
+
+.pageContextDot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #caff00;
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+.pageContext code {
+    font-size: 0.65rem;
+    font-family: monospace;
+    color: rgba(255,255,255,0.35);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Error */
+.errorBanner {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 8px;
+    color: #ef4444;
+    padding: 7px 10px;
+    font-size: 0.75rem;
+}
+
+/* Submit */
+.submitBtn {
+    background: linear-gradient(135deg, #caff00 0%, #a3e635 100%);
+    color: #000;
+    font-weight: 700;
+    font-size: 0.83rem;
+    border: none;
+    border-radius: 10px;
+    padding: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(202,255,0,0.25);
+}
+
+.submitBtn:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 22px rgba(202,255,0,0.4);
+}
+
+.submitBtn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.submittingDots span {
+    animation: blink 1.2s infinite;
+}
+.submittingDots span:nth-child(2) { animation-delay: 0.2s; }
+.submittingDots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ── Success state ── */
+.successState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 28px 20px 24px;
+    gap: 8px;
+}
+
+.successRocket {
+    font-size: 2.5rem;
+    animation: successBounce 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    margin-bottom: 4px;
+}
+
+.successTitle {
+    font-family: var(--font-outfit), sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.successText {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    max-width: 260px;
+    line-height: 1.5;
+    margin: 0 0 8px;
+}
+
+.okBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(202,255,0,0.1);
+    color: #caff00;
+    border: 1px solid rgba(202,255,0,0.2);
+    border-radius: 8px;
+    padding: 7px 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.okBtn:hover {
+    background: rgba(202,255,0,0.18);
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+    .widgetContainer {
+        bottom: 78px; /* above BottomNav */
+        right: 14px;
+    }
+
+    .feedbackCard {
+        width: calc(100vw - 28px);
+    }
+
+    .triggerButton {
+        padding: 9px 14px 9px 11px;
+        font-size: 0.77rem;
+    }
+}

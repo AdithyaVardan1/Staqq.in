@@ -52,14 +52,14 @@ export const StockCard: React.FC<StockCardProps> = ({
         }
     };
 
-    // Live calculations
-    const displayPrice = price ?? initialPrice;
+    // Live calculations — guard against null/undefined from API
+    const displayPrice = price ?? initialPrice ?? 0;
 
     // Use live change if available, otherwise fallback to initial props
-    const currentChange = changePercent !== undefined ? changePercent : initialChange;
-    const currentChangeAmount = change !== undefined ? change : initialChangeAmount;
+    const currentChange = (changePercent !== undefined && changePercent !== null) ? changePercent : (initialChange ?? 0);
+    const currentChangeAmount = (change !== undefined && change !== null) ? change : (initialChangeAmount ?? 0);
     const isPositive = currentChange >= 0;
-    const isReturnPositive = return1Y >= 0;
+    const isReturnPositive = (return1Y ?? 0) >= 0;
     const changeColor = isPositive ? 'var(--status-success)' : 'var(--status-danger)';
 
     return (
@@ -97,14 +97,14 @@ export const StockCard: React.FC<StockCardProps> = ({
 
                 <div className={styles.priceRow}>
                     <div className={styles.priceSection}>
-                        <div className={styles.price}>₹{displayPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+                        <div className={styles.price}>₹{(displayPrice || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
                         <div className={styles.change} style={{ color: changeColor }}>
                             {isPositive ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
-                            {isPositive ? '+' : ''}{currentChange.toFixed(2)}% (₹{Math.abs(currentChangeAmount).toFixed(2)})
+                            {isPositive ? '+' : ''}{(currentChange || 0).toFixed(2)}% (₹{Math.abs(currentChangeAmount || 0).toFixed(2)})
                         </div>
                     </div>
                     <div className={styles.chartSection}>
-                        <Sparkline data={sparklineData} isPositive={isPositive} />
+                        <Sparkline data={sparklineData ?? []} isPositive={isPositive} />
                     </div>
                 </div>
 
@@ -122,7 +122,7 @@ export const StockCard: React.FC<StockCardProps> = ({
                     <div className={styles.metric}>
                         <span className={styles.metricLabel}>{metricLabel || '1Y Return'}</span>
                         <span className={styles.metricValue} style={{ color: isReturnPositive ? 'var(--status-success)' : 'var(--status-danger)' }}>
-                            {isReturnPositive ? '+' : ''}{return1Y.toFixed(2)}{metricLabel ? '' : '%'}
+                            {isReturnPositive ? '+' : ''}{(return1Y || 0).toFixed(2)}{metricLabel ? '' : '%'}
                         </span>
                     </div>
                 </div>

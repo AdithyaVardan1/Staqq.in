@@ -227,12 +227,20 @@ export async function GET(request: Request) {
         const mcap      = searchParams.get('mcap') || 'all'; // all | large | mid | small
         const return1Y  = searchParams.get('return1Y') || 'all'; // all | positive | top10 | top30
 
-        // Static NIFTY 500 list   always available, never empty, no Angel One dependency.
-        const universe = getUniverseList();
+        let universe = getUniverseList();
 
         // Live prices come from the background-refreshed snapshot (1 read for the
         // whole universe). Yahoo is only a fallback for symbols not yet in it.
         const snapshot = await readSnapshot();
+
+        // Global Sort BEFORE pagination
+        if (sortBy === 'price-high' || sortBy === 'price-low') {
+            universe = [...universe].sort((a, b) => {
+                const priceA = snapshot?.data?.[a.symbol]?.price || 0;
+                const priceB = snapshot?.data?.[b.symbol]?.price || 0;
+                return sortBy === 'price-high' ? priceB - priceA : priceA - priceB;
+            });
+        }
 
         // Depth-search: scan stocks starting at offset
         const MAX_SCAN = 200;

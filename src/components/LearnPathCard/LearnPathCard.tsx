@@ -173,10 +173,22 @@ export default function LearningPathCard({
                 <div className={styles.progressTrack}>
                   <div className={styles.progressFill} style={{ width: `${progress}%` }} />
                 </div>
-                <span className={styles.featuredCta}>Continue →</span>
+                <span className={styles.featuredCta}>
+                  Continue
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '4px' }}>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
               </div>
             ) : (
-              <span className={styles.featuredCta}>Start Learning →</span>
+              <span className={styles.featuredCta}>
+                Start Learning
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '4px' }}>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
             )}
           </div>
         </div>

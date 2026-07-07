@@ -1403,25 +1403,27 @@
 .tooltipText {
     visibility: hidden;
     opacity: 0;
-    width: max-content;
-    max-width: 250px;
-    background-color: rgba(20, 20, 20, 0.95);
-    backdrop-filter: blur(10px);
+    width: 240px;
+    max-width: min(240px, calc(100vw - 32px));
+    background-color: rgba(18, 18, 18, 0.97);
+    backdrop-filter: blur(12px);
     color: #e0e0e0;
     text-align: left;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 10px 14px;
     position: absolute;
-    z-index: 100;
-    bottom: 125%;
+    z-index: 9999;
+    bottom: calc(100% + 10px);
     left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
-    font-size: 0.8rem;
+    transform: translateX(-50%) translateY(6px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+    font-size: 0.78rem;
     font-weight: 400;
-    line-height: 1.5;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(202, 255, 0, 0.05);
+    line-height: 1.55;
+    white-space: normal;
+    word-wrap: break-word;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.6), 0 0 20px rgba(202, 255, 0, 0.04);
     pointer-events: none;
 }
 

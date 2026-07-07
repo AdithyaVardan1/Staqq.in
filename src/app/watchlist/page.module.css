@@ -1,87 +1,204 @@
-.main {
-    min-height: 100vh;
-    padding: var(--header-height) 0 4rem;
-    background: radial-gradient(circle at 50% 0, rgba(79, 70, 229, 0.05), transparent 70%);
+/* ══════════════════════════════
+   Watchlist Page
+══════════════════════════════ */
+
+@keyframes glowBreath {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50%       { opacity: 0.8; transform: scale(1.08); }
 }
 
+@keyframes shimmerLime {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+}
+
+.main {
+    min-height: 100vh;
+    padding-top: 120px;
+    padding-bottom: 4rem;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Ambient glow */
+.main::before {
+    content: '';
+    position: fixed;
+    top: -120px; right: -80px;
+    width: 520px; height: 420px;
+    background: radial-gradient(ellipse, rgba(202,255,0,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: glowBreath 10s ease-in-out infinite;
+    filter: blur(50px);
+}
+
+/* ── Page header ── */
 .header {
     text-align: center;
     margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.headerBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary-brand);
+    background: rgba(202, 255, 0, 0.08);
+    border: 1px solid rgba(202, 255, 0, 0.2);
+    border-radius: 999px;
+    padding: 4px 14px;
+    margin-bottom: 14px;
 }
 
 .title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(to right, #fff, #94a3b8);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    color: #fff;
+    margin: 0 0 0.65rem;
+    font-family: var(--font-outfit), sans-serif;
+}
+
+.accent {
+    background: linear-gradient(135deg, #caff00 0%, #a3e635 40%, #f0ff80 70%, #caff00 100%);
+    background-size: 200% auto;
     -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     background-clip: text;
-    color: transparent;
+    animation: shimmerLime 4s linear infinite;
 }
 
 .subtitle {
-    font-size: 1.1rem;
-    color: var(--text-muted);
+    font-size: 0.92rem;
+    color: #52525b;
+    margin: 0;
 }
 
+/* ── Grid ── */
 .grid {
-    width: 100%;
-    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 1;
 }
 
+@media (min-width: 640px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ── Card wrapper with remove button ── */
+.itemWrapper {
+    position: relative;
+}
+
+/* Always-visible remove button at top-right of card */
+.removeBtn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(20, 20, 20, 0.92);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #71717a;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 30;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.removeBtn:hover {
+    background: rgba(30, 10, 10, 0.95);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #f87171;
+    transform: scale(1.05);
+}
+
+.removeBtnConfirm {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: #f87171;
+    padding: 5px 12px;
+}
+
+.removeBtnConfirm:hover {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: #ef4444;
+    color: #fff;
+}
+
+/* ── Empty state ── */
 .emptyState {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 4rem 2rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: var(--radius-xl);
-    border: 1px dashed rgba(255, 255, 255, 0.1);
+    padding: 5rem 2rem;
     text-align: center;
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed rgba(255,255,255,0.08);
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
 }
 
-.emptyState h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--text-primary);
-}
-
-.emptyState p {
-    color: var(--text-muted);
-}
-
-.floatingDeleteBtn {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    color: var(--text-muted);
+.emptyIcon {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: rgba(202,255,0,0.06);
+    border: 1px solid rgba(202,255,0,0.15);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    z-index: 30;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-    transform: scale(0.8);
+    color: var(--primary-brand);
+    margin-bottom: 1.5rem;
 }
 
-:global(.group):hover .floatingDeleteBtn,
-/* Support group hover pattern */
-.floatingDeleteBtn:hover {
-    opacity: 1;
-    transform: scale(1);
+.emptyTitle {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #e4e4e7;
+    margin: 0 0 0.6rem;
+    font-family: var(--font-outfit), sans-serif;
 }
 
-.floatingDeleteBtn:hover {
-    background: var(--status-danger);
-    color: white;
-    border-color: var(--status-danger);
+.emptyText {
+    font-size: 0.9rem;
+    color: #52525b;
+    max-width: 360px;
+    line-height: 1.65;
+    margin: 0 0 2rem;
+}
+
+.emptyText strong {
+    color: #a1a1aa;
+    font-weight: 600;
+}
+
+.emptyActions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
 }

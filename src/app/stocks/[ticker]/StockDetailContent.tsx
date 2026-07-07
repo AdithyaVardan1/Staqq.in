@@ -135,6 +135,29 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
         }
     };
 
+    const handleShare = async () => {
+        const shareText = `${data.ticker} (${data.name || ''}) live price, fundamentals, and comprehensive analysis on Staqq.`;
+        const shareUrl = window.location.href;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: `${data.ticker} | Staqq`,
+                    text: shareText,
+                    url: shareUrl,
+                });
+            } catch (e) {
+                console.error('Share failed', e);
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+                alert('Link copied to clipboard!');
+            } catch (e) {
+                console.error('Clipboard copy failed', e);
+            }
+        }
+    };
+
     const { price: displayPrice, change: liveChange, changePercent: liveChangePercent, status } = useLiveMarketData(ticker, data.price, data.change, data.changePercent);
 
     // Use live values if they exist, otherwise fallback to initial data
@@ -367,20 +390,25 @@ export default function StockDetailContent({ params }: { params: Promise<{ ticke
                         <Button
                             variant={isSelected ? "primary" : "outline"}
                             size="sm"
-                            className={styles.watchlistBtn}
                             onClick={toggleCompare}
                         >
-                            {isSelected ? <Trash2 size={18} /> : <Plus size={18} />}
+                            {isSelected ? <Trash2 size={14} /> : <Plus size={14} />}
                             {isSelected ? 'Remove' : 'Compare'}
                         </Button>
-                        <Button variant="ghost" size="icon"><Share2 size={20} /></Button>
+                        <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={handleShare}
+                        >
+                            <Share2 size={14} />
+                            Share
+                        </Button>
                         <Button
                             variant={isWatched ? "primary" : "outline"}
                             size="sm"
-                            className={styles.watchlistBtn}
                             onClick={handleWatchlistToggle}
                         >
-                            <Bookmark size={18} fill={isWatched ? "currentColor" : "none"} />
+                            <Bookmark size={14} fill={isWatched ? "currentColor" : "none"} />
                             {isWatched ? 'In Watchlist' : 'Watchlist'}
                         </Button>
                         <AlertSubscribeButton ticker={data.ticker} />

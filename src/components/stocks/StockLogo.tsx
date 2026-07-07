@@ -34,18 +34,8 @@ export const StockLogo: React.FC<StockLogoProps> = ({
     }, [ticker]);
 
     const sources = [
-        // Source 1: Upstox (Highly reliable for Indian stocks)
-        `https://assets.upstox.com/content/assets/images/logos/${baseTicker}.png`,
-        // Source 2: TradingView NSE prefix
-        `https://s3-symbol-logo.tradingview.com/nse-${baseTicker.toLowerCase()}--big.svg`,
-        // Source 3: Brandfetch with .NS (Often works for Indian stocks)
-        `https://cdn.brandfetch.io/ticker/${nsTicker}?c=${clientId}`,
-        // Source 4: Finology
-        `https://ticker.finology.in/logos/stocks/${baseTicker}.png`,
-        // Source 5: Brandfetch Base
-        `https://cdn.brandfetch.io/ticker/${baseTicker}?c=${clientId}`,
-        // Source 6: TradingView fallback
-        `https://s3-symbol-logo.tradingview.com/${baseTicker}--big.svg`
+        `/logos/${baseTicker}.png`,
+        `/logos/${baseTicker}.svg`
     ];
 
     const currentSrc = sources[srcIndex];
@@ -55,7 +45,6 @@ export const StockLogo: React.FC<StockLogoProps> = ({
             setSrcIndex(prev => prev + 1);
             setStatus('loading');
         } else {
-            console.warn(`[StockLogo] All sources failed for ${uppercaseTicker}`);
             setStatus('error');
         }
     };
@@ -75,10 +64,9 @@ export const StockLogo: React.FC<StockLogoProps> = ({
             suppressHydrationWarning
             title={name}
         >
-            {/* The Fallback is ALWAYS in the background while loading or on error */}
             {status !== 'success' && (
                 <div className={styles.fallback}>
-                    {name.charAt(0)}
+                    {(name || ticker || '?').charAt(0)}
                 </div>
             )}
 

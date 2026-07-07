@@ -107,6 +107,7 @@ const rootJsonLd = [
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
 
 export default function RootLayout({
   children,
@@ -126,6 +127,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <BottomNav />
+        <FeedbackWidget />
       </body>
     </html>
   );
