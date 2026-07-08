@@ -34,7 +34,7 @@
         "next": "16.1.4",
         "openai": "^6.21.0",
         "otplib": "^13.2.1",
-        "panini-connector": "file:../panini-monorepo/sdk/panini-connector-js",
+        "panini-connector": "file:./vendor/panini-connector",
         "razorpay": "^2.9.6",
         "react": "19.2.3",
         "react-dom": "19.2.3",

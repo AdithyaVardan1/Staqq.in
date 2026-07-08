@@ -1,0 +1,54 @@
+{
+  "name": "panini-connector",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./next-app": {
+      "types": "./dist/framework/nextAppRouter.d.ts",
+      "import": "./dist/framework/nextAppRouter.js",
+      "require": "./dist/framework/nextAppRouter.cjs"
+    },
+    "./next-pages": {
+      "types": "./dist/framework/nextPagesRouter.d.ts",
+      "import": "./dist/framework/nextPagesRouter.js",
+      "require": "./dist/framework/nextPagesRouter.cjs"
+    },
+    "./express": {
+      "types": "./dist/framework/express.d.ts",
+      "import": "./dist/framework/express.js",
+      "require": "./dist/framework/express.cjs"
+    },
+    "./storage/supabase": {
+      "types": "./dist/storage/supabase.d.ts",
+      "import": "./dist/storage/supabase.js",
+      "require": "./dist/storage/supabase.cjs"
+    },
+    "./storage/postgres": {
+      "types": "./dist/storage/postgres.d.ts",
+      "import": "./dist/storage/postgres.js",
+      "require": "./dist/storage/postgres.cjs"
+    },
+    "./storage/memory": {
+      "types": "./dist/storage/memory.d.ts",
+      "import": "./dist/storage/memory.js",
+      "require": "./dist/storage/memory.cjs"
+    }
+  },
+  "peerDependencies": {
+    "express": "^4.0.0",
+    "next": "^13.0.0 || ^14.0.0 || ^15.0.0",
+    "pg": "^8.0.0"
+  },
+  "files": [
+    "dist/",
+    "README.md"
+  ]
+}

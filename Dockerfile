@@ -30,6 +30,9 @@ RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -m nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Vendored file: dep — standalone tracing skips it because it's a symlink, so
+# copy the real files into the runtime node_modules explicitly.
+COPY --from=builder --chown=nextjs:nodejs /app/vendor/panini-connector ./node_modules/panini-connector
 USER nextjs
 EXPOSE 3000
 CMD ["node", "server.js"]
